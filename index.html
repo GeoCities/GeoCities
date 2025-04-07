@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GeoCities</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='50' font-size='80' text-anchor='middle' dominant-baseline='middle' fill='%23000'>G%3C/text%3E%3C/svg%3E" type="image/svg+xml">
     <style>
         /* Body Styles */
         body {
@@ -19,6 +20,8 @@
             padding-top: 100px;
             transition: background 0.3s ease, color 0.3s ease;
             position: relative; /* Needed for absolute positioning of footer */
+            padding-bottom: 40px; /* Add padding at the bottom for the fixed footer */
+            box-sizing: border-box;
         }
         body.light-mode {
             background: #fff;
@@ -31,6 +34,11 @@
             align-items: center;
             width: 90%;
             max-width: 600px;
+            min-height: calc(100vh - 140px); /* Subtract header and footer height */
+            display: flex; /* Enable flexbox for vertical alignment */
+            flex-direction: column;
+            justify-content: space-between; /* Push content and footer apart */
+
         }
         /* Logo Box (Homepage Avatar) */
         .logo-box {
@@ -78,6 +86,8 @@
             transition: all 0.3s ease;
             height: 38px;
             box-sizing: border-box;
+            /* Prevent zoom on focus in iOS */
+            font-size: 16px; /* Ensure a default font size */
         }
         .search-input.light-mode {
             background: #eee;
@@ -113,8 +123,9 @@
             display: flex;
             flex-direction: column;
             align-items: stretch;
-            margin-top: 0; /* Changed from 20px to 0 */
-            margin-bottom: 40px; /* Added margin-bottom for spacing with footer */
+            margin-top: 0;
+            margin-bottom: 0; /* Removed bottom margin from profile container */
+            flex: 1; /* Allow profile container to take up available space */
         }
         .profile-box {
             border: 1px solid #fff;
@@ -274,7 +285,7 @@
         }
         /* Footer Styles */
         .footer {
-            position: absolute; /* Fix the footer to the bottom */
+            position: fixed; /* Fix the footer to the bottom */
             bottom: 0;
             left: 0;
             width: 100%;
@@ -316,15 +327,15 @@
                 <button class="search-button" onclick="searchENS()">Search</button>
             </div>
             <div id="error-message-home" class="error-message" style="display: none;"></div>
-            <footer class="footer">
-                GeoCities®️
-            </footer>
         </div>
         <div id="profile-page" style="display: none;">
             <div class="logo-box" id="profile-avatar"></div>
             <div id="profile-records" class="profile-container"></div>
         </div>
         <div class="additional-space"></div>
+        <footer class="footer">
+            GeoCities®️
+        </footer>
     </div>
     <script>
         const homepage = document.getElementById('homepage');
