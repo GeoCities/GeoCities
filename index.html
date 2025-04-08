@@ -90,7 +90,7 @@
             font-size: 16px; /* Ensure a default font size */
         }
         .search-input.light-mode {
-            background: #eee;
+            background: #fff; /* Changed to #fff */
             color: #000;
             border-color: #000;
         }
@@ -183,7 +183,7 @@
             box-sizing: border-box;
         }
         .light-mode #profile-avatar {
-             border-color: #000;
+            border-color: #000;
         }
         /* Error Message */
         .error-message {
@@ -322,13 +322,17 @@
         <div id="homepage">
             <div class="logo-box" id="homepage-avatar"></div>
             <h2 id="homepage-geocities">GeoCities</h2>
-            <div class="search-container">
+            <div class="search-container" id="home-search-container">
                 <input type="text" id="ens-query" class="search-input" placeholder="Enter ENS name or address">
                 <button class="search-button" onclick="searchENS()">Search</button>
             </div>
             <div id="error-message-home" class="error-message" style="display: none;"></div>
         </div>
         <div id="profile-page" style="display: none;">
+            <div class="search-container" id="profile-search-container">
+                <input type="text" id="ens-query-profile" class="search-input" placeholder="Enter ENS name or address">
+                <button class="search-button" id="profile-search-button" onclick="searchENS()">Search</button>
+            </div>
             <div class="logo-box" id="profile-avatar"></div>
             <div id="profile-records" class="profile-container"></div>
         </div>
@@ -356,6 +360,12 @@
         let lightMode = false;
         const footerElement = document.querySelector('.footer');
 
+        // Get the search input and button elements for the profile page
+        const ensInputProfile = document.getElementById('ens-query-profile');
+        const profileSearchButton = document.getElementById('profile-search-button');
+        const profileSearchContainer = document.getElementById('profile-search-container');
+
+
         function toggleTheme() {
             lightMode = !lightMode;
             pageBody.classList.toggle('light-mode', lightMode);
@@ -380,6 +390,11 @@
             searchBtn.style.backgroundColor = lightMode ? '#fff' : '#000';
             searchBtn.style.color = lightMode ? '#000' : '#fff';
             footerElement.classList.toggle('light-mode', lightMode);
+
+            // Update search bar theme on profile page
+            ensInputProfile.classList.toggle('light-mode', lightMode);
+            profileSearchButton.classList.toggle('light-mode', lightMode);
+            updateProfileSearchAppearance(); // Call this function to update appearance
         }
 
         async function setAvatar(ensName, element) {
@@ -418,7 +433,8 @@
         setAvatar('geocities.eth', homepageAvatar);
 
         async function searchENS() {
-            const query = ensInput.value.trim();
+            const query = (profilePage.style.display === 'block') ? ensInputProfile.value.trim() : ensInput.value.trim();
+
             const ensName = query.endsWith('.eth') ? query : `${query}.eth`;
             if (!query) {
                 errorMessage.textContent = 'Please enter an ENS name or address.';
@@ -481,6 +497,7 @@
                     isFirstRecord = false; // After the first record, set to false
                 });
             }
+            updateProfileSearchAppearance(); // Call this function when showing profile page
         }
 
         function addProfileRecord(label, value, isFirst) {
@@ -511,6 +528,36 @@
             ensInput.value = '';
             errorMessage.style.display = 'none';
         }
+
+        // Event listener for the Enter key in the search input on home page
+        ensInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                searchENS();
+            }
+        });
+
+        // Event listener for the Enter key in the search input on profile page
+        ensInputProfile.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                searchENS();
+            }
+        });
+        // Event listener for the search button on profile page
+        profileSearchButton.addEventListener('click', () => {
+            searchENS();
+        });
+
+        function updateProfileSearchAppearance() {
+            if (lightMode) {
+                ensInputProfile.classList.add('light-mode');
+                profileSearchButton.classList.add('light-mode');
+            } else {
+                ensInputProfile.classList.remove('light-mode');
+                profileSearchButton.classList.remove('light-mode');
+            }
+        }
+        //call on initial load
+        updateProfileSearchAppearance();
     </script>
 </body>
 </html>
