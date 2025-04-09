@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GeoCities</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='50' font-size='80' text-anchor='middle' dominant-baseline='middle' fill='%23000'>G%3C/text%3E%3C/svg%3E" type="image/svg+xml">    <style>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='50' font-size='80' text-anchor='middle' dominant-baseline='middle' fill='%23000'>G%3C/text%3E%3C/svg%3E" type="image/svg+xml" type="image/svg+xml">
+    <style>
         /* Body Styles */
         body {
             font-family: sans-serif;
@@ -397,12 +398,12 @@
         }
 
         async function setAvatar(ensName, element) {
-            const url = `https://api.ethfollow.xyz/api/v1/users/${ensName}/ens`;
+            const url = `https://api.web3.bio/profile/ens/${ensName}`;
             try {
                 const response = await fetch(url);
                 if (response.ok) {
                     const data = await response.json();
-                    const avatar = data.ens.avatar;
+                    const avatar = data.avatar;
                     if (avatar) {
                         element.style.backgroundImage = `url('${avatar}')`;
                         element.style.backgroundSize = 'contain';
@@ -433,15 +434,15 @@
 
         async function searchENS() {
             const query = (profilePage.style.display === 'block') ? ensInputProfile.value.trim() : ensInput.value.trim();
-
             const ensName = query.endsWith('.eth') ? query : `${query}.eth`;
+
             if (!query) {
                 errorMessage.textContent = 'Please enter an ENS name or address.';
                 errorMessage.style.display = 'block';
                 return;
             }
             errorMessage.style.display = 'none';
-            const url = `https://api.ethfollow.xyz/api/v1/users/${ensName}/ens`;
+            const url = `https://api.web3.bio/profile/ens/${ensName}`;
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
@@ -457,7 +458,7 @@
                     return;
                 }
                 const data = await response.json();
-                displayProfile(data.ens);
+                displayProfile(data);
             } catch (err) {
                 console.error("ENS fetch error:", err);
                 errorMessage.textContent = `Unexpected error: ${err.message}`;
@@ -471,16 +472,54 @@
             profileRecords.innerHTML = '';
 
             // Set the profile avatar
-            setAvatar(ensData.name, profileAvatar);
+            setAvatar(ensData.identity, profileAvatar);
 
-            const records = [];
-            records.push({ label: 'ENS Name', value: ensData.name });
-            if (ensData.address) records.push({ label: 'Address', value: ensData.address });
-            if (ensData.records) {
-                Object.entries(ensData.records).forEach(([key, value]) =>
-                    records.push({ label: key, value })
-                );
+            let records = [];
+            for (const [key, value] of Object.entries(ensData)) {
+                if (key === 'links' || key === 'social') {
+                    // Handle links and social separately
+                    if (value && typeof value === 'object') {
+                        for (const [linkKey, linkValue] of Object.entries(value)) {
+                            if (linkValue && typeof linkValue === 'object') {
+                                // Handle nested objects inside platforms
+                                for (const [nestedKey, nestedValue] of Object.entries(linkValue)) {
+                                    if (nestedValue !== null && nestedValue !== undefined && nestedValue !== '') {
+                                        records.push({
+                                            label: `${key}.${linkKey}.${nestedKey}`,
+                                            value: nestedValue
+                                        });
+                                    }
+                                }
+                            } else if (linkValue !== null && linkValue !== undefined && linkValue !== '') {
+                                // Handle direct values
+                                records.push({
+                                    label: `${key}.${linkKey}`,
+                                    value: linkValue
+                                });
+                            }
+                        }
+                    }
+                } else {
+                    // Handle normal key-value pairs
+                    if (value !== null && value !== undefined && value !== '') {
+                        if (typeof value === 'object' && value !== null) {
+                            // Handle nested objects that aren't links or social
+                            for (const [nestedKey, nestedValue] of Object.entries(value)) {
+                                if (nestedValue !== null && nestedValue !== undefined && nestedValue !== '') {
+                                    records.push({
+                                        label: `${key}.${nestedKey}`,
+                                        value: nestedValue
+                                    });
+                                }
+                            }
+                        } else {
+                            records.push({ label: key, value: value });
+                        }
+                    }
+                }
             }
+
+
             if (records.length === 0) {
                 const noRecords = document.createElement('div');
                 noRecords.classList.add('profile-box');
@@ -493,10 +532,10 @@
                 let isFirstRecord = true;
                 records.forEach(({ label, value }) => {
                     addProfileRecord(label, value, isFirstRecord);
-                    isFirstRecord = false; // After the first record, set to false
+                    isFirstRecord = false;
                 });
             }
-            updateProfileSearchAppearance(); // Call this function when showing profile page
+            updateProfileSearchAppearance();
         }
 
         function addProfileRecord(label, value, isFirst) {
@@ -506,7 +545,7 @@
                 record.classList.add('light-mode');
             }
             if (isFirst) {
-                record.style.marginTop = '0'; // Remove top margin for the first record
+                record.style.marginTop = '0';
             }
             const headerElement = document.createElement('div');
             headerElement.classList.add('profile-box-header');
@@ -515,7 +554,7 @@
             }
             headerElement.textContent = label;
             const valueContainer = document.createElement('div');
-            valueContainer.textContent = value;
+            valueContainer.textContent =  (typeof value === 'object' && value !== null) ? JSON.stringify(value) : value;
             record.appendChild(headerElement);
             record.appendChild(valueContainer);
             profileRecords.appendChild(record);
@@ -560,3 +599,4 @@
     </script>
 </body>
 </html>
+
