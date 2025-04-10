@@ -478,10 +478,25 @@
             const specificOmissions = [
                 'social.follower',
                 'social.following',
-                'Platform'
+                'Platform',
+                'platform' // Added to omit platform: ens
             ];
 
-            let records = [];
+            // Define header name changes
+            const headerRenames = {
+                'identity': 'ENS',
+                'DisplayName': 'Name',
+                'CreatedAt': 'Created'
+            };
+
+            let recordsMap = {
+                'address': null,     // First record (if exists)
+                'ENS': null,         // Second record (renamed from 'identity')
+                'Name': null,        // Third record (renamed from 'DisplayName')
+                'Created': null       // Last record (renamed from 'CreatedAt')
+            };
+
+            let otherRecords = [];   // All other records in between
 
             // Process the ENS data
             for (const [key, value] of Object.entries(ensData)) {
@@ -491,7 +506,7 @@
                         if (platformData && typeof platformData === 'object') {
                             // For platform data, only use the handle and simplify the label
                             if (platformData.handle) {
-                                records.push({
+                                otherRecords.push({
                                     label: platform, // Just the platform name (e.g., "github")
                                     value: platformData.handle
                                 });
@@ -518,14 +533,14 @@
                                     if (specificOmissions.includes(nestedLabel)) continue;
 
                                     if (nestedValue !== null && nestedValue !== undefined && nestedValue !== '') {
-                                        records.push({
+                                        otherRecords.push({
                                             label: nestedLabel,
                                             value: nestedValue
                                         });
                                     }
                                 }
                             } else {
-                                records.push({
+                                otherRecords.push({
                                     label: recordLabel,
                                     value: socialValue
                                 });
@@ -548,20 +563,59 @@
                                 if (specificOmissions.includes(recordLabel)) continue;
 
                                 if (nestedValue !== null && nestedValue !== undefined && nestedValue !== '') {
-                                    records.push({
+                                    otherRecords.push({
                                         label: recordLabel,
                                         value: nestedValue
                                     });
                                 }
                             }
                         } else {
-                            records.push({ label: key, value: value });
+                            // Check if the key is one of our specific keys to be ordered
+                            const renamedHeader = headerRenames[key] || key;
+
+                            if (key === 'address') {
+                                recordsMap['address'] = { label: 'address', value: value };
+                            } else if (key === 'identity') {
+                                recordsMap['ENS'] = { label: 'ENS', value: value };
+                            } else if (key === 'DisplayName') {
+                                recordsMap['Name'] = { label: 'Name', value: value };
+                            } else if (key === 'CreatedAt') {
+                                recordsMap['Created'] = { label: 'Created', value: value };
+                            } else {
+                                otherRecords.push({ label: renamedHeader, value: value });
+                            }
                         }
                     }
                 }
             }
 
-            if (records.length === 0) {
+            // Build the final ordered records array
+            let orderedRecords = [];
+
+            // Add address first (if it exists)
+            if (recordsMap['address']) {
+                orderedRecords.push(recordsMap['address']);
+            }
+
+            // Add ENS second (if it exists)
+            if (recordsMap['ENS']) {
+                orderedRecords.push(recordsMap['ENS']);
+            }
+
+            // Add Name third (if it exists)
+            if (recordsMap['Name']) {
+                orderedRecords.push(recordsMap['Name']);
+            }
+
+            // Add all other records in the middle
+            orderedRecords = orderedRecords.concat(otherRecords);
+
+            // Add Created at the end (if it exists)
+            if (recordsMap['Created']) {
+                orderedRecords.push(recordsMap['Created']);
+            }
+
+            if (orderedRecords.length === 0) {
                 const noRecords = document.createElement('div');
                 noRecords.classList.add('profile-box');
                 if (lightMode) {
@@ -571,7 +625,7 @@
                 profileRecords.appendChild(noRecords);
             } else {
                 let isFirstRecord = true;
-                records.forEach(({ label, value }) => {
+                orderedRecords.forEach(({ label, value }) => {
                     addProfileRecord(label, value, isFirstRecord);
                     isFirstRecord = false;
                 });
@@ -595,7 +649,7 @@
             }
             headerElement.textContent = label;
             const valueContainer = document.createElement('div');
-            valueContainer.textContent =  (typeof value === 'object' && value !== null) ? JSON.stringify(value) : value;
+            valueContainer.textContent =  (typeof value=== 'object' && value !== null) ? JSON.stringify(value) : value;
             record.appendChild(headerElement);
             record.appendChild(valueContainer);
             profileRecords.appendChild(record);
@@ -639,4 +693,6 @@
         updateProfileSearchAppearance();
     </script>
 </body>
+</html>
+
 </html>
