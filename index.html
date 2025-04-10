@@ -474,40 +474,82 @@
             // Set the profile avatar
             setAvatar(ensData.identity, profileAvatar);
 
+            // Records to omit - specific entries
+            const specificOmissions = [
+                'social.follower',
+                'social.following',
+                'Platform'
+            ];
+
             let records = [];
+
+            // Process the ENS data
             for (const [key, value] of Object.entries(ensData)) {
-                if (key === 'links' || key === 'social') {
-                    // Handle links and social separately
-                    if (value && typeof value === 'object') {
-                        for (const [linkKey, linkValue] of Object.entries(value)) {
-                            if (linkValue && typeof linkValue === 'object') {
-                                // Handle nested objects inside platforms
-                                for (const [nestedKey, nestedValue] of Object.entries(linkValue)) {
+                // Handle links - special processing for platform data
+                if (key === 'links' && value && typeof value === 'object') {
+                    for (const [platform, platformData] of Object.entries(value)) {
+                        if (platformData && typeof platformData === 'object') {
+                            // For platform data, only use the handle and simplify the label
+                            if (platformData.handle) {
+                                records.push({
+                                    label: platform, // Just the platform name (e.g., "github")
+                                    value: platformData.handle
+                                });
+                            }
+                            // Skip link and source fields - we're only using the handle
+                        }
+                    }
+                }
+                // Handle social data - with specific omissions
+                else if (key === 'social' && value && typeof value === 'object') {
+                    for (const [socialKey, socialValue] of Object.entries(value)) {
+                        const recordLabel = `${key}.${socialKey}`;
+
+                        // Skip specifically omitted records
+                        if (specificOmissions.includes(recordLabel)) continue;
+
+                        if (socialValue !== null && socialValue !== undefined && socialValue !== '') {
+                            if (typeof socialValue === 'object') {
+                                // Handle nested objects in social
+                                for (const [nestedKey, nestedValue] of Object.entries(socialValue)) {
+                                    const nestedLabel = `${recordLabel}.${nestedKey}`;
+
+                                    // Skip specifically omitted nested records
+                                    if (specificOmissions.includes(nestedLabel)) continue;
+
                                     if (nestedValue !== null && nestedValue !== undefined && nestedValue !== '') {
                                         records.push({
-                                            label: `${key}.${linkKey}.${nestedKey}`,
+                                            label: nestedLabel,
                                             value: nestedValue
                                         });
                                     }
                                 }
-                            } else if (linkValue !== null && linkValue !== undefined && linkValue !== '') {
-                                // Handle direct values
+                            } else {
                                 records.push({
-                                    label: `${key}.${linkKey}`,
-                                    value: linkValue
+                                    label: recordLabel,
+                                    value: socialValue
                                 });
                             }
                         }
                     }
-                } else {
-                    // Handle normal key-value pairs
+                }
+                // Handle all other keys
+                else {
+                    // Skip specifically omitted records
+                    if (specificOmissions.includes(key)) continue;
+
                     if (value !== null && value !== undefined && value !== '') {
                         if (typeof value === 'object' && value !== null) {
-                            // Handle nested objects that aren't links or social
+                            // Handle nested objects
                             for (const [nestedKey, nestedValue] of Object.entries(value)) {
+                                const recordLabel = `${key}.${nestedKey}`;
+
+                                // Skip specifically omitted nested records
+                                if (specificOmissions.includes(recordLabel)) continue;
+
                                 if (nestedValue !== null && nestedValue !== undefined && nestedValue !== '') {
                                     records.push({
-                                        label: `${key}.${nestedKey}`,
+                                        label: recordLabel,
                                         value: nestedValue
                                     });
                                 }
@@ -518,7 +560,6 @@
                     }
                 }
             }
-
 
             if (records.length === 0) {
                 const noRecords = document.createElement('div');
@@ -599,4 +640,3 @@
     </script>
 </body>
 </html>
-
