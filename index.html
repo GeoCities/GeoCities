@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GeoCities</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='50' font-size='80' text-anchor='middle' dominant-baseline='middle' fill='%23000'>G%3C/text%3E%3C/svg%3E" type="image/svg+xml" type="image/svg+xml">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='50' font-size='80' text-anchor='middle' dominant-baseline='middle' fill='%23000'>G%3C/text%3E%3C/svg%3E" type="image/svg+xml">
     <style>
         /* Body Styles */
         body {
@@ -90,7 +90,7 @@
             font-size: 16px; /* Ensure a default font size */
         }
         .search-input.light-mode {
-            background: #fff; /* Changed to #fff */
+            background: #fff;
             color: #000;
             border-color: #000;
         }
@@ -190,6 +190,7 @@
             color: red;
             margin-top: 10px;
             transition: color 0.3s ease;
+            display: none; /* Initially hidden */
         }
         .error-message.light-mode {
             color: red;
@@ -326,7 +327,7 @@
                 <input type="text" id="ens-query" class="search-input" placeholder="Enter ENS name or address">
                 <button class="search-button" onclick="searchENS()">Search</button>
             </div>
-            <div id="error-message-home" class="error-message" style="display: none;"></div>
+            <div id="error-message-home" class="error-message"></div>
         </div>
         <div id="profile-page" style="display: none;">
             <div class="search-container" id="profile-search-container">
@@ -482,18 +483,18 @@
                 'platform' // Added to omit platform: ens
             ];
 
-            // Define header name changes
+            // Define header name changes - updated with correct capitalization
             const headerRenames = {
                 'identity': 'ENS',
-                'DisplayName': 'Name',
-                'CreatedAt': 'Created'
+                'displayName': 'Name',
+                'createdAt': 'Created'
             };
 
             let recordsMap = {
                 'address': null,     // First record (if exists)
                 'ENS': null,         // Second record (renamed from 'identity')
-                'Name': null,        // Third record (renamed from 'DisplayName')
-                'Created': null       // Last record (renamed from 'CreatedAt')
+                'Name': null,        // Third record (renamed from 'displayName')
+                'Created': null      // Last record (renamed from 'createdAt')
             };
 
             let otherRecords = [];   // All other records in between
@@ -577,10 +578,20 @@
                                 recordsMap['address'] = { label: 'address', value: value };
                             } else if (key === 'identity') {
                                 recordsMap['ENS'] = { label: 'ENS', value: value };
-                            } else if (key === 'DisplayName') {
+                            } else if (key === 'displayName') {
                                 recordsMap['Name'] = { label: 'Name', value: value };
-                            } else if (key === 'CreatedAt') {
-                                recordsMap['Created'] = { label: 'Created', value: value };
+                            } else if (key === 'createdAt') {
+                                // Format the date from ISO to mm/dd/yyyy
+                                let formattedDate = value;
+                                try {
+                                    const date = new Date(value);
+                                    if (!isNaN(date.getTime())) {
+                                        formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+                                    }
+                                } catch (err) {
+                                    console.error("Date parsing error:", err);
+                                }
+                                recordsMap['Created'] = { label: 'Created', value: formattedDate };
                             } else {
                                 otherRecords.push({ label: renamedHeader, value: value });
                             }
@@ -693,6 +704,4 @@
         updateProfileSearchAppearance();
     </script>
 </body>
-</html>
-
 </html>
