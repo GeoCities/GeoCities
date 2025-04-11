@@ -19,8 +19,8 @@
             margin: 0;
             padding-top: 100px;
             transition: background 0.3s ease, color 0.3s ease;
-            position: relative; /* Needed for absolute positioning of footer */
-            padding-bottom: 40px; /* Add padding at the bottom for the fixed footer */
+            position: relative;
+            padding-bottom: 40px;
             box-sizing: border-box;
         }
         body.light-mode {
@@ -34,10 +34,10 @@
             align-items: center;
             width: 90%;
             max-width: 600px;
-            min-height: calc(100vh - 140px); /* Subtract header and footer height */
-            display: flex; /* Enable flexbox for vertical alignment */
+            min-height: calc(100vh - 140px);
+            display: flex;
             flex-direction: column;
-            justify-content: space-between; /* Push content and footer apart */
+            justify-content: space-between;
         }
         /* Logo Box (Homepage Avatar) */
         .logo-box {
@@ -85,8 +85,7 @@
             transition: all 0.3s ease;
             height: 38px;
             box-sizing: border-box;
-            /* Prevent zoom on focus in iOS */
-            font-size: 16px; /* Ensure a default font size */
+            font-size: 16px;
         }
         .search-input.light-mode {
             background: #fff;
@@ -123,8 +122,8 @@
             flex-direction: column;
             align-items: stretch;
             margin-top: 0;
-            margin-bottom: 0; /* Removed bottom margin from profile container */
-            flex: 1; /* Allow profile container to take up available space */
+            margin-bottom: 0;
+            flex: 1;
         }
         .profile-box {
             border: 1px solid #fff;
@@ -178,7 +177,7 @@
             overflow: hidden;
             margin-bottom: 0;
             border: 1px solid #fff;
-            border-bottom: none; /* Add this to connect with profile records */
+            border-bottom: none;
             box-sizing: border-box;
         }
         #profile-avatar-link {
@@ -199,7 +198,7 @@
             color: red;
             margin-top: 10px;
             transition: color 0.3s ease;
-            display: none; /* Initially hidden */
+            display: none;
         }
         .error-message.light-mode {
             color: red;
@@ -295,7 +294,7 @@
         }
         /* Footer Styles */
         .footer {
-            position: fixed; /* Fix the footer to the bottom */
+            position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
@@ -371,8 +370,6 @@
         const buttonWrapper = document.querySelector('.header-button-wrapper');
         let lightMode = false;
         const footerElement = document.querySelector('.footer');
-
-        // Get the search input and button elements for the profile page
         const ensInputProfile = document.getElementById('ens-query-profile');
         const profileSearchButton = document.getElementById('profile-search-button');
         const profileSearchContainer = document.getElementById('profile-search-container');
@@ -401,8 +398,6 @@
             searchBtn.style.backgroundColor = lightMode ? '#fff' : '#000';
             searchBtn.style.color = lightMode ? '#000' : '#fff';
             footerElement.classList.toggle('light-mode', lightMode);
-
-            // Update search bar theme on profile page
             ensInputProfile.classList.toggle('light-mode', lightMode);
             profileSearchButton.classList.toggle('light-mode', lightMode);
             updateProfileSearchAppearance();
@@ -420,10 +415,8 @@
                     const avatar = data.avatar;
                     
                     if (isProfileAvatar) {
-                        // For profile avatar (always clickable)
                         const avatarLink = document.getElementById('profile-avatar-link');
-                        const sanitizedEnsName = ensName.endsWith('.eth') ? ensName : `${ensName}.eth`;
-                        avatarLink.href = `https://${sanitizedEnsName}.eth.link`;
+                        avatarLink.href = `https://${ensName}.eth.link`; // Fixed line: Use ensName directly
                         avatarLink.target = "_blank";
                         
                         if (avatar) {
@@ -437,7 +430,6 @@
                             avatarLink.style.backgroundImage = 'none';
                         }
                     } else {
-                        // For homepage avatar (non-clickable)
                         if (avatar) {
                             element.style.backgroundImage = `url('${avatar}')`;
                             element.style.backgroundSize = 'contain';
@@ -456,8 +448,7 @@
                     
                     if (isProfileAvatar) {
                         const avatarLink = document.getElementById('profile-avatar-link');
-                        const sanitizedEnsName = ensName.endsWith('.eth') ? ensName : `${ensName}.eth`;
-                        avatarLink.href = `https://${sanitizedEnsName}.eth.link`;
+                        avatarLink.href = `https://${ensName}.eth.link`; // Fixed line: Use ensName directly
                         avatarLink.target = "_blank";
                         avatarLink.textContent = ensName[0].toUpperCase();
                         avatarLink.style.backgroundImage = 'none';
@@ -473,8 +464,7 @@
                 
                 if (isProfileAvatar) {
                     const avatarLink = document.getElementById('profile-avatar-link');
-                    const sanitizedEnsName = ensName.endsWith('.eth') ? ensName : `${ensName}.eth`;
-                    avatarLink.href = `https://${sanitizedEnsName}.eth.link`;
+                    avatarLink.href = `https://${ensName}.eth.link`; // Fixed line: Use ensName directly
                     avatarLink.target = "_blank";
                     avatarLink.textContent = ensName[0].toUpperCase();
                     avatarLink.style.backgroundImage = 'none';
@@ -529,18 +519,15 @@
             profilePage.style.display = 'block';
             profileRecords.innerHTML = '';
 
-            // Set the profile avatar with the isProfileAvatar flag set to true
             setAvatar(ensData.identity, null, true);
 
-            // Records to omit - specific entries
             const specificOmissions = [
                 'social.follower',
                 'social.following',
                 'Platform',
-                'platform' // Added to omit platform: ens
+                'platform'
             ];
 
-            // Define header name changes - updated with correct capitalization
             const headerRenames = {
                 'identity': 'ENS',
                 'displayName': 'Name',
@@ -548,15 +535,14 @@
             };
 
             let recordsMap = {
-                'address': null,     // First record (if exists)
-                'ENS': null,         // Second record (renamed from 'identity')
-                'Name': null,        // Third record (renamed from 'displayName')
-                'Created': null      // Last record (renamed from 'createdAt')
+                'address': null,
+                'ENS': null,
+                'Name': null,
+                'Created': null
             };
 
-            let otherRecords = [];    // All other records in between
+            let otherRecords = [];
 
-            // Add contenthash to records if it exists
             if (ensData.records && ensData.records.contenthash) {
                 otherRecords.push({
                     label: 'contenthash',
@@ -564,35 +550,26 @@
                 });
             }
 
-            // Process the ENS data
             for (const [key, value] of Object.entries(ensData)) {
-                // Handle links - special processing for platform data
                 if (key === 'links' && value && typeof value === 'object') {
                     for (const [platform, platformData] of Object.entries(value)) {
                         if (platformData && typeof platformData === 'object') {
-                            // For platform data, only use the handle and simplify the label
                             if (platformData.handle) {
                                 otherRecords.push({
-                                    label: platform, // Just the platform name (e.g., "github")
+                                    label: platform,
                                     value: platformData.handle
                                 });
                             }
-                            // Skip link and source fields - we're only using the handle
                         }
                     }
-                }
-                // Handle social data - with specific omissions
-                else if (key === 'social' && value && typeof value === 'object') {
+                } else if (key === 'social' && value && typeof value === 'object') {
                     for (const [socialKey, socialValue] of Object.entries(value)) {
                         const recordLabel = `${key}.${socialKey}`;
-                        // Skip specifically omitted records
                         if (specificOmissions.includes(recordLabel)) continue;
                         if (socialValue !== null && socialValue !== undefined && socialValue !== '') {
                             if (typeof socialValue === 'object') {
-                                // Handle nested objects in social
                                 for (const [nestedKey, nestedValue] of Object.entries(socialValue)) {
                                     const nestedLabel = `${recordLabel}.${nestedKey}`;
-                                    // Skip specifically omitted nested records
                                     if (specificOmissions.includes(nestedLabel)) continue;
                                     if (nestedValue !== null && nestedValue !== undefined && nestedValue !== '') {
                                         otherRecords.push({
@@ -609,17 +586,12 @@
                             }
                         }
                     }
-                }
-                // Handle all other keys
-                else {
-                    // Skip specifically omitted records
+                } else {
                     if (specificOmissions.includes(key)) continue;
                     if (value !== null && value !== undefined && value !== '') {
                         if (typeof value === 'object' && value !== null && key !== 'records') {
-                            // Handle nested objects (except 'records' which we handle separately)
                             for (const [nestedKey, nestedValue] of Object.entries(value)) {
                                 const recordLabel = `${key}.${nestedKey}`;
-                                // Skip specifically omitted nested records
                                 if (specificOmissions.includes(recordLabel)) continue;
                                 if (nestedValue !== null && nestedValue !== undefined && nestedValue !== '') {
                                     otherRecords.push({
@@ -629,7 +601,6 @@
                                 }
                             }
                         } else {
-                            // Check if the key is one of our specific keys to be ordered
                             const renamedHeader = headerRenames[key] || key;
                             if (key === 'address') {
                                 recordsMap['address'] = { label: 'address', value: value };
@@ -638,7 +609,6 @@
                             } else if (key === 'displayName') {
                                 recordsMap['Name'] = { label: 'Name', value: value };
                             } else if (key === 'createdAt') {
-                                // Format the date from ISO to mm/dd/yyyy
                                 let formattedDate = value;
                                 try {
                                     const date = new Date(value);
@@ -657,33 +627,17 @@
                 }
             }
 
-            // Build the final ordered records array
             let orderedRecords = [];
-            // Add address first (if it exists)
-            if (recordsMap['address']) {
-                orderedRecords.push(recordsMap['address']);
-            }
-            // Add ENS second (if it exists)
-            if (recordsMap['ENS']) {
-                orderedRecords.push(recordsMap['ENS']);
-            }
-            // Add Name third (if it exists)
-            if (recordsMap['Name']) {
-                orderedRecords.push(recordsMap['Name']);
-            }
-            // Add all other records in the middle
+            if (recordsMap['address']) orderedRecords.push(recordsMap['address']);
+            if (recordsMap['ENS']) orderedRecords.push(recordsMap['ENS']);
+            if (recordsMap['Name']) orderedRecords.push(recordsMap['Name']);
             orderedRecords = orderedRecords.concat(otherRecords);
-            // Add Created at the end (if it exists)
-            if (recordsMap['Created']) {
-                orderedRecords.push(recordsMap['Created']);
-            }
+            if (recordsMap['Created']) orderedRecords.push(recordsMap['Created']);
 
             if (orderedRecords.length === 0) {
                 const noRecords = document.createElement('div');
                 noRecords.classList.add('profile-box');
-                if (lightMode) {
-                    noRecords.classList.add('light-mode');
-                }
+                if (lightMode) noRecords.classList.add('light-mode');
                 noRecords.textContent = 'No Records Found.';
                 profileRecords.appendChild(noRecords);
             } else {
@@ -699,17 +653,11 @@
         function addProfileRecord(label, value, isFirst) {
             const record = document.createElement('div');
             record.classList.add('profile-box');
-            if (lightMode) {
-                record.classList.add('light-mode');
-            }
-            if (isFirst) {
-                record.style.marginTop = '0';
-            }
+            if (lightMode) record.classList.add('light-mode');
+            if (isFirst) record.style.marginTop = '0';
             const headerElement = document.createElement('div');
             headerElement.classList.add('profile-box-header');
-            if (lightMode) {
-                headerElement.classList.add('light-mode');
-            }
+            if (lightMode) headerElement.classList.add('light-mode');
             headerElement.textContent = label;
             const valueContainer = document.createElement('div');
             valueContainer.textContent = (typeof value === 'object' && value !== null) ? JSON.stringify(value) : value;
@@ -725,23 +673,16 @@
             errorMessage.style.display = 'none';
         }
 
-        // Event listener for the Enter key in the search input on home page
         ensInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                searchENS();
-            }
+            if (e.key === 'Enter') searchENS();
         });
 
-        // Event listener for the Enter key in the search input on profile page
         ensInputProfile.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                searchENS();
-            }
+            if (e.key === 'Enter') searchENS();
         });
 
         function updateProfileSearchAppearance() {
             if (profilePage.style.display === 'block') {
-                // Apply styles for profile page search
                 ensInputProfile.classList.add('search-input');
                 profileSearchButton.classList.add('search-button');
                 if (lightMode) {
@@ -752,7 +693,6 @@
                     profileSearchButton.classList.remove('light-mode');
                 }
             } else {
-                // Ensure styles are set for home page search
                 ensInput.classList.add('search-input');
                 searchBtn.classList.add('search-button');
                 if (lightMode) {
@@ -765,7 +705,6 @@
             }
         }
 
-        // Initial call to set the correct appearance on page load
         updateProfileSearchAppearance();
     </script>
 </body>
