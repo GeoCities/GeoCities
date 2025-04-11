@@ -182,6 +182,23 @@
             border-bottom: none; /* Add this to connect with profile records */
             box-sizing: border-box;
         }
+        #profile-avatar-link {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+        #profile-avatar-link.has-contenthash {
+            cursor: pointer;
+        }
+        #profile-avatar-link:not(.has-contenthash) {
+            cursor: default;
+        }
+
         .light-mode #profile-avatar {
             border-color: #000;
         }
@@ -334,7 +351,9 @@
                 <input type="text" id="ens-query-profile" class="search-input" placeholder="Enter ENS name or address">
                 <button class="search-button" id="profile-search-button" onclick="searchENS()">Search</button>
             </div>
-            <div class="logo-box" id="profile-avatar"></div>
+            <div id="profile-avatar">
+                <a id="profile-avatar-link"></a>
+            </div>
             <div id="profile-records" class="profile-container"></div>
         </div>
         <div class="additional-space"></div>
@@ -350,6 +369,7 @@
         const errorMessage = document.getElementById('error-message-home');
         const homepageAvatar = document.getElementById('homepage-avatar');
         const profileAvatar = document.getElementById('profile-avatar');
+        const profileAvatarLink = document.getElementById('profile-avatar-link');
         const pageBody = document.body;
         const inputField = document.querySelector('.search-input');
         const searchBtn = document.querySelector('.search-button');
@@ -398,36 +418,87 @@
             updateProfileSearchAppearance(); // Call this function to update appearance
         }
 
-        async function setAvatar(ensName, element) {
+        async function setAvatar(ensName, element, isProfileAvatar = false) {
             const url = `https://api.web3.bio/profile/ens/${ensName}`;
             try {
                 const response = await fetch(url);
                 if (response.ok) {
                     const data = await response.json();
                     const avatar = data.avatar;
-                    if (avatar) {
-                        element.style.backgroundImage = `url('${avatar}')`;
-                        element.style.backgroundSize = 'contain';
-                        element.style.backgroundPosition = 'center';
-                        element.style.backgroundRepeat = 'no-repeat';
-                        element.textContent = '';
+                    
+                    if (isProfileAvatar) {
+                        // For profile avatar (the clickable one)
+                        const avatarLink = document.getElementById('profile-avatar-link');
+                        
+                        // Check if contenthash exists
+                        let hasContenthash = false;
+                        if (data.records && data.records.contenthash) {
+                            hasContenthash = true;
+                            avatarLink.href = `https://${ensName}.eth.link`;
+                            avatarLink.target = "_blank";
+                            avatarLink.classList.add('has-contenthash');
+                        } else {
+                            avatarLink.removeAttribute('href');
+                            avatarLink.removeAttribute('target');
+                            avatarLink.classList.remove('has-contenthash');
+                        }
+                        
+                        if (avatar) {
+                            avatarLink.style.backgroundImage = `url('${avatar}')`;
+                            avatarLink.style.backgroundSize = 'contain';
+                            avatarLink.style.backgroundPosition = 'center';
+                            avatarLink.style.backgroundRepeat = 'no-repeat';
+                            avatarLink.textContent = '';
+                        } else {
+                            avatarLink.textContent = ensName[0].toUpperCase();
+                            avatarLink.style.backgroundImage = 'none';
+                        }
                     } else {
-                        element.textContent = ensName[0].toUpperCase();
-                        element.style.backgroundImage = 'none';
+                        // For homepage avatar (non-clickable)
+                        if (avatar) {
+                            element.style.backgroundImage = `url('${avatar}')`;
+                            element.style.backgroundSize = 'contain';
+                            element.style.backgroundPosition = 'center';
+                            element.style.backgroundRepeat = 'no-repeat';
+                            element.textContent = '';
+                        } else {
+                            element.textContent = ensName[0].toUpperCase();
+                            element.style.backgroundImage = 'none';
+                        }
                     }
                 } else {
                     const data = await response.json();
                     errorMessage.textContent = `Error: ${data?.message || response.statusText}`;
                     errorMessage.style.display = 'block';
-                    element.textContent = ensName[0].toUpperCase();
-                    element.style.backgroundImage = 'none';
+                    
+                    if (isProfileAvatar) {
+                        const avatarLink = document.getElementById('profile-avatar-link');
+                        avatarLink.textContent = ensName[0].toUpperCase();
+                        avatarLink.style.backgroundImage = 'none';
+                        avatarLink.removeAttribute('href');
+                        avatarLink.removeAttribute('target');
+                        avatarLink.classList.remove('has-contenthash');
+                    } else {
+                        element.textContent = ensName[0].toUpperCase();
+                        element.style.backgroundImage = 'none';
+                    }
                 }
             } catch (err) {
                 console.error("Avatar fetch error:", err);
                 errorMessage.textContent = `Unexpected error: ${err.message}`;
                 errorMessage.style.display = 'block';
-                element.textContent = ensName[0].toUpperCase();
-                element.style.backgroundImage = 'none';
+                
+                if (isProfileAvatar) {
+                    const avatarLink = document.getElementById('profile-avatar-link');
+                    avatarLink.textContent = ensName[0].toUpperCase();
+                    avatarLink.style.backgroundImage = 'none';
+                    avatarLink.removeAttribute('href');
+                    avatarLink.removeAttribute('target');
+                    avatarLink.classList.remove('has-contenthash');
+                } else {
+                    element.textContent = ensName[0].toUpperCase();
+                    element.style.backgroundImage = 'none';
+                }
             }
         }
 
@@ -472,8 +543,8 @@
             profilePage.style.display = 'block';
             profileRecords.innerHTML = '';
 
-            // Set the profile avatar
-            setAvatar(ensData.identity, profileAvatar);
+            // Set the profile avatar with the isProfileAvatar flag set to true
+            setAvatar(ensData.identity, null, true);
 
             // Records to omit - specific entries
             const specificOmissions = [
@@ -493,11 +564,19 @@
             let recordsMap = {
                 'address': null,     // First record (if exists)
                 'ENS': null,         // Second record (renamed from 'identity')
-                'Name': null,        // Third record (renamed from 'displayName')
-                'Created': null      // Last record (renamed from 'createdAt')
+                'Name': null,         // Third record (renamed from 'displayName')
+                'Created': null         // Last record (renamed from 'createdAt')
             };
 
-            let otherRecords = [];   // All other records in between
+            let otherRecords = [];    // All other records in between
+
+            // Add contenthash to records if it exists
+            if (ensData.records && ensData.records.contenthash) {
+                otherRecords.push({
+                    label: 'contenthash',
+                    value: ensData.records.contenthash
+                });
+            }
 
             // Process the ENS data
             for (const [key, value] of Object.entries(ensData)) {
@@ -555,18 +634,17 @@
                     if (specificOmissions.includes(key)) continue;
 
                     if (value !== null && value !== undefined && value !== '') {
-                        if (typeof value === 'object' && value !== null) {
-                            // Handle nested objects
+                        if (typeof value === 'object' && value !== null && key !== 'records') {
+                            // Handle nested objects (except 'records' which we handle separately)
                             for (const [nestedKey, nestedValue] of Object.entries(value)) {
                                 const recordLabel = `${key}.${nestedKey}`;
 
                                 // Skip specifically omitted nested records
                                 if (specificOmissions.includes(recordLabel)) continue;
 
-                                if (nestedValue !== null && nestedValue !== undefined && nestedValue !== '') {
-                                    otherRecords.push({
-                                        label: recordLabel,
-                                        value: nestedValue
+                                if (nestedValue !== null && nestedValue!== undefined && nestedValue !== '') {
+                                    otherRecords.push({label: recordLabel,
+                                        value:nestedValue
                                     });
                                 }
                             }
@@ -579,7 +657,7 @@
                             } else if (key === 'identity') {
                                 recordsMap['ENS'] = { label: 'ENS', value: value };
                             } else if (key === 'displayName') {
-                                recordsMap['Name'] = { label: 'Name', value: value };
+                                recordsMap['Name'] = { label: 'Name', value: value };  // Corrected line
                             } else if (key === 'createdAt') {
                                 // Format the date from ISO to mm/dd/yyyy
                                 let formattedDate = value;
@@ -592,7 +670,7 @@
                                     console.error("Date parsing error:", err);
                                 }
                                 recordsMap['Created'] = { label: 'Created', value: formattedDate };
-                            } else {
+                            } else if (key !== 'records') { // Skip the 'records' object as we handle contenthash separately
                                 otherRecords.push({ label: renamedHeader, value: value });
                             }
                         }
@@ -674,33 +752,46 @@
         }
 
         // Event listener for the Enter key in the search input on home page
-        ensInput.addEventListener('keypress', (event) => {
-            if (event.key === 'Enter') {
+        ensInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
                 searchENS();
             }
         });
 
         // Event listener for the Enter key in the search input on profile page
-        ensInputProfile.addEventListener('keypress', (event) => {
-            if (event.key === 'Enter') {
+        ensInputProfile.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
                 searchENS();
             }
         });
-        // Event listener for the search button on profile page
-        profileSearchButton.addEventListener('click', () => {
-            searchENS();
-        });
 
         function updateProfileSearchAppearance() {
-            if (lightMode) {
-                ensInputProfile.classList.add('light-mode');
-                profileSearchButton.classList.add('light-mode');
+            if (profilePage.style.display === 'block') {
+                // Apply styles for profile page search
+                ensInputProfile.classList.add('search-input');
+                profileSearchButton.classList.add('search-button');
+                if (lightMode) {
+                    ensInputProfile.classList.add('light-mode');
+                    profileSearchButton.classList.add('light-mode');
+                } else {
+                    ensInputProfile.classList.remove('light-mode');
+                    profileSearchButton.classList.remove('light-mode');
+                }
             } else {
-                ensInputProfile.classList.remove('light-mode');
-                profileSearchButton.classList.remove('light-mode');
+                // Ensure styles are set for home page search
+                ensInput.classList.add('search-input');
+                searchBtn.classList.add('search-button');
+                if (lightMode) {
+                    ensInput.classList.add('light-mode');
+                    searchBtn.classList.add('light-mode');
+                } else {
+                    ensInput.classList.remove('light-mode');
+                    searchBtn.classList.remove('light-mode');
+                }
             }
         }
-        //call on initial load
+
+        // Initial call to set the correct appearance on page load
         updateProfileSearchAppearance();
     </script>
 </body>
