@@ -341,14 +341,14 @@
             <div class="logo-box" id="homepage-avatar"></div>
             <h2 id="homepage-geocities">GeoCities</h2>
             <div class="search-container" id="home-search-container">
-                <input type="text" id="ens-query" class="search-input" placeholder="Enter ENS name or address">
+                <input type="text" id="ens-query" class="search-input" placeholder="Enter ENS or Base name">
                 <button class="search-button" onclick="searchENS()">Search</button>
             </div>
             <div id="error-message-home" class="error-message"></div>
         </div>
         <div id="profile-page" style="display: none;">
             <div class="search-container" id="profile-search-container">
-                <input type="text" id="ens-query-profile" class="search-input" placeholder="Enter ENS name or address">
+                <input type="text" id="ens-query-profile" class="search-input" placeholder="Enter ENS or Base name">
                 <button class="search-button" id="profile-search-button" onclick="searchENS()">Search</button>
             </div>
             <div id="profile-avatar">
@@ -419,7 +419,10 @@
         }
 
         async function setAvatar(ensName, element, isProfileAvatar = false) {
-            const url = `https://api.web3.bio/profile/ens/${ensName}`;
+            let url = `https://api.web3.bio/profile/ens/${ensName}`;
+             if (ensName.endsWith('.base.eth')) {
+                url = `https://api.web3.bio/profile/basenames/${ensName}`;
+             }
             try {
                 const response = await fetch(url);
                 if (response.ok) {
@@ -488,7 +491,7 @@
                 errorMessage.textContent = `Unexpected error: ${err.message}`;
                 errorMessage.style.display = 'block';
                 
-                if (isProfileAvatar) {
+                 if (isProfileAvatar) {
                     const avatarLink = document.getElementById('profile-avatar-link');
                     avatarLink.textContent = ensName[0].toUpperCase();
                     avatarLink.style.backgroundImage = 'none';
@@ -506,15 +509,18 @@
 
         async function searchENS() {
             const query = (profilePage.style.display === 'block') ? ensInputProfile.value.trim() : ensInput.value.trim();
-            const ensName = query.endsWith('.eth') ? query : `${query}.eth`;
+            const ensName = query.endsWith('.eth') || query.endsWith('.base.eth') ? query : `${query}.eth`;
 
             if (!query) {
-                errorMessage.textContent = 'Please enter an ENS name or address.';
+                errorMessage.textContent = 'Please enter an ENS or Base name.';
                 errorMessage.style.display = 'block';
                 return;
             }
             errorMessage.style.display = 'none';
-            const url = `https://api.web3.bio/profile/ens/${ensName}`;
+            let url = `https://api.web3.bio/profile/ens/${ensName}`;
+            if(ensName.endsWith('.base.eth')){
+                 url = `https://api.web3.bio/profile/basenames/${ensName}`;
+            }
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
@@ -642,7 +648,7 @@
                                 // Skip specifically omitted nested records
                                 if (specificOmissions.includes(recordLabel)) continue;
 
-                                if (nestedValue !== null && nestedValue!== undefined && nestedValue !== '') {
+                                 if (nestedValue !== null && nestedValue!== undefined && nestedValue !== '') {
                                     otherRecords.push({label: recordLabel,
                                         value:nestedValue
                                     });
