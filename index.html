@@ -416,7 +416,9 @@
                     
                     if (isProfileAvatar) {
                         const avatarLink = document.getElementById('profile-avatar-link');
-                        avatarLink.href = `https://${ensName}.eth.link`; // Fixed line: Use ensName directly
+                        // Normalize ensName to avoid duplicate .eth
+                        const normalizedEnsName = ensName.endsWith('.eth') ? ensName.slice(0, -4) : ensName;
+                        avatarLink.href = `https://${normalizedEnsName}.eth.link`;
                         avatarLink.target = "_blank";
                         
                         if (avatar) {
@@ -448,7 +450,9 @@
                     
                     if (isProfileAvatar) {
                         const avatarLink = document.getElementById('profile-avatar-link');
-                        avatarLink.href = `https://${ensName}.eth.link`; // Fixed line: Use ensName directly
+                        // Normalize ensName to avoid duplicate .eth
+                        const normalizedEnsName = ensName.endsWith('.eth') ? ensName.slice(0, -4) : ensName;
+                        avatarLink.href = `https://${normalizedEnsName}.eth.link`;
                         avatarLink.target = "_blank";
                         avatarLink.textContent = ensName[0].toUpperCase();
                         avatarLink.style.backgroundImage = 'none';
@@ -464,7 +468,9 @@
                 
                 if (isProfileAvatar) {
                     const avatarLink = document.getElementById('profile-avatar-link');
-                    avatarLink.href = `https://${ensName}.eth.link`; // Fixed line: Use ensName directly
+                    // Normalize ensName to avoid duplicate .eth
+                    const normalizedEnsName = ensName.endsWith('.eth') ? ensName.slice(0, -4) : ensName;
+                    avatarLink.href = `https://${normalizedEnsName}.eth.link`;
                     avatarLink.target = "_blank";
                     avatarLink.textContent = ensName[0].toUpperCase();
                     avatarLink.style.backgroundImage = 'none';
