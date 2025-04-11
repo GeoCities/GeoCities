@@ -38,7 +38,6 @@
             display: flex; /* Enable flexbox for vertical alignment */
             flex-direction: column;
             justify-content: space-between; /* Push content and footer apart */
-
         }
         /* Logo Box (Homepage Avatar) */
         .logo-box {
@@ -192,13 +191,6 @@
             color: inherit;
             cursor: pointer;
         }
-        #profile-avatar-link.has-contenthash {
-            cursor: pointer;
-        }
-        #profile-avatar-link:not(.has-contenthash) {
-            cursor: default;
-        }
-
         .light-mode #profile-avatar {
             border-color: #000;
         }
@@ -317,7 +309,6 @@
         .footer.light-mode {
             color: #000;
         }
-
         .header-button-wrapper {
             display: flex;
             align-items: center;
@@ -386,7 +377,6 @@
         const profileSearchButton = document.getElementById('profile-search-button');
         const profileSearchContainer = document.getElementById('profile-search-container');
 
-
         function toggleTheme() {
             lightMode = !lightMode;
             pageBody.classList.toggle('light-mode', lightMode);
@@ -415,14 +405,14 @@
             // Update search bar theme on profile page
             ensInputProfile.classList.toggle('light-mode', lightMode);
             profileSearchButton.classList.toggle('light-mode', lightMode);
-            updateProfileSearchAppearance(); // Call this function to update appearance
+            updateProfileSearchAppearance();
         }
 
         async function setAvatar(ensName, element, isProfileAvatar = false) {
             let url = `https://api.web3.bio/profile/ens/${ensName}`;
-             if (ensName.endsWith('.base.eth')) {
+            if (ensName.endsWith('.base.eth')) {
                 url = `https://api.web3.bio/profile/basenames/${ensName}`;
-             }
+            }
             try {
                 const response = await fetch(url);
                 if (response.ok) {
@@ -430,21 +420,11 @@
                     const avatar = data.avatar;
                     
                     if (isProfileAvatar) {
-                        // For profile avatar (the clickable one)
+                        // For profile avatar (always clickable)
                         const avatarLink = document.getElementById('profile-avatar-link');
-                        
-                        // Check if contenthash exists
-                        let hasContenthash = false;
-                        if (data.records && data.records.contenthash) {
-                            hasContenthash = true;
-                            avatarLink.href = `https://${ensName}.eth.link`;
-                            avatarLink.target = "_blank";
-                            avatarLink.classList.add('has-contenthash');
-                        } else {
-                            avatarLink.removeAttribute('href');
-                            avatarLink.removeAttribute('target');
-                            avatarLink.classList.remove('has-contenthash');
-                        }
+                        const sanitizedEnsName = ensName.endsWith('.eth') ? ensName : `${ensName}.eth`;
+                        avatarLink.href = `https://${sanitizedEnsName}.eth.link`;
+                        avatarLink.target = "_blank";
                         
                         if (avatar) {
                             avatarLink.style.backgroundImage = `url('${avatar}')`;
@@ -476,11 +456,11 @@
                     
                     if (isProfileAvatar) {
                         const avatarLink = document.getElementById('profile-avatar-link');
+                        const sanitizedEnsName = ensName.endsWith('.eth') ? ensName : `${ensName}.eth`;
+                        avatarLink.href = `https://${sanitizedEnsName}.eth.link`;
+                        avatarLink.target = "_blank";
                         avatarLink.textContent = ensName[0].toUpperCase();
                         avatarLink.style.backgroundImage = 'none';
-                        avatarLink.removeAttribute('href');
-                        avatarLink.removeAttribute('target');
-                        avatarLink.classList.remove('has-contenthash');
                     } else {
                         element.textContent = ensName[0].toUpperCase();
                         element.style.backgroundImage = 'none';
@@ -491,13 +471,13 @@
                 errorMessage.textContent = `Unexpected error: ${err.message}`;
                 errorMessage.style.display = 'block';
                 
-                 if (isProfileAvatar) {
+                if (isProfileAvatar) {
                     const avatarLink = document.getElementById('profile-avatar-link');
+                    const sanitizedEnsName = ensName.endsWith('.eth') ? ensName : `${ensName}.eth`;
+                    avatarLink.href = `https://${sanitizedEnsName}.eth.link`;
+                    avatarLink.target = "_blank";
                     avatarLink.textContent = ensName[0].toUpperCase();
                     avatarLink.style.backgroundImage = 'none';
-                    avatarLink.removeAttribute('href');
-                    avatarLink.removeAttribute('target');
-                    avatarLink.classList.remove('has-contenthash');
                 } else {
                     element.textContent = ensName[0].toUpperCase();
                     element.style.backgroundImage = 'none';
@@ -518,8 +498,8 @@
             }
             errorMessage.style.display = 'none';
             let url = `https://api.web3.bio/profile/ens/${ensName}`;
-            if(ensName.endsWith('.base.eth')){
-                 url = `https://api.web3.bio/profile/basenames/${ensName}`;
+            if (ensName.endsWith('.base.eth')) {
+                url = `https://api.web3.bio/profile/basenames/${ensName}`;
             }
             try {
                 const response = await fetch(url);
@@ -570,8 +550,8 @@
             let recordsMap = {
                 'address': null,     // First record (if exists)
                 'ENS': null,         // Second record (renamed from 'identity')
-                'Name': null,         // Third record (renamed from 'displayName')
-                'Created': null         // Last record (renamed from 'createdAt')
+                'Name': null,        // Third record (renamed from 'displayName')
+                'Created': null      // Last record (renamed from 'createdAt')
             };
 
             let otherRecords = [];    // All other records in between
@@ -605,19 +585,15 @@
                 else if (key === 'social' && value && typeof value === 'object') {
                     for (const [socialKey, socialValue] of Object.entries(value)) {
                         const recordLabel = `${key}.${socialKey}`;
-
                         // Skip specifically omitted records
                         if (specificOmissions.includes(recordLabel)) continue;
-
                         if (socialValue !== null && socialValue !== undefined && socialValue !== '') {
                             if (typeof socialValue === 'object') {
                                 // Handle nested objects in social
                                 for (const [nestedKey, nestedValue] of Object.entries(socialValue)) {
                                     const nestedLabel = `${recordLabel}.${nestedKey}`;
-
                                     // Skip specifically omitted nested records
                                     if (specificOmissions.includes(nestedLabel)) continue;
-
                                     if (nestedValue !== null && nestedValue !== undefined && nestedValue !== '') {
                                         otherRecords.push({
                                             label: nestedLabel,
@@ -638,32 +614,29 @@
                 else {
                     // Skip specifically omitted records
                     if (specificOmissions.includes(key)) continue;
-
                     if (value !== null && value !== undefined && value !== '') {
                         if (typeof value === 'object' && value !== null && key !== 'records') {
                             // Handle nested objects (except 'records' which we handle separately)
                             for (const [nestedKey, nestedValue] of Object.entries(value)) {
                                 const recordLabel = `${key}.${nestedKey}`;
-
                                 // Skip specifically omitted nested records
                                 if (specificOmissions.includes(recordLabel)) continue;
-
-                                 if (nestedValue !== null && nestedValue!== undefined && nestedValue !== '') {
-                                    otherRecords.push({label: recordLabel,
-                                        value:nestedValue
+                                if (nestedValue !== null && nestedValue !== undefined && nestedValue !== '') {
+                                    otherRecords.push({
+                                        label: recordLabel,
+                                        value: nestedValue
                                     });
                                 }
                             }
                         } else {
                             // Check if the key is one of our specific keys to be ordered
                             const renamedHeader = headerRenames[key] || key;
-
                             if (key === 'address') {
                                 recordsMap['address'] = { label: 'address', value: value };
                             } else if (key === 'identity') {
                                 recordsMap['ENS'] = { label: 'ENS', value: value };
                             } else if (key === 'displayName') {
-                                recordsMap['Name'] = { label: 'Name', value: value };  // Corrected line
+                                recordsMap['Name'] = { label: 'Name', value: value };
                             } else if (key === 'createdAt') {
                                 // Format the date from ISO to mm/dd/yyyy
                                 let formattedDate = value;
@@ -676,7 +649,7 @@
                                     console.error("Date parsing error:", err);
                                 }
                                 recordsMap['Created'] = { label: 'Created', value: formattedDate };
-                            } else if (key !== 'records') { // Skip the 'records' object as we handle contenthash separately
+                            } else if (key !== 'records') {
                                 otherRecords.push({ label: renamedHeader, value: value });
                             }
                         }
@@ -686,25 +659,20 @@
 
             // Build the final ordered records array
             let orderedRecords = [];
-
             // Add address first (if it exists)
             if (recordsMap['address']) {
                 orderedRecords.push(recordsMap['address']);
             }
-
             // Add ENS second (if it exists)
             if (recordsMap['ENS']) {
                 orderedRecords.push(recordsMap['ENS']);
             }
-
             // Add Name third (if it exists)
             if (recordsMap['Name']) {
                 orderedRecords.push(recordsMap['Name']);
             }
-
             // Add all other records in the middle
             orderedRecords = orderedRecords.concat(otherRecords);
-
             // Add Created at the end (if it exists)
             if (recordsMap['Created']) {
                 orderedRecords.push(recordsMap['Created']);
@@ -744,7 +712,7 @@
             }
             headerElement.textContent = label;
             const valueContainer = document.createElement('div');
-            valueContainer.textContent =  (typeof value=== 'object' && value !== null) ? JSON.stringify(value) : value;
+            valueContainer.textContent = (typeof value === 'object' && value !== null) ? JSON.stringify(value) : value;
             record.appendChild(headerElement);
             record.appendChild(valueContainer);
             profileRecords.appendChild(record);
