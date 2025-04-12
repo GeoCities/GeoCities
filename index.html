@@ -454,7 +454,7 @@
         const profileRecords = document.getElementById('profile-records');
         const errorMessageHome = document.getElementById('error-message-home');
         const errorMessageProfile = document.getElementById('error-message-profile');
-        const homepageAvatar = document.getElementById('homepage-avatar');
+        constKB homepageAvatar = document.getElementById('homepage-avatar');
         const profileAvatar = document.getElementById('profile-avatar');
         const profileAvatarLink = document.getElementById('profile-avatar-link');
         const pageBody = document.body;
@@ -504,35 +504,24 @@
         }
 
         // --- Avatar Setting Function ---
-        /**
-         * Fetches and sets the avatar image or displays the first letter.
-         * @param {string | null} name - The ENS/Base name or null.
-         * @param {HTMLElement} element - The container element for the avatar.
-         * @param {boolean} isProfileAvatar - Flag indicating if this is the main profile avatar.
-         * @param {boolean} makeClickable - Flag to potentially make the profile avatar link active.
-         * @param {boolean} hasContentHash - Flag indicating if the profile has a content hash (used for ENS linking).
-         */
         async function setAvatar(name, element, isProfileAvatar = false, makeClickable = true, hasContentHash = false) {
             const targetElement = element;
             const targetLinkElement = isProfileAvatar ? profileAvatarLink : null;
 
-            // --- Reset State ---
             targetElement.style.backgroundImage = 'none';
             const initial = name ? name[0].toUpperCase() : 'G';
             targetElement.textContent = initial;
 
             if (targetLinkElement) {
-                targetLinkElement.href = ''; // Clear link initially
+                targetLinkElement.href = '';
                 targetLinkElement.target = '';
-                targetLinkElement.style.cursor = 'default'; // Reset cursor
+                targetLinkElement.style.cursor = 'default';
                 targetLinkElement.textContent = initial;
                 targetLinkElement.style.backgroundImage = 'none';
             }
-            // --- End Reset ---
 
-            if (!name) return; // Exit if no name provided
+            if (!name) return;
 
-            // Determine API URL based on name suffix
             let url = `https://api.web3.bio/profile/ens/${name}`;
             if (name.endsWith('.base.eth')) {
                 url = `https://api.web3.bio/profile/basenames/${name}`;
@@ -546,39 +535,27 @@
                     avatarUrl = data.avatar;
                 }
 
-                // --- Apply Avatar or Fallback ---
                 if (avatarUrl) {
                     const imageUrl = `url('${avatarUrl}')`;
                     targetElement.style.backgroundImage = imageUrl;
-                    targetElement.textContent = ''; // Hide initial letter
+                    targetElement.textContent = '';
 
                     if (targetLinkElement) {
                         targetLinkElement.style.backgroundImage = imageUrl;
                         targetLinkElement.textContent = '';
 
-                        // --- Link Logic (Only for Profile Avatar) ---
-                        if (makeClickable) {
-                            // Check if it's an ENS name (not Base) AND has a content hash
-                            if (name.endsWith('.eth') && !name.endsWith('.base.eth') && hasContentHash) {
-                                const normalizedEnsName = name.slice(0, -4); // Remove .eth
-                                targetLinkElement.href = `https://${normalizedEnsName}.eth.limo`; // Use eth.limo gateway
-                                targetLinkElement.target = "_blank";
-                                targetLinkElement.style.cursor = 'pointer';
-                            } else {
-                                // Not an ENS name with content hash, keep it non-clickable
-                                targetLinkElement.href = '';
-                                targetLinkElement.style.cursor = 'default';
-                            }
+                        if (makeClickable && name.endsWith('.eth') && !name.endsWith('.base.eth')) {
+                            const normalizedEnsName = name.slice(0, -4);
+                            targetLinkElement.href = `https://${normalizedEnsName}.eth.limo`;
+                            targetLinkElement.target = '_blank';
+                            targetLinkElement.rel = 'noopener noreferrer';
+                            targetLinkElement.style.cursor = 'pointer';
                         } else {
-                             // If makeClickable is false, ensure it's not clickable
-                             targetLinkElement.href = '';
-                             targetLinkElement.style.cursor = 'default';
+                            targetLinkElement.href = '';
+                            targetLinkElement.style.cursor = 'default';
                         }
-                        // --- End Link Logic ---
                     }
                 } else {
-                    // No avatar found or fetch failed - initial letter remains visible
-                    // Ensure link is non-functional
                     if (targetLinkElement) {
                         targetLinkElement.textContent = initial;
                         targetLinkElement.href = '';
@@ -587,7 +564,6 @@
                 }
             } catch (err) {
                 console.error("Avatar fetch error:", err);
-                // Fallback: Ensure initial letter is displayed and link is inactive
                 targetElement.textContent = initial;
                 if (targetLinkElement) {
                     targetLinkElement.textContent = initial;
@@ -597,9 +573,8 @@
             }
         }
 
-
         // Set initial homepage avatar ('geocities.eth')
-        setAvatar('geocities.eth', homepageAvatar, false, false, false); // Not profile, not clickable, no content hash
+        setAvatar('geocities.eth', homepageAvatar, false, false, false);
 
         // --- Main Search Function ---
         async function searchENS() {
@@ -658,7 +633,7 @@
 
                 // --- Handle Successful Response (Registered Name) ---
                 const data = await response.json();
-                displayProfile(data, ensName); // Pass original searched name for context
+                displayProfile(data, ensName);
 
             } catch (err) {
                 // --- Handle Network or Unexpected Errors ---
@@ -677,7 +652,6 @@
              targetErrorElement.style.display = 'block';
 
              if (onProfilePage) {
-                 // Reset avatar to default 'G' on profile page error
                  setAvatar(null, profileAvatar, true, false, false);
              }
         }
@@ -690,20 +664,16 @@
             errorMessageProfile.style.display = 'none';
             errorMessageHome.style.display = 'none';
 
-            // Set default avatar (first letter, not clickable, no content hash)
             setAvatar(ensName, profileAvatar, true, false, false);
 
-            // --- Add ENS or Base Name Record ---
             if (isBaseName) {
-                addProfileRecord('Base Name', ensName, true); // First record
+                addProfileRecord('Base Name', ensName, true);
             } else {
-                addProfileRecord('ENS', ensName, true); // First record
+                addProfileRecord('ENS', ensName, true);
             }
 
-            // --- Add "Status: Name not registered" Record ---
-            addProfileRecord('Status', 'Name not registered', false); // Not first
+            addProfileRecord('Status', 'Name not registered', false);
 
-            // --- Configure and Show the Register Button ---
             const buttonText = isBaseName ? 'Register Base Name' : 'Register ENS Name';
             let registerUrl = '';
 
@@ -716,13 +686,13 @@
 
             registerButton.textContent = buttonText;
             registerButton.onclick = () => window.open(registerUrl, '_blank');
-            registerButton.className = 'register-button'; // Ensure base class
-            if (lightMode) registerButton.classList.add('light-mode'); // Apply theme
-            registerButtonContainer.style.display = 'block'; // Show button
+            registerButton.className = 'register-button';
+            if (lightMode) registerButton.classList.add('light-mode');
+            registerButtonContainer.style.display = 'block';
         }
 
         // --- Function to Display Registered Profile Data ---
-        function displayProfile(ensData, searchedName) { // Added searchedName
+        function displayProfile(ensData, searchedName) {
             homepage.style.display = 'none';
             profilePage.style.display = 'flex';
             profileRecords.innerHTML = '';
@@ -730,86 +700,99 @@
             errorMessageHome.style.display = 'none';
             registerButtonContainer.style.display = 'none';
 
-            const identityName = ensData?.identity || searchedName; // Use identity or fallback
-            const hasContentHash = !!ensData?.records?.contenthash; // Check for content hash
+            const identityName = ensData?.identity || searchedName;
+            const hasContentHash = !!ensData?.records?.contenthash;
 
-            // Set avatar, make clickable only if ENS name with content hash
             setAvatar(identityName, profileAvatar, true, true, hasContentHash);
 
-            // --- Define Records to Omit or Handle Specially ---
-            const specificOmissions = [ /* ... (same as before) ... */ ];
-            const headerRenames = { /* ... (same as before) ... */ };
+            const specificOmissions = ['avatar', 'identity', 'address', 'displayName', 'createdAt', 'records', 'followers', 'platform', 'social'];
+            const headerRenames = {
+                'email': 'Email',
+                'url': 'Website',
+                'description': 'Bio',
+                'keywords': 'Tags',
+                'com.discord': 'Discord',
+                'com.twitter': 'Twitter',
+                'com.github': 'GitHub',
+                'org.telegram': 'Telegram'
+            };
 
-            // --- Structure to Hold Processed Records ---
             let recordsMap = {
-                // Use consistent keys internally, display label will be adjusted
-                'identity': null, // Will hold ENS or Base Name data
+                'identity': null,
                 'address': null,
                 'displayName': null,
                 'contentHash': null,
-                'createdAt': null
+                'createdAt': null,
+                'website': null
             };
             let otherRecords = [];
 
-            // --- Extract Key Records ---
             if (ensData.address) recordsMap['address'] = { label: 'Address', value: ensData.address };
 
-            // *** UPDATED: Handle Identity (ENS/Base Name) Label ***
             if (ensData.identity) {
                 const isBase = ensData.identity.endsWith('.base.eth');
-                const displayLabel = isBase ? 'Base Name' : 'ENS'; // Determine correct label
+                const displayLabel = isBase ? 'Base Name' : 'ENS';
                 recordsMap['identity'] = { label: displayLabel, value: ensData.identity };
             }
-            // *** END UPDATE ***
 
             if (ensData.displayName && ensData.displayName !== ensData.identity) {
-                 recordsMap['displayName'] = { label: 'Name', value: ensData.displayName };
+                recordsMap['displayName'] = { label: 'Name', value: ensData.displayName };
             }
             if (ensData.records?.contenthash) {
-                 recordsMap['contentHash'] = { label: 'Content Hash', value: ensData.records.contenthash };
+                recordsMap['contentHash'] = { label: 'Content Hash', value: ensData.records.contenthash };
             }
             if (ensData.createdAt) {
-                 let formattedDate = ensData.createdAt;
-                 try {
-                     const date = new Date(ensData.createdAt);
-                     if (!isNaN(date.getTime())) { formattedDate = date.toLocaleDateString(); }
-                 } catch (err) { console.error("Date parsing error:", err); }
-                 recordsMap['createdAt'] = { label: 'Created', value: formattedDate };
+                let formattedDate = ensData.createdAt;
+                try {
+                    const date = new Date(ensData.createdAt);
+                    if (!isNaN(date.getTime())) { formattedDate = date.toLocaleDateString(); }
+                } catch (err) { console.error("Date parsing error:", err); }
+                recordsMap['createdAt'] = { label: 'Created', value: formattedDate };
+            }
+            if (ensData.url || ensData.records?.url) {
+                recordsMap['website'] = { label: 'Website', value: ensData.url || ensData.records.url };
             }
 
-            // --- Process Remaining Data (Function definition assumed unchanged) ---
-             function processValue(key, value, targetArray) {
-                 if (value === null || value === undefined || value === '' || specificOmissions.includes(key)) return;
+            function processValue(key, value, targetArray) {
+                if (value === null || value === undefined || value === '' || specificOmissions.includes(key)) return;
 
-                 const label = headerRenames[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                const label = headerRenames[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
 
-                 // Avoid adding duplicates already handled explicitly or in otherRecords
-                 if (recordsMap[key] || targetArray.some(r => r.label === label)) return;
+                if (recordsMap[key] || targetArray.some(r => r.label === label)) return;
 
+                if (typeof value === 'object') {
+                    if (key === 'links') {
+                        Object.entries(value).forEach(([linkName, linkData]) => {
+                            if (linkData && linkData.handle) {
+                                const formattedLabel = headerRenames[linkName] || linkName.replace(/^./, c => c.toUpperCase());
+                                targetArray.push({ label: formattedLabel, value: linkData.handle });
+                            }
+                        });
+                    }
+                    else if (key === 'records') {
+                        Object.entries(value).forEach(([recordKey, recordValue]) => {
+                            if (recordKey !== 'contenthash' && recordKey !== 'url' && recordValue) {
+                                const recordLabel = headerRenames[recordKey] || recordKey.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                                targetArray.push({ label: recordLabel, value: recordValue });
+                            }
+                        });
+                    }
+                } else {
+                    targetArray.push({ label: label, value: value });
+                }
+            }
 
-                 if (typeof value === 'object') {
-                     if (key === 'links') { /* ... handle links ... */ }
-                     else if (key === 'social') { /* ... handle social ... */ }
-                     else if (key === 'records') { /* ... handle records ... */ }
-                 } else {
-                     targetArray.push({ label: label, value: value });
-                 }
-             }
-             // Process all entries... (logic assumed unchanged)
-             Object.entries(ensData).forEach(([key, value]) => {
-                  // Check against internal keys of recordsMap before processing
-                  if (!recordsMap[key]) {
-                      processValue(key, value, otherRecords);
-                  }
-             });
+            Object.entries(ensData).forEach(([key, value]) => {
+                if (!Object.keys(recordsMap).includes(key)) {
+                    processValue(key, value, otherRecords);
+                }
+            });
 
-
-            // --- Order and Display Records ---
             let orderedRecords = [];
-            // Add primary records in preferred order using internal keys
             if (recordsMap['address']) orderedRecords.push(recordsMap['address']);
-            if (recordsMap['identity']) orderedRecords.push(recordsMap['identity']); // Add ENS or Base Name
+            if (recordsMap['identity']) orderedRecords.push(recordsMap['identity']);
             if (recordsMap['displayName']) orderedRecords.push(recordsMap['displayName']);
+            if (recordsMap['website']) orderedRecords.push(recordsMap['website']);
             if (recordsMap['contentHash']) orderedRecords.push(recordsMap['contentHash']);
 
             otherRecords.sort((a, b) => a.label.localeCompare(b.label));
@@ -817,17 +800,14 @@
 
             if (recordsMap['createdAt']) orderedRecords.push(recordsMap['createdAt']);
 
-            // --- Render Records ---
             if (orderedRecords.length === 0) {
-                 addProfileRecord('Status', 'No profile records found.', true);
+                addProfileRecord('Status', 'No profile records found.', true);
             } else {
-                 orderedRecords.forEach((record, index) => {
-                     // Use the 'label' property from the record object for display
-                     addProfileRecord(record.label, record.value, index === 0);
-                 });
+                orderedRecords.forEach((record, index) => {
+                    addProfileRecord(record.label, record.value, index === 0);
+                });
             }
         }
-
 
         // --- Function to Add a Single Profile Record to the DOM ---
          function addProfileRecord(label, value, isFirst) {
@@ -838,7 +818,6 @@
             const headerElement = document.createElement('div');
             headerElement.classList.add('profile-box-header');
             if (lightMode) headerElement.classList.add('light-mode');
-            // Use the label directly as it's already formatted in displayProfile
             headerElement.textContent = label;
 
             const valueContainer = document.createElement('div');
@@ -860,7 +839,6 @@
             errorMessageHome.style.display = 'none';
             errorMessageProfile.style.display = 'none';
             profileRecords.innerHTML = '';
-            // Reset profile avatar to default GeoCities one
             setAvatar('geocities.eth', profileAvatar, true, false, false);
             registerButtonContainer.style.display = 'none';
         }
@@ -870,7 +848,6 @@
         ensInputProfile.addEventListener('keypress', (e) => { if (e.key === 'Enter') { e.preventDefault(); searchENS(); } });
 
         // --- Initial Setup ---
-        // Reset profile avatar on load in case of browser back navigation state issues
         setAvatar(null, profileAvatar, true, false, false);
 
     </script>
