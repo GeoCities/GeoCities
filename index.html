@@ -186,7 +186,6 @@
              cursor: pointer;
         }
 
-
         /* Container for Profile Records */
         .profile-container {
             width: 100%;
@@ -268,7 +267,6 @@
         }
         /* No specific light mode needed for red text */
 
-
         /* Theme Toggle Button (Top Right) */
         .toggle-button {
             padding: 10px 15px;
@@ -320,7 +318,6 @@
             border-color: #000;
         }
         /* --- End NEW Styles --- */
-
 
         /* Header (Top Bar) */
         .header {
@@ -504,7 +501,7 @@
         }
 
         // --- Avatar Setting Function ---
-        async function setAvatar(name, element, isProfileAvatar = false, makeClickable = true, hasContentHash = false) {
+        async function setAvatar(name, element, isProfileAvatar = false, makeClickable = true) {
             const targetElement = element;
             const targetLinkElement = isProfileAvatar ? profileAvatarLink : null;
 
@@ -521,6 +518,17 @@
             }
 
             if (!name) return;
+
+            // Set the clickable link for profile avatar
+            if (targetLinkElement && makeClickable) {
+                if (name.endsWith('.base.eth')) {
+                    targetLinkElement.href = `https://${name}.limo`;
+                } else if (name.endsWith('.eth')) {
+                    targetLinkElement.href = `https://${name.slice(0, -4)}.eth.limo`;
+                }
+                targetLinkElement.target = '_blank';
+                targetLinkElement.style.cursor = 'pointer';
+            }
 
             let url = `https://api.web3.bio/profile/ens/${name}`;
             if (name.endsWith('.base.eth')) {
@@ -543,22 +551,6 @@
                     if (targetLinkElement) {
                         targetLinkElement.style.backgroundImage = imageUrl;
                         targetLinkElement.textContent = '';
-
-                        if (makeClickable && name.endsWith('.eth') && !name.endsWith('.base.eth') && hasContentHash) {
-                            const normalizedEnsName = name.slice(0, -4);
-                            targetLinkElement.href = `https://${normalizedEnsName}.eth.limo`;
-                            targetLinkElement.target = '_blank';
-                            targetLinkElement.style.cursor = 'pointer';
-                        } else {
-                            targetLinkElement.href = '';
-                            targetLinkElement.style.cursor = 'default';
-                        }
-                    }
-                } else {
-                    if (targetLinkElement) {
-                        targetLinkElement.textContent = initial;
-                        targetLinkElement.href = '';
-                        targetLinkElement.style.cursor = 'default';
                     }
                 }
             } catch (err) {
@@ -566,14 +558,12 @@
                 targetElement.textContent = initial;
                 if (targetLinkElement) {
                     targetLinkElement.textContent = initial;
-                    targetLinkElement.href = '';
-                    targetLinkElement.style.cursor = 'default';
                 }
             }
         }
 
         // Set initial homepage avatar ('geocities.eth')
-        setAvatar('geocities.eth', homepageAvatar, false, false, false);
+        setAvatar('geocities.eth', homepageAvatar, false, false);
 
         // --- Main Search Function ---
         async function searchENS() {
@@ -651,7 +641,7 @@
              targetErrorElement.style.display = 'block';
 
              if (onProfilePage) {
-                 setAvatar(null, profileAvatar, true, false, false);
+                 setAvatar(null, profileAvatar, true, false);
              }
         }
 
@@ -663,7 +653,7 @@
             errorMessageProfile.style.display = 'none';
             errorMessageHome.style.display = 'none';
 
-            setAvatar(ensName, profileAvatar, true, false, false);
+            setAvatar(ensName, profileAvatar, true, true);
 
             if (isBaseName) {
                 addProfileRecord('Base Name', ensName, true);
@@ -700,11 +690,10 @@
             registerButtonContainer.style.display = 'none';
 
             const identityName = ensData?.identity || searchedName;
-            const hasContentHash = !!ensData?.records?.contenthash;
 
-            setAvatar(identityName, profileAvatar, true, true, hasContentHash);
+            setAvatar(identityName, profileAvatar, true, true);
 
-            const specificOmissions = ['avatar', 'identity', 'address', 'displayName', 'createdAt', 'records', 'followers', 'platform'];
+            const specificOmissions = ['avatar', 'identity', 'address', 'displayName', 'description', 'url', 'email', 'createdAt', 'records', 'followers', 'platform', 'follower', 'following'];
             const headerRenames = {
                 'email': 'Email',
                 'url': 'Website',
@@ -720,6 +709,9 @@
                 'identity': null,
                 'address': null,
                 'displayName': null,
+                'description': null,
+                'url': null,
+                'email': null,
                 'contentHash': null,
                 'createdAt': null
             };
@@ -735,6 +727,15 @@
 
             if (ensData.displayName && ensData.displayName !== ensData.identity) {
                 recordsMap['displayName'] = { label: 'Name', value: ensData.displayName };
+            }
+            if (ensData.description) {
+                recordsMap['description'] = { label: 'Bio', value: ensData.description };
+            }
+            if (ensData.url) {
+                recordsMap['url'] = { label: 'Website', value: ensData.url };
+            }
+            if (ensData.email) {
+                recordsMap['email'] = { label: 'Email', value: ensData.email };
             }
             if (ensData.records?.contenthash) {
                 recordsMap['contentHash'] = { label: 'Content Hash', value: ensData.records.contenthash };
@@ -766,7 +767,7 @@
                     }
                     else if (key === 'social') {
                         Object.entries(value).forEach(([platform, handle]) => {
-                            if (handle) {
+                            if (handle && !['follower', 'following'].includes(platform)) {
                                 const formattedPlatform = headerRenames[platform] || platform.replace(/^./, c => c.toUpperCase());
                                 targetArray.push({ label: formattedPlatform, value: handle });
                             }
@@ -795,6 +796,9 @@
             if (recordsMap['address']) orderedRecords.push(recordsMap['address']);
             if (recordsMap['identity']) orderedRecords.push(recordsMap['identity']);
             if (recordsMap['displayName']) orderedRecords.push(recordsMap['displayName']);
+            if (recordsMap['description']) orderedRecords.push(recordsMap['description']);
+            if (recordsMap['url']) orderedRecords.push(recordsMap['url']);
+            if (recordsMap['email']) orderedRecords.push(recordsMap['email']);
             if (recordsMap['contentHash']) orderedRecords.push(recordsMap['contentHash']);
 
             otherRecords.sort((a, b) => a.label.localeCompare(b.label));
@@ -841,7 +845,7 @@
             errorMessageHome.style.display = 'none';
             errorMessageProfile.style.display = 'none';
             profileRecords.innerHTML = '';
-            setAvatar('geocities.eth', profileAvatar, true, false, false);
+            setAvatar('geocities.eth', profileAvatar, true, false);
             registerButtonContainer.style.display = 'none';
         }
 
@@ -850,7 +854,7 @@
         ensInputProfile.addEventListener('keypress', (e) => { if (e.key === 'Enter') { e.preventDefault(); searchENS(); } });
 
         // --- Initial Setup ---
-        setAvatar(null, profileAvatar, true, false, false);
+        setAvatar(null, profileAvatar, true, false);
 
     </script>
 </body>
