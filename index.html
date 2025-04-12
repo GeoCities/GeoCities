@@ -454,7 +454,7 @@
         const profileRecords = document.getElementById('profile-records');
         const errorMessageHome = document.getElementById('error-message-home');
         const errorMessageProfile = document.getElementById('error-message-profile');
-        constKB homepageAvatar = document.getElementById('homepage-avatar');
+        const homepageAvatar = document.getElementById('homepage-avatar');
         const profileAvatar = document.getElementById('profile-avatar');
         const profileAvatarLink = document.getElementById('profile-avatar-link');
         const pageBody = document.body;
@@ -544,11 +544,10 @@
                         targetLinkElement.style.backgroundImage = imageUrl;
                         targetLinkElement.textContent = '';
 
-                        if (makeClickable && name.endsWith('.eth') && !name.endsWith('.base.eth')) {
+                        if (makeClickable && name.endsWith('.eth') && !name.endsWith('.base.eth') && hasContentHash) {
                             const normalizedEnsName = name.slice(0, -4);
                             targetLinkElement.href = `https://${normalizedEnsName}.eth.limo`;
                             targetLinkElement.target = '_blank';
-                            targetLinkElement.rel = 'noopener noreferrer';
                             targetLinkElement.style.cursor = 'pointer';
                         } else {
                             targetLinkElement.href = '';
@@ -705,7 +704,7 @@
 
             setAvatar(identityName, profileAvatar, true, true, hasContentHash);
 
-            const specificOmissions = ['avatar', 'identity', 'address', 'displayName', 'createdAt', 'records', 'followers', 'platform', 'social'];
+            const specificOmissions = ['avatar', 'identity', 'address', 'displayName', 'createdAt', 'records', 'followers', 'platform'];
             const headerRenames = {
                 'email': 'Email',
                 'url': 'Website',
@@ -722,8 +721,7 @@
                 'address': null,
                 'displayName': null,
                 'contentHash': null,
-                'createdAt': null,
-                'website': null
+                'createdAt': null
             };
             let otherRecords = [];
 
@@ -749,9 +747,6 @@
                 } catch (err) { console.error("Date parsing error:", err); }
                 recordsMap['createdAt'] = { label: 'Created', value: formattedDate };
             }
-            if (ensData.url || ensData.records?.url) {
-                recordsMap['website'] = { label: 'Website', value: ensData.url || ensData.records.url };
-            }
 
             function processValue(key, value, targetArray) {
                 if (value === null || value === undefined || value === '' || specificOmissions.includes(key)) return;
@@ -769,9 +764,17 @@
                             }
                         });
                     }
+                    else if (key === 'social') {
+                        Object.entries(value).forEach(([platform, handle]) => {
+                            if (handle) {
+                                const formattedPlatform = headerRenames[platform] || platform.replace(/^./, c => c.toUpperCase());
+                                targetArray.push({ label: formattedPlatform, value: handle });
+                            }
+                        });
+                    }
                     else if (key === 'records') {
                         Object.entries(value).forEach(([recordKey, recordValue]) => {
-                            if (recordKey !== 'contenthash' && recordKey !== 'url' && recordValue) {
+                            if (recordKey !== 'contenthash' && recordValue) {
                                 const recordLabel = headerRenames[recordKey] || recordKey.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
                                 targetArray.push({ label: recordLabel, value: recordValue });
                             }
@@ -792,7 +795,6 @@
             if (recordsMap['address']) orderedRecords.push(recordsMap['address']);
             if (recordsMap['identity']) orderedRecords.push(recordsMap['identity']);
             if (recordsMap['displayName']) orderedRecords.push(recordsMap['displayName']);
-            if (recordsMap['website']) orderedRecords.push(recordsMap['website']);
             if (recordsMap['contentHash']) orderedRecords.push(recordsMap['contentHash']);
 
             otherRecords.sort((a, b) => a.label.localeCompare(b.label));
