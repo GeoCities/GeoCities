@@ -693,8 +693,15 @@
             // Set default avatar (first letter, not clickable, no content hash)
             setAvatar(ensName, profileAvatar, true, false, false);
 
-            // Add "Status: Name not registered" record
-            addProfileRecord('Status', 'Name not registered', true);
+            // --- Add ENS or Base Name Record ---
+            if (isBaseName) {
+                addProfileRecord('Base Name', ensName, true); // First record
+            } else {
+                addProfileRecord('ENS', ensName, true); // First record
+            }
+
+            // --- Add "Status: Name not registered" Record ---
+            addProfileRecord('Status', 'Name not registered', false); // Not first
 
             // --- Configure and Show the Register Button ---
             const buttonText = isBaseName ? 'Register Base Name' : 'Register ENS Name';
@@ -704,7 +711,7 @@
                 const baseNameOnly = ensName.replace(/\.base\.eth$/, '');
                 registerUrl = `https://www.base.org/names?claim=${baseNameOnly}`;
             } else {
-                 registerUrl = `https://app.ens.domains/${ensName}/register`;
+                registerUrl = `https://app.ens.domains/${ensName}/register`;
             }
 
             registerButton.textContent = buttonText;
