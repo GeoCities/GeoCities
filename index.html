@@ -505,6 +505,7 @@
             const targetElement = element;
             const targetLinkElement = isProfileAvatar ? profileAvatarLink : null;
 
+            // Reset styles and content
             targetElement.style.backgroundImage = 'none';
             const initial = name ? name[0].toUpperCase() : 'G';
             targetElement.textContent = initial;
@@ -515,20 +516,16 @@
                 targetLinkElement.style.cursor = 'default';
                 targetLinkElement.textContent = initial;
                 targetLinkElement.style.backgroundImage = 'none';
+
+                // Set the clickable link for profile avatar
+                if (makeClickable && name) {
+                    targetLinkElement.href = `https://${name}.limo`;
+                    targetLinkElement.target = '_blank';
+                    targetLinkElement.style.cursor = 'pointer';
+                }
             }
 
             if (!name) return;
-
-            // Set the clickable link for profile avatar
-            if (targetLinkElement && makeClickable) {
-                if (name.endsWith('.base.eth')) {
-                    targetLinkElement.href = `https://${name}.limo`;
-                } else if (name.endsWith('.eth')) {
-                    targetLinkElement.href = `https://${name.slice(0, -4)}.eth.limo`;
-                }
-                targetLinkElement.target = '_blank';
-                targetLinkElement.style.cursor = 'pointer';
-            }
 
             let url = `https://api.web3.bio/profile/ens/${name}`;
             if (name.endsWith('.base.eth')) {
@@ -693,11 +690,12 @@
 
             setAvatar(identityName, profileAvatar, true, true);
 
-            const specificOmissions = ['avatar', 'identity', 'address', 'displayName', 'description', 'url', 'email', 'createdAt', 'records', 'followers', 'platform', 'follower', 'following'];
+            const specificOmissions = ['avatar', 'identity', 'address', 'displayName', 'description', 'email', 'location', 'status', 'createdAt', 'records', 'followers', 'platform', 'follower', 'following'];
             const headerRenames = {
                 'email': 'Email',
-                'url': 'Website',
                 'description': 'Bio',
+                'location': 'Location',
+                'status': 'Status',
                 'keywords': 'Tags',
                 'com.discord': 'Discord',
                 'com.twitter': 'Twitter',
@@ -706,11 +704,13 @@
             };
 
             let recordsMap = {
-                'identity': null,
                 'address': null,
+                'identity': null,
                 'displayName': null,
+                'location': null,
+                'status': null,
                 'description': null,
-                'url': null,
+                'website': null,
                 'email': null,
                 'contentHash': null,
                 'createdAt': null
@@ -728,18 +728,31 @@
             if (ensData.displayName && ensData.displayName !== ensData.identity) {
                 recordsMap['displayName'] = { label: 'Name', value: ensData.displayName };
             }
+
+            if (ensData.location) {
+                recordsMap['location'] = { label: 'Location', value: ensData.location };
+            }
+
+            if (ensData.status) {
+                recordsMap['status'] = { label: 'Status', value: ensData.status };
+            }
+
             if (ensData.description) {
                 recordsMap['description'] = { label: 'Bio', value: ensData.description };
             }
-            if (ensData.url) {
-                recordsMap['url'] = { label: 'Website', value: ensData.url };
+
+            if (ensData.links?.website?.handle) {
+                recordsMap['website'] = { label: 'Website', value: ensData.links.website.handle };
             }
+
             if (ensData.email) {
                 recordsMap['email'] = { label: 'Email', value: ensData.email };
             }
+
             if (ensData.records?.contenthash) {
-                recordsMap['contentHash'] = { label: 'Content Hash', value: ensData.records.contenthash };
+                recordsMap['contentHash'] = { label: 'contenthash', value: ensData.records.contenthash };
             }
+
             if (ensData.createdAt) {
                 let formattedDate = ensData.createdAt;
                 try {
@@ -759,7 +772,7 @@
                 if (typeof value === 'object') {
                     if (key === 'links') {
                         Object.entries(value).forEach(([linkName, linkData]) => {
-                            if (linkData && linkData.handle) {
+                            if (linkName !== 'website' && linkData && linkData.handle) {
                                 const formattedLabel = headerRenames[linkName] || linkName.replace(/^./, c => c.toUpperCase());
                                 targetArray.push({ label: formattedLabel, value: linkData.handle });
                             }
@@ -796,9 +809,11 @@
             if (recordsMap['address']) orderedRecords.push(recordsMap['address']);
             if (recordsMap['identity']) orderedRecords.push(recordsMap['identity']);
             if (recordsMap['displayName']) orderedRecords.push(recordsMap['displayName']);
+            if (recordsMap['location']) orderedRecords.push(recordsMap['location']);
+            if (recordsMap['status']) orderedRecords.push(recordsMap['status']);
             if (recordsMap['description']) orderedRecords.push(recordsMap['description']);
-            if (recordsMap['url']) orderedRecords.push(recordsMap['url']);
             if (recordsMap['email']) orderedRecords.push(recordsMap['email']);
+            if (recordsMap['website']) orderedRecords.push(recordsMap['website']);
             if (recordsMap['contentHash']) orderedRecords.push(recordsMap['contentHash']);
 
             otherRecords.sort((a, b) => a.label.localeCompare(b.label));
