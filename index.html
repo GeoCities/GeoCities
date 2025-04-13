@@ -165,33 +165,24 @@
             margin-bottom: 0;
             color: #fff;
             transition: border-color 0.3s ease, color 0.3s ease, background-image 0.3s ease;
-            position: relative;
         }
         .light-mode #profile-avatar {
             border-color: #000;
             color: #000;
         }
-        /* Link inside Profile Avatar */
+
+        /* Profile Avatar Link Wrapper */
         #profile-avatar-link {
+            display: block;
             width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             text-decoration: none;
             color: inherit;
             cursor: default;
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
-            pointer-events: auto;
+            pointer-events: none; /* Disabled by default */
         }
         #profile-avatar-link[href]:not([href=""]) {
             cursor: pointer;
+            pointer-events: auto; /* Enabled when href is set */
         }
 
         /* Container for Profile Records */
@@ -430,9 +421,9 @@
                 <button class="search-button" id="profile-search-button" onclick="searchENS()">Search</button>
             </div>
             <div id="error-message-profile" class="error-message"></div>
-            <div id="profile-avatar">
-                <a id="profile-avatar-link" target="_blank" rel="noopener noreferrer"></a>
-            </div>
+            <a id="profile-avatar-link" target="_blank" rel="noopener noreferrer">
+                <div id="profile-avatar"></div>
+            </a>
             <div id="profile-records" class="profile-container"></div>
             <div id="register-button-container" class="register-button-container">
                 <button id="register-name-button" class="register-button"></button>
@@ -511,26 +502,26 @@
             if (targetLinkElement) {
                 // Reset link properties
                 targetLinkElement.href = '';
-                targetLinkElement.textContent = initial;
-                targetLinkElement.style.backgroundImage = 'none';
                 targetLinkElement.style.cursor = 'default';
-                targetLinkElement.target = '';
 
-                // Set the link if name is provided and clickable is allowed
-                if (makeClickable && name) {
+                // Set the link if name is provided, valid, and clickable is allowed
+                if (makeClickable && name && typeof name === 'string' && name.trim()) {
                     let normalizedName = name.trim().toLowerCase();
-                    let limoUrl = normalizedName.endsWith('.base.eth')
-                        ? `https://${normalizedName}.limo`
-                        : `https://${normalizedName}.eth.limo`;
-                    console.debug(`Setting avatar link for ${normalizedName} to ${limoUrl}`);
-                    targetLinkElement.href = limoUrl;
-                    targetLinkElement.target = '_blank';
-                    targetLinkElement.style.cursor = 'pointer';
+                    if (normalizedName.endsWith('.eth') || normalizedName.endsWith('.base.eth')) {
+                        let limoUrl = normalizedName.endsWith('.base.eth')
+                            ? `https://${normalizedName}.limo`
+                            : `https://${normalizedName}.eth.limo`;
+                        console.log(`Setting profile avatar link for ${normalizedName} to ${limoUrl}`);
+                        targetLinkElement.href = limoUrl;
+                        targetLinkElement.style.cursor = 'pointer';
+                    } else {
+                        console.warn(`Invalid name format for link: ${normalizedName}`);
+                    }
                 }
             }
 
             // If no name is provided, stop here
-            if (!name) return;
+            if (!name || !name.trim()) return;
 
             // Fetch avatar image from API
             let url = `https://api.web3.bio/profile/ens/${name}`;
@@ -550,26 +541,13 @@
                     const imageUrl = `url('${avatarUrl}')`;
                     targetElement.style.backgroundImage = imageUrl;
                     targetElement.textContent = '';
-
-                    if (targetLinkElement) {
-                        targetLinkElement.style.backgroundImage = imageUrl;
-                        targetLinkElement.textContent = '';
-                    }
                 } else {
                     console.warn(`No avatar URL found for ${name}`);
-                    // Ensure the link remains if set
                     targetElement.textContent = initial;
-                    if (targetLinkElement) {
-                        targetLinkElement.textContent = initial;
-                    }
                 }
             } catch (err) {
                 console.error(`Avatar fetch error for ${name}:`, err);
-                // Ensure the link remains if set
                 targetElement.textContent = initial;
-                if (targetLinkElement) {
-                    targetLinkElement.textContent = initial;
-                }
             }
         }
 
