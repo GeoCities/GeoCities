@@ -498,17 +498,21 @@
             const targetElement = element;
             const targetLinkElement = isProfileAvatar ? profileAvatarLink : null;
 
+            // Reset the element's content
             targetElement.style.backgroundImage = 'none';
             const initial = name ? name[0].toUpperCase() : 'G';
             targetElement.textContent = initial;
 
+            // Handle the link element for profile avatar
             if (targetLinkElement) {
+                // Reset link properties
                 targetLinkElement.href = '';
                 targetLinkElement.textContent = initial;
                 targetLinkElement.style.backgroundImage = 'none';
                 targetLinkElement.style.cursor = 'default';
                 targetLinkElement.target = '';
 
+                // Set the link if name is provided and clickable is allowed
                 if (makeClickable && name) {
                     let normalizedName = name.trim().toLowerCase();
                     let limoUrl = normalizedName.endsWith('.base.eth')
@@ -521,9 +525,10 @@
                 }
             }
 
+            // If no name is provided, stop here
             if (!name) return;
 
-            // Still fetch avatar image from API, but it won't affect the link
+            // Fetch avatar image from API
             let url = `https://api.web3.bio/profile/ens/${name}`;
             if (name.endsWith('.base.eth')) {
                 url = `https://api.web3.bio/profile/basenames/${name}`;
@@ -548,9 +553,15 @@
                     }
                 } else {
                     console.warn(`No avatar URL found for ${name}`);
+                    // Ensure the link remains if set
+                    targetElement.textContent = initial;
+                    if (targetLinkElement) {
+                        targetLinkElement.textContent = initial;
+                    }
                 }
             } catch (err) {
                 console.error(`Avatar fetch error for ${name}:`, err);
+                // Ensure the link remains if set
                 targetElement.textContent = initial;
                 if (targetLinkElement) {
                     targetLinkElement.textContent = initial;
