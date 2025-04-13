@@ -163,6 +163,7 @@
             margin-bottom: 0; /* Connects to profile records */
             color: #fff; /* Default text color */
             transition: border-color 0.3s ease, color 0.3s ease, background-image 0.3s ease;
+            position: relative; /* Ensure link positioning */
         }
         .light-mode #profile-avatar {
             border-color: #000;
@@ -172,18 +173,20 @@
         #profile-avatar-link {
             width: 100%;
             height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: block; /* Changed to block for better touch support */
             text-decoration: none;
             color: inherit; /* Inherit color from parent */
-            cursor: default; /* Default cursor */
-            background-size: contain; /* Ensure background image within link scales */
+            background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
+            position: absolute; /* Fill parent */
+            top: 0;
+            left: 0;
+            pointer-events: auto; /* Ensure touch/click works */
+            z-index: 1; /* Above avatar content */
         }
-        #profile-avatar-link[href]:not([href=""]) { /* Style only when it's a valid link */
-             cursor: pointer;
+        #profile-avatar-link[href]:not([href=""]) {
+            cursor: pointer; /* Clickable cursor */
         }
 
         /* Container for Profile Records */
@@ -512,15 +515,23 @@
 
             if (targetLinkElement) {
                 targetLinkElement.href = '';
-                targetLinkElement.target = '';
-                targetLinkElement.style.cursor = 'default';
-                targetLinkElement.textContent = initial;
+                targetLinkElement.textContent = '';
                 targetLinkElement.style.backgroundImage = 'none';
+                targetLinkElement.style.cursor = 'default';
+                targetLinkElement.removeAttribute('target');
 
                 // Set the clickable link for profile avatar
                 if (makeClickable && name) {
-                    targetLinkElement.href = `https://${name}.limo`;
-                    targetLinkElement.target = '_blank';
+                    let limoUrl;
+                    if (name.endsWith('.base.eth')) {
+                        limoUrl = `https://${name}.limo`;
+                    } else if (name.endsWith('.eth')) {
+                        limoUrl = `https://${name}.limo`;
+                    } else {
+                        limoUrl = `https://${name}.eth.limo`;
+                    }
+                    targetLinkElement.href = limoUrl;
+                    targetLinkElement.setAttribute('target', '_blank');
                     targetLinkElement.style.cursor = 'pointer';
                 }
             }
