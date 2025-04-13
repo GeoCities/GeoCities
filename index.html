@@ -507,15 +507,18 @@
                 // Set the link if name is provided, valid, and clickable is allowed
                 if (makeClickable && name && typeof name === 'string' && name.trim()) {
                     let normalizedName = name.trim().toLowerCase();
-                    if (normalizedName.endsWith('.eth') || normalizedName.endsWith('.base.eth')) {
-                        let limoUrl = normalizedName.endsWith('.base.eth')
-                            ? `https://${normalizedName}.limo`
-                            : `https://${normalizedName}.eth.limo`;
-                        console.log(`Setting profile avatar link for ${normalizedName} to ${limoUrl}`);
+                    // Remove .eth or .base.eth to avoid duplication
+                    normalizedName = normalizedName.replace(/\.eth$/, '').replace(/\.base\.eth$/, '');
+                    if (name.endsWith('.base.eth')) {
+                        let limoUrl = `https://${normalizedName}.base.eth.limo`;
+                        console.log(`Setting profile avatar link for ${normalizedName}.base.eth to ${limoUrl}`);
                         targetLinkElement.href = limoUrl;
                         targetLinkElement.style.cursor = 'pointer';
                     } else {
-                        console.warn(`Invalid name format for link: ${normalizedName}`);
+                        let limoUrl = `https://${normalizedName}.eth.limo`;
+                        console.log(`Setting profile avatar link for ${normalizedName}.eth to ${limoUrl}`);
+                        targetLinkElement.href = limoUrl;
+                        targetLinkElement.style.cursor = 'pointer';
                     }
                 }
             }
