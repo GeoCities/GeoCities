@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GeoCities</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='50' font-size='80' text-anchor='middle' dominant-baseline='middle' fill='%23000'>G%3C/text%3E%3C/svg%3E" type="image/svg+xml">
+    <style>
+        /* Body Styles */
+        body {
+            font-family: sans-serif;
+            background: #000;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding-top: 60px;
+            transition: background 0.3s ease, color 0.3s ease;
+            position: relative;
+            padding-bottom: 60px;
+            box-sizing: border-box;
+        }
+        body.light-mode {
+            background: #fff;
+            color: #000;
+        }
+
+        /* Container Styles */
+        .container {
+            flex-direction: column;
+            display: flex;
+            align-items: center;
+            width: 90%;
+            max-width: 600px;
+            justify-content: flex-start;
+            flex-grow: 1;
+        }
+
+        /* Logo Box (Homepage Avatar) */
+        .logo-box {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 6em;
+            margin: 20px auto 0;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: border-color 0.3s ease, background-image 0.3s ease;
+            border-radius: 0;
+            overflow: hidden;
+            color: #fff;
+        }
+        .light-mode .logo-box {
+            border-color: #000;
+            color: #000;
+        }
+
+        /* Heading "GeoCities" below avatar */
+        h2#homepage-geocities {
+            margin: 0 auto 20px;
+            text-align: center;
+            display: block;
+            transition: color 0.3s ease, border-color 0.3s ease;
+            font-size: 1.2em;
+            border: 1px solid #fff;
+            border-top: none;
+            padding: 10px 0;
+            border-radius: 0;
+            width: 200px;
+        }
+        #homepage-geocities.light-mode {
+            border-color: #000;
+            color: #000;
+        }
+
+        /* Search Bar Container */
+        .search-container {
+            display: flex;
+            width: 100%;
+            margin-bottom: 20px;
+            height: 38px;
+        }
+
+        /* Search Input Field */
+        .search-input {
+            flex: 1;
+            padding: 10px;
+            background: #000;
+            color: #fff;
+            border: 1px solid #fff;
+            border-right: none;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            height: 100%;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .search-input.light-mode {
+            background: #fff;
+            color: #000;
+            border-color: #000;
+        }
+        .search-input::placeholder {
+            color: #aaa;
+        }
+        .search-input.light-mode::placeholder {
+            color: #555;
+        }
+        .search-input:focus {
+            font-size: 16px; /* Prevent iOS zoom */
+            outline: none; /* Optional: cleaner focus appearance */
+        }
+
+        /* Search Button */
+        .search-button {
+            padding: 10px 15px;
+            background: #000;
+            color: #fff;
+            border: 1px solid #fff;
+            cursor: pointer;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            height: 100%;
+            font-size: 0.8em;
+            box-sizing: border-box;
+        }
+        .search-button.light-mode {
+            background: #fff;
+            color: #000;
+            border-color: #000;
+        }
+
+        /* Profile Page Container (Hidden initially) */
+        #profile-page {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        /* Profile Avatar Display */
+        #profile-avatar {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10em;
+            border: 1px solid #fff;
+            box-sizing: border-box;
+            border-radius: 0;
+            overflow: hidden;
+            margin-bottom: 0;
+            color: #fff;
+            transition: border-color 0.3s ease, color 0.3s ease, background-image 0.3s ease;
+        }
+        .light-mode #profile-avatar {
+            border-color: #000;
+            color: #000;
+        }
+
+        /* Profile Avatar Link Wrapper */
+        #profile-avatar-link {
+            display: block;
+            width: 100%;
+            text-decoration: none;
+            color: inherit;
+            cursor: default;
+            pointer-events: none; /* Disabled by default */
+        }
+        #profile-avatar-link[href]:not([href=""]) {
+            cursor: pointer;
+            pointer-events: auto; /* Enabled when href is set */
+        }
+
+        /* Container for Profile Records */
+        .profile-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            margin: 0;
+        }
+
+        /* Individual Profile Record Box */
+        .profile-box {
+            border: 1px solid #fff;
+            padding: 10px;
+            background: #000;
+            color: #fff;
+            word-break: break-word;
+            transition: all 0.3s ease;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+            border-top: none;
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 38px;
+        }
+        .profile-box:first-child {
+            border-top: 1px solid #fff;
+        }
+        .profile-box.light-mode {
+            background: #fff;
+            color: #000;
+            border-color: #000;
+        }
+        .profile-box.light-mode:first-child {
+            border-top: 1px solid #000;
+        }
+
+        /* Header part of Profile Box */
+        .profile-box-header {
+            font-weight: bold;
+            margin: 0;
+            color: #fff;
+            transition: color 0.3s ease;
+            flex: 0 0 100px;
+            min-width: 80px;
+            text-align: left;
+        }
+        .profile-box-header.light-mode {
+            color: #000;
+        }
+
+        /* Value part of Profile Box */
+        .profile-box-value {
+            flex: 1;
+            text-align: left;
+            word-break: break-all;
+            color: #fff;
+            transition: color 0.3s ease;
+        }
+        .profile-box-value.light-mode {
+            color: #000;
+        }
+
+        /* Error Message Styling */
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            transition: color 0.3s ease;
+            display: none;
+            width: 100%;
+            text-align: center;
+            padding: 5px;
+            box-sizing: border-box;
+            min-height: 20px;
+        }
+
+        /* Theme Toggle Button */
+        .toggle-button {
+            padding: 10px 15px;
+            color: #fff;
+            border: 1px solid #fff;
+            cursor: pointer;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            font-size: 0.8em;
+            min-width: 80px;
+            text-align: center;
+            height: 38px;
+            background: #000;
+            box-sizing: border-box;
+        }
+        .toggle-button.light-mode {
+            background: #fff;
+            color: #000;
+            border-color: #000;
+        }
+
+        /* Register Button Styles */
+        .register-button-container {
+            width: 100%;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+        .register-button {
+            padding: 10px 15px;
+            color: #fff;
+            border: 1px solid #fff;
+            cursor: pointer;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            font-size: 0.8em;
+            text-align: center;
+            height: 38px;
+            background: #000;
+            box-sizing: border-box;
+            display: inline-block;
+        }
+        .register-button.light-mode {
+            background: #fff;
+            color: #000;
+            border-color: #000;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #000;
+            z-index: 10;
+            box-sizing: border-box;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+        body.light-mode .header {
+            background: #fff;
+        }
+
+        /* Header Logo Box */
+        .header-title-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 38px;
+            width: 38px;
+            border: 1px solid #fff;
+            border-radius: 0;
+            transition: border-color 0.3s ease;
+            cursor: pointer;
+        }
+        .header-title-box.light-mode {
+            border-color: #000;
+        }
+
+        /* Header Logo Text */
+        .header-title {
+            color: #fff;
+            font-size: 1.2em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .header-title.light-mode {
+            color: #000;
+        }
+
+        /* Header Button Wrapper */
+        .header-button-wrapper {
+            display: flex;
+            align-items: center;
+            height: 38px;
+            box-sizing: border-box;
+        }
+
+        /* Footer Styles */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #000;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 0.8em;
+            box-sizing: border-box;
+            border-top: 1px solid #fff;
+            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            z-index: 10;
+        }
+        .footer.light-mode {
+            background: #fff;
+            color: #000;
+            border-top-color: #000;
+        }
+
+        /* Iframe Container */
+        #profile-iframe-container {
+            width: 100%;
+            margin-top: 10px;
+            visibility: visible;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Iframe */
+        .profile-iframe {
+            width: 100%;
+            height: 480px;
+            border: 1px solid #fff;
+            border-radius: 0;
+            background: #fff;
+            transition: border-color 0.3s ease;
+            visibility: visible;
+        }
+        .profile-iframe.light-mode {
+            border-color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-title-box" onclick="showHomepage()" title="Go to Homepage">
+            <div class="header-title">G</div>
+        </div>
+        <div class="header-button-wrapper">
+            <button class="toggle-button" onclick="toggleTheme()">Light</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="homepage">
+            <div class="logo-box" id="homepage-avatar"></div>
+            <h2 id="homepage-geocities">GeoCities</h2>
+            <div class="search-container" id="home-search-container">
+                <input type="text" id="ens-query-home" class="search-input" placeholder="Enter ENS or Base name">
+                <button class="search-button" id="home-search-button" onclick="searchENS()">Search</button>
+            </div>
+            <div id="error-message-home" class="error-message"></div>
+        </div>
+
+        <div id="profile-page">
+            <div class="search-container" id="profile-search-container">
+                <input type="text" id="ens-query-profile" class="search-input" placeholder="Enter ENS or Base name">
+                <button class="search-button" id="profile-search-button" onclick="searchENS()">Search</button>
+            </div>
+            <div id="error-message-profile" class="error-message"></div>
+            <a id="profile-avatar-link" target="_blank" rel="noopener noreferrer">
+                <div id="profile-avatar"></div>
+            </a>
+            <div id="profile-records" class="profile-container"></div>
+            <div id="register-button-container" class="register-button-container">
+                <button id="register-name-button" class="register-button"></button>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        GeoCities®️
+    </footer>
+
+    <script>
+        // DOM Element References
+        const homepage = document.getElementById('homepage');
+        const profilePage = document.getElementById('profile-page');
+        const ensInputHome = document.getElementById('ens-query-home');
+        const ensInputProfile = document.getElementById('ens-query-profile');
+        const profileRecords = document.getElementById('profile-records');
+        const errorMessageHome = document.getElementById('error-message-home');
+        const errorMessageProfile = document.getElementById('error-message-profile');
+        const homepageAvatar = document.getElementById('homepage-avatar');
+        const profileAvatar = document.getElementById('profile-avatar');
+        const profileAvatarLink = document.getElementById('profile-avatar-link');
+        const pageBody = document.body;
+        const homeSearchButton = document.getElementById('home-search-button');
+        const profileSearchButton = document.getElementById('profile-search-button');
+        const themeBtn = document.querySelector('.toggle-button');
+        const headerLogo = document.querySelector('.header-title');
+        const headerBox = document.querySelector('.header-title-box');
+        const headerElement = document.querySelector('.header');
+        const geoCitiesTitle = document.getElementById('homepage-geocities');
+        const footerElement = document.querySelector('.footer');
+        const registerButtonContainer = document.getElementById('register-button-container');
+        const registerButton = document.getElementById('register-name-button');
+
+        // State Variables
+        let lightMode = false;
+
+        // Theme Toggling Function
+        function toggleTheme() {
+            lightMode = !lightMode;
+            pageBody.classList.toggle('light-mode', lightMode);
+            headerElement.classList.toggle('light-mode', lightMode);
+            footerElement.classList.toggle('light-mode', lightMode);
+            ensInputHome.classList.toggle('light-mode', lightMode);
+            ensInputProfile.classList.toggle('light-mode', lightMode);
+            homeSearchButton.classList.toggle('light-mode', lightMode);
+            profileSearchButton.classList.toggle('light-mode', lightMode);
+            themeBtn.classList.toggle('light-mode', lightMode);
+            headerLogo.classList.toggle('light-mode', lightMode);
+            headerBox.classList.toggle('light-mode', lightMode);
+            geoCitiesTitle.classList.toggle('light-mode', lightMode);
+            homepageAvatar.classList.toggle('light-mode', lightMode);
+            profileAvatar.classList.toggle('light-mode', lightMode);
+            registerButton.classList.toggle('light-mode', lightMode);
+
+            document.querySelectorAll('.profile-box').forEach(box => {
+                box.classList.toggle('light-mode', lightMode);
+                box.querySelector('.profile-box-header')?.classList.toggle('light-mode', lightMode);
+                box.querySelector('.profile-box-value')?.classList.toggle('light-mode', lightMode);
+            });
+
+            document.querySelectorAll('.profile-iframe').forEach(iframe => {
+                iframe.classList.toggle('light-mode', lightMode);
+            });
+
+            themeBtn.textContent = lightMode ? 'Dark' : 'Light';
+        }
+
+        // Avatar Setting Function
+        async function setAvatar(name, element, isProfileAvatar = false, makeClickable = true) {
+            const targetElement = element;
+            const targetLinkElement = isProfileAvatar ? profileAvatarLink : null;
+
+            // Reset the element's content
+            targetElement.style.backgroundImage = 'none';
+            const initial = name ? name[0].toUpperCase() : 'G';
+            targetElement.textContent = initial;
+
+            // Handle the link element for profile avatar
+            if (targetLinkElement) {
+                // Reset link properties
+                targetLinkElement.href = '';
+                targetLinkElement.style.cursor = 'default';
+
+                // Set the link if name is provided, valid, and clickable is allowed
+                if (makeClickable && name && typeof name === 'string' && name.trim()) {
+                    let normalizedName = name.trim().toLowerCase();
+                    normalizedName = normalizedName.replace(/\.eth$/, '').replace(/\.base\.eth$/, '');
+                    if (name.endsWith('.base.eth')) {
+                        let limoUrl = `https://${normalizedName}.base.eth.limo`;
+                        console.log(`Setting profile avatar link for ${normalizedName}.base.eth to ${limoUrl}`);
+                        targetLinkElement.href = limoUrl;
+                        targetLinkElement.style.cursor = 'pointer';
+                    } else {
+                        let limoUrl = `https://${normalizedName}.eth.limo`;
+                        console.log(`Setting profile avatar link for ${normalizedName}.eth to ${limoUrl}`);
+                        targetLinkElement.href = limoUrl;
+                        targetLinkElement.style.cursor = 'pointer';
+                    }
+                }
+            }
+
+            // If no name is provided, stop here
+            if (!name || !name.trim()) return;
+
+            // Fetch avatar image from API
+            let url = `https://api.web3.bio/profile/ens/${name}`;
+            if (name.endsWith('.base.eth')) {
+                url = `https://api.web3.bio/profile/basenames/${name}`;
+            }
+
+            try {
+                const response = await fetch(url);
+                let avatarUrl = null;
+                if (response.ok) {
+                    const data = await response.json();
+                    avatarUrl = data.avatar;
+                }
+
+                if (avatarUrl) {
+                    const imageUrl = `url('${avatarUrl}')`;
+                    targetElement.style.backgroundImage = imageUrl;
+                    targetElement.textContent = '';
+                } else {
+                    console.warn(`No avatar URL found for ${name}`);
+                    targetElement.textContent = initial;
+                }
+            } catch (err) {
+                console.error(`Avatar fetch error for ${name}:`, err);
+                targetElement.textContent = initial;
+            }
+        }
+
+        // Set initial homepage avatar
+        setAvatar('geocities.eth', homepageAvatar, false, false);
+
+        // Main Search Function
+        async function searchENS() {
+            const isOnProfilePage = profilePage.style.display === 'flex';
+            const queryInput = isOnProfilePage ? ensInputProfile : ensInputHome;
+            const currentErrorMessageElement = isOnProfilePage ? errorMessageProfile : errorMessageHome;
+            const query = queryInput.value.trim().toLowerCase();
+
+            currentErrorMessageElement.style.display = 'none';
+            profileRecords.innerHTML = '';
+            registerButtonContainer.style.display = 'none';
+
+            if (!query) {
+                displayError('Please enter an ENS or Base name.', isOnProfilePage);
+                return;
+            }
+            if (/\s/.test(query)) {
+                displayError('Name cannot contain spaces.', isOnProfilePage);
+                return;
+            }
+            const ensName = (query.endsWith('.eth') || query.endsWith('.base.eth')) ? query : `${query}.eth`;
+
+            let url = `https://api.web3.bio/profile/ens/${ensName}`;
+            let isBaseName = false;
+            if (ensName.endsWith('.base.eth')) {
+                url = `https://api.web3.bio/profile/basenames/${ensName}`;
+                isBaseName = true;
+            }
+
+            try {
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        displayUnregisteredProfile(ensName, isBaseName);
+                    } else {
+                        let errorText = `Error: ${response.statusText}`;
+                        try {
+                            const errorData = await response.json();
+                            errorText = errorData?.message || errorData?.error || `Error ${response.status}: ${response.statusText}`;
+                            if (errorText.toLowerCase().includes("invalid name")) {
+                                errorText = `Invalid name format: ${ensName}`;
+                            } else if (response.status >= 500) {
+                                errorText = "Server error. Please try again later.";
+                            }
+                        } catch (e) { console.log("Could not parse error JSON", e); }
+                        displayError(errorText, isOnProfilePage);
+                    }
+                    return;
+                }
+
+                const data = await response.json();
+                displayProfile(data, ensName);
+            } catch (err) {
+                console.error("API fetch error:", err);
+                let errorMsg = "Network error. Please check your connection.";
+                if (err instanceof TypeError) { errorMsg = "Network error or CORS issue. Check console."; }
+                else { errorMsg = `Unexpected error: ${err.message}`; }
+                displayError(errorMsg, isOnProfilePage);
+            }
+        }
+
+        // Display Error Messages
+        function displayError(message, onProfilePage) {
+            const targetErrorElement = onProfilePage ? errorMessageProfile : errorMessageHome;
+            targetErrorElement.textContent = message;
+            targetErrorElement.style.display = 'block';
+
+            if (onProfilePage) {
+                setAvatar(null, profileAvatar, true, false);
+            }
+        }
+
+        // Helper to add the eth.limo iframe
+        function updateProfileIframe(identityName, isBaseName) {
+            console.log(`updateProfileIframe called for ${identityName}, isBaseName: ${isBaseName}`);
+            
+            // Remove any existing iframe
+            let iframeContainer = document.getElementById('profile-iframe-container');
+            if (!iframeContainer) {
+                iframeContainer = document.createElement('div');
+                iframeContainer.id = 'profile-iframe-container';
+                profileRecords.parentNode.insertBefore(iframeContainer, registerButtonContainer);
+            }
+            iframeContainer.innerHTML = ''; // Clear previous iframe
+
+            // Normalize the name (strip .eth/.base.eth for URL construction)
+            let normalizedName = identityName.trim().toLowerCase();
+            normalizedName = normalizedName.replace(/\.eth$/, '').replace(/\.base\.eth$/, '');
+
+            let url = isBaseName
+                ? `https://${normalizedName}.base.eth.limo`
+                : `https://${normalizedName}.eth.limo`;
+            console.log(`Creating iframe with URL: ${url}`);
+
+            // Create and style the iframe
+            const iframe = document.createElement('iframe');
+            iframe.src = url;
+            iframe.classList.add('profile-iframe');
+            if (lightMode) iframe.classList.add('light-mode');
+            iframe.setAttribute('allowfullscreen', '');
+            iframe.setAttribute('loading', 'lazy');
+            iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+            iframe.title = 'eth.limo gateway';
+
+            iframeContainer.appendChild(iframe);
+        }
+
+        // Display Unregistered Profile
+        function displayUnregisteredProfile(ensName, isBaseName) {
+            homepage.style.display = 'none';
+            profilePage.style.display = 'flex';
+            profileRecords.innerHTML = '';
+            errorMessageProfile.style.display = 'none';
+            errorMessageHome.style.display = 'none';
+
+            // Clear iframe
+            let iframeContainer = document.getElementById('profile-iframe-container');
+            if (iframeContainer) iframeContainer.innerHTML = '';
+
+            setAvatar(ensName, profileAvatar, true, true);
+
+            if (isBaseName) {
+                addProfileRecord('Base Name', ensName, true);
+            } else {
+                addProfileRecord('ENS', ensName, true);
+            }
+
+            addProfileRecord('Status', 'Name not registered', false);
+
+            // Add iframe
+            updateProfileIframe(ensName, isBaseName);
+
+            const buttonText = isBaseName ? 'Register Base Name' : 'Register ENS Name';
+            let registerUrl = '';
+
+            if (isBaseName) {
+                const baseNameOnly = ensName.replace(/\.base\.eth$/, '');
+                registerUrl = `https://www.base.org/names?claim=${baseNameOnly}`;
+            } else {
+                registerUrl = `https://app.ens.domains/${ensName}/register`;
+            }
+
+            registerButton.textContent = buttonText;
+            registerButton.onclick = () => window.open(registerUrl, '_blank');
+            registerButton.className = 'register-button';
+            if (lightMode) registerButton.classList.add('light-mode');
+            registerButtonContainer.style.display = 'block';
+        }
+
+        // Display Registered Profile Data
+        function displayProfile(ensData, searchedName) {
+            homepage.style.display = 'none';
+            profilePage.style.display = 'flex';
+            profileRecords.innerHTML = '';
+            errorMessageProfile.style.display = 'none';
+            errorMessageHome.style.display = 'none';
+            registerButtonContainer.style.display = 'none';
+
+            const identityName = ensData?.identity || searchedName;
+
+            setAvatar(identityName, profileAvatar, true, true);
+
+            const specificOmissions = ['avatar', 'identity', 'address', 'displayName', 'description', 'email', 'location', 'status', 'createdAt', 'records', 'followers', 'platform', 'follower', 'following'];
+            const headerRenames = {
+                'email': 'Email',
+                'description': 'Bio',
+                'location': 'Location',
+                'status': 'Status',
+                'keywords': 'Tags',
+                'com.discord': 'Discord',
+                'com.twitter': 'Twitter',
+                'com.github': 'GitHub',
+                'org.telegram': 'Telegram'
+            };
+
+            let recordsMap = {
+                'address': null,
+                'identity': null,
+                'displayName': null,
+                'location': null,
+                'status': null,
+                'description': null,
+                'website': null,
+                'email': null,
+                'contentHash': null,
+                'createdAt': null
+            };
+            let otherRecords = [];
+
+            if (ensData.address) recordsMap['address'] = { label: 'Address', value: ensData.address };
+            if (ensData.identity) {
+                const isBase = ensData.identity.endsWith('.base.eth');
+                const displayLabel = isBase ? 'Base Name' : 'ENS';
+                recordsMap['identity'] = { label: displayLabel, value: ensData.identity };
+            }
+            if (ensData.displayName && ensData.displayName !== ensData.identity) {
+                recordsMap['displayName'] = { label: 'Name', value: ensData.displayName };
+            }
+            if (ensData.location) {
+                recordsMap['location'] = { label: 'Location', value: ensData.location };
+            }
+            if (ensData.status) {
+                recordsMap['status'] = { label: 'Status', value: ensData.status };
+            }
+            if (ensData.description) {
+                recordsMap['description'] = { label: 'Bio', value: ensData.description };
+            }
+            if (ensData.links?.website?.handle) {
+                recordsMap['website'] = { label: 'Website', value: ensData.links.website.handle };
+            }
+            if (ensData.email) {
+                recordsMap['email'] = { label: 'Email', value: ensData.email };
+            }
+            if (ensData.records?.contenthash || ensData.records?.contentHash) {
+                recordsMap['contentHash'] = { label: 'contenthash', value: ensData.records.contenthash || ensData.records.contentHash };
+            }
+            if (ensData.createdAt) {
+                let formattedDate = ensData.createdAt;
+                try {
+                    const date = new Date(ensData.createdAt);
+                    if (!isNaN(date.getTime())) { formattedDate = date.toLocaleDateString(); }
+                } catch (err) { console.error("Date parsing error:", err); }
+                recordsMap['createdAt'] = { label: 'Created', value: formattedDate };
+            }
+
+            function processValue(key, value, targetArray) {
+                if (value === null || value === undefined || value === '' || specificOmissions.includes(key)) return;
+
+                const label = headerRenames[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+
+                if (recordsMap[key] || targetArray.some(r => r.label === label)) return;
+
+                if (typeof value === 'object') {
+                    if (key === 'links') {
+                        Object.entries(value).forEach(([linkName, linkData]) => {
+                            if (linkName !== 'website' && linkData && linkData.handle) {
+                                const formattedLabel = headerRenames[linkName] || linkName.replace(/^./, c => c.toUpperCase());
+                                targetArray.push({ label: formattedLabel, value: linkData.handle });
+                            }
+                        });
+                    }
+                    else if (key === 'social') {
+                        Object.entries(value).forEach(([platform, handle]) => {
+                            if (handle && !['follower', 'following'].includes(platform)) {
+                                const formattedPlatform = headerRenames[platform] || platform.replace(/^./, c => c.toUpperCase());
+                                targetArray.push({ label: formattedPlatform, value: handle });
+                            }
+                        });
+                    }
+                    else if (key === 'records') {
+                        Object.entries(value).forEach(([recordKey, recordValue]) => {
+                            if (recordKey !== 'contenthash' && recordKey !== 'contentHash' && recordValue) {
+                                const recordLabel = headerRenames[recordKey] || recordKey.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                                targetArray.push({ label: recordLabel, value: recordValue });
+                            }
+                        });
+                    }
+                } else {
+                    targetArray.push({ label: label, value: value });
+                }
+            }
+
+            Object.entries(ensData).forEach(([key, value]) => {
+                if (!Object.keys(recordsMap).includes(key)) {
+                    processValue(key, value, otherRecords);
+                }
+            });
+
+            let orderedRecords = [];
+            if (recordsMap['address']) orderedRecords.push(recordsMap['address']);
+            if (recordsMap['identity']) orderedRecords.push(recordsMap['identity']);
+            if (recordsMap['displayName']) orderedRecords.push(recordsMap['displayName']);
+            if (recordsMap['location']) orderedRecords.push(recordsMap['location']);
+            if (recordsMap['status']) orderedRecords.push(recordsMap['status']);
+            if (recordsMap['description']) orderedRecords.push(recordsMap['description']);
+            if (recordsMap['email']) orderedRecords.push(recordsMap['email']);
+            if (recordsMap['website']) orderedRecords.push(recordsMap['website']);
+            if (recordsMap['contentHash']) orderedRecords.push(recordsMap['contentHash']);
+            otherRecords.sort((a, b) => a.label.localeCompare(b.label));
+            orderedRecords = orderedRecords.concat(otherRecords);
+            if (recordsMap['createdAt']) orderedRecords.push(recordsMap['createdAt']);
+
+            if (orderedRecords.length === 0) {
+                addProfileRecord('Status', 'No profile records found.', true);
+            } else {
+                orderedRecords.forEach((record, index) => {
+                    addProfileRecord(record.label, record.value, index === 0);
+                });
+            }
+
+            // Add iframe
+            const isBaseName = identityName.endsWith('.base.eth');
+            updateProfileIframe(identityName, isBaseName);
+        }
+
+        // Add Profile Record to DOM
+        function addProfileRecord(label, value, isFirst) {
+            const recordDiv = document.createElement('div');
+            recordDiv.classList.add('profile-box');
+            if (lightMode) recordDiv.classList.add('light-mode');
+
+            const headerElement = document.createElement('div');
+            headerElement.classList.add('profile-box-header');
+            if (lightMode) headerElement.classList.add('light-mode');
+            headerElement.textContent = label;
+
+            const valueContainer = document.createElement('div');
+            valueContainer.classList.add('profile-box-value');
+            if (lightMode) valueContainer.classList.add('light-mode');
+            valueContainer.textContent = (typeof value === 'object' && value !== null) ? JSON.stringify(value) : value;
+
+            recordDiv.appendChild(headerElement);
+            recordDiv.appendChild(valueContainer);
+            profileRecords.appendChild(recordDiv);
+        }
+
+        // Show Homepage View
+        function showHomepage() {
+            profilePage.style.display = 'none';
+            homepage.style.display = 'block';
+            ensInputHome.value = '';
+            ensInputProfile.value = '';
+            errorMessageHome.style.display = 'none';
+            errorMessageProfile.style.display = 'none';
+            profileRecords.innerHTML = '';
+            setAvatar(null, profileAvatar, true, false);
+            registerButtonContainer.style.display = 'none';
+
+            // Clear iframe
+            let iframeContainer = document.getElementById('profile-iframe-container');
+            if (iframeContainer) iframeContainer.innerHTML = '';
+        }
+
+        // Event Listeners for Enter Key
+        ensInputHome.addEventListener('keypress', (e) => { if (e.key === 'Enter') { e.preventDefault(); searchENS(); } });
+        ensInputProfile.addEventListener('keypress', (e) => { if (e.key === 'Enter') { e.preventDefault(); searchENS(); } });
+
+        // Initial Setup
+        setAvatar(null, profileAvatar, true, false);
+    </script>
+</body>
+</html>
