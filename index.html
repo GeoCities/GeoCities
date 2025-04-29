@@ -426,29 +426,6 @@
             color: #000;
             border-top-color: #000;
         }
-
-        /* Iframe Container */
-        #profile-iframe-container {
-            width: 100%;
-            margin-top: 10px;
-            visibility: visible;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Iframe */
-        .profile-iframe {
-            width: 100%;
-            height: 480px;
-            border: 1px solid #fff;
-            border-radius: 0;
-            background: #fff;
-            transition: border-color 0.3s ease;
-            visibility: visible;
-        }
-        .profile-iframe.light-mode {
-            border-color: #000;
-        }
     </style>
 </head>
 <body>
@@ -485,7 +462,6 @@
                 <div id="profile-avatar"></div>
             </a>
             <div id="profile-records" class="profile-container"></div>
-            <div id="profile-iframe-container"></div>
             <div id="register-button-container" class="register-button-container">
                 <button id="register-name-button" class="register-button"></button>
             </div>
@@ -547,10 +523,6 @@
                 box.classList.toggle('light-mode', lightMode);
                 box.querySelector('.profile-box-header')?.classList.toggle('light-mode', lightMode);
                 box.querySelector('.profile-box-value')?.classList.toggle('light-mode', lightMode);
-            });
-
-            document.querySelectorAll('.profile-iframe').forEach(iframe => {
-                iframe.classList.toggle('light-mode', lightMode);
             });
 
             themeBtn.textContent = lightMode ? 'Dark' : 'Light';
@@ -732,69 +704,6 @@
             }
         }
 
-        // Helper to add the eth.limo iframe
-        function updateProfileIframe(identityName, isBaseName) {
-            console.log(`updateProfileIframe called for ${identityName}, isBaseName: ${isBaseName}`);
-
-            // Ensure iframe container exists
-            let iframeContainer = document.getElementById('profile-iframe-container');
-            if (!iframeContainer) {
-                console.log('Creating new #profile-iframe-container');
-                iframeContainer = document.createElement('div');
-                iframeContainer.id = 'profile-iframe-container';
-                profileRecords.parentNode.insertBefore(iframeContainer, registerButtonContainer);
-            }
-
-            // Clear previous content
-            iframeContainer.innerHTML = '';
-            console.log('Cleared iframe container');
-
-            // Normalize the name (strip .eth/.base.eth for URL construction)
-            let normalizedName = identityName.trim().toLowerCase();
-            normalizedName = normalizedName.replace(/\.eth$/, '').replace(/\.base\.eth$/, '');
-
-            // Construct the iframe URL
-            let url = isBaseName
-                ? `https://${normalizedName}.base.eth.limo`
-                : `https://${normalizedName}.eth.limo`;
-            console.log(`Creating iframe with URL: ${url}`);
-
-            // Create the iframe element
-            const iframe = document.createElement('iframe');
-            iframe.src = url;
-            iframe.classList.add('profile-iframe');
-            if (lightMode) iframe.classList.add('light-mode');
-            iframe.setAttribute('allowfullscreen', '');
-            iframe.setAttribute('loading', 'lazy');
-            iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
-            iframe.title = 'eth.limo gateway';
-            console.log('Iframe element created with attributes');
-
-            // Handle successful load
-            iframe.onload = () => {
-                console.log(`Iframe loaded successfully for ${url}`);
-                try {
-                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                    if (iframeDoc && iframeDoc.body) {
-                        console.log(`Iframe content detected: ${iframeDoc.body.innerHTML.substring(0, 100)}...`);
-                    } else {
-                        console.warn(`Iframe content is empty or inaccessible for ${url}`);
-                    }
-                } catch (err) {
-                    console.warn(`Cannot access iframe content for ${url} (likely cross-origin):`, err);
-                }
-            };
-
-            // Handle load errors
-            iframe.onerror = (err) => {
-                console.error(`Iframe failed to load for ${url}:`, err);
-            };
-
-            // Append iframe to container
-            iframeContainer.appendChild(iframe);
-            console.log('Iframe appended to container');
-        }
-
         // Display Unregistered Profile
         function displayUnregisteredProfile(ensName, isBaseName) {
             homepage.style.display = 'none';
@@ -812,7 +721,6 @@
             }
 
             addProfileRecord('Status', 'Name not registered', false);
-            updateProfileIframe(ensName, isBaseName);
 
             const buttonText = isBaseName ? 'Register Base Name' : 'Register ENS Name';
             let registerUrl = '';
@@ -966,9 +874,6 @@
                     addProfileRecord(record.label, record.value, index === 0);
                 });
             }
-
-            const isBaseName = identityName.endsWith('.base.eth');
-            updateProfileIframe(identityName, isBaseName);
         }
 
         // Add Profile Record to DOM
@@ -1003,10 +908,6 @@
             profileRecords.innerHTML = '';
             setProfileImages(null, profileAvatar, profileHeader, true, false);
             registerButtonContainer.style.display = 'none';
-
-            // Clear iframe
-            let iframeContainer = document.getElementById('profile-iframe-container');
-            if (iframeContainer) iframeContainer.innerHTML = '';
         }
 
         // Event Listeners for Enter Key
