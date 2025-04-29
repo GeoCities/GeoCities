@@ -146,6 +146,40 @@
             margin-top: 20px;
         }
 
+        /* Profile Header Display */
+        #profile-header {
+            width: 100%;
+            height: 0;
+            padding-bottom: 33.33%; /* 1:3 aspect ratio (height = width / 3) */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: none; /* Hidden by default */
+            border: 1px solid #fff;
+            box-sizing: border-box;
+            border-radius: 0;
+            overflow: hidden;
+            margin-bottom: 0;
+            transition: border-color 0.3s ease;
+        }
+        .light-mode #profile-header {
+            border-color: #000;
+        }
+
+        /* Profile Header Link Wrapper */
+        #profile-header-link {
+            display: block;
+            width: 100%;
+            text-decoration: none;
+            color: inherit;
+            cursor: default;
+            pointer-events: none; /* Disabled by default */
+        }
+        #profile-header-link[href]:not([href=""]) {
+            cursor: pointer;
+            pointer-events: auto; /* Enabled when href is set */
+        }
+
         /* Profile Avatar Display */
         #profile-avatar {
             width: 100%;
@@ -444,10 +478,14 @@
                 <button class="search-button" id="profile-search-button" onclick="searchENS()">Search</button>
             </div>
             <div id="error-message-profile" class="error-message"></div>
+            <a id="profile-header-link" target="_blank" rel="noopener noreferrer">
+                <div id="profile-header"></div>
+            </a>
             <a id="profile-avatar-link" target="_blank" rel="noopener noreferrer">
                 <div id="profile-avatar"></div>
             </a>
             <div id="profile-records" class="profile-container"></div>
+            <div id="profile-iframe-container"></div>
             <div id="register-button-container" class="register-button-container">
                 <button id="register-name-button" class="register-button"></button>
             </div>
@@ -468,7 +506,9 @@
         const errorMessageProfile = document.getElementById('error-message-profile');
         const homepageAvatar = document.getElementById('homepage-avatar');
         const profileAvatar = document.getElementById('profile-avatar');
+        const profileHeader = document.getElementById('profile-header');
         const profileAvatarLink = document.getElementById('profile-avatar-link');
+        const profileHeaderLink = document.getElementById('profile-header-link');
         const pageBody = document.body;
         const homeSearchButton = document.getElementById('home-search-button');
         const profileSearchButton = document.getElementById('profile-search-button');
@@ -500,6 +540,7 @@
             geoCitiesTitle.classList.toggle('light-mode', lightMode);
             homepageAvatar.classList.toggle('light-mode', lightMode);
             profileAvatar.classList.toggle('light-mode', lightMode);
+            profileHeader.classList.toggle('light-mode', lightMode);
             registerButton.classList.toggle('light-mode', lightMode);
 
             document.querySelectorAll('.profile-box').forEach(box => {
@@ -515,44 +556,50 @@
             themeBtn.textContent = lightMode ? 'Dark' : 'Light';
         }
 
-        // Avatar Setting Function
-        async function setAvatar(name, element, isProfileAvatar = false, makeClickable = true) {
-            const targetElement = element;
-            const targetLinkElement = isProfileAvatar ? profileAvatarLink : null;
+        // Set Profile Images (Avatar and Header)
+        async function setProfileImages(name, avatarElement, headerElement, isProfile = false, makeClickable = true) {
+            const avatarTarget = avatarElement;
+            const headerTarget = headerElement || null;
+            const avatarLink = isProfile ? profileAvatarLink : null;
+            const headerLink = isProfile ? profileHeaderLink : null;
 
-            // Reset the element's content
-            targetElement.style.backgroundImage = 'none';
+            // Reset avatar
+            avatarTarget.style.backgroundImage = 'none';
             const initial = name ? name[0].toUpperCase() : 'G';
-            targetElement.textContent = initial;
+            avatarTarget.textContent = initial;
 
-            // Handle the link element for profile avatar
-            if (targetLinkElement) {
-                // Reset link properties
-                targetLinkElement.href = '';
-                targetLinkElement.style.cursor = 'default';
-
-                // Set the link if name is provided, valid, and clickable is allowed
-                if (makeClickable && name && typeof name === 'string' && name.trim()) {
-                    let normalizedName = name.trim().toLowerCase();
-                    normalizedName = normalizedName.replace(/\.eth$/, '').replace(/\.base\.eth$/, '');
-                    if (name.endsWith('.base.eth')) {
-                        let limoUrl = `https://${normalizedName}.base.eth.limo`;
-                        console.log(`Setting profile avatar link for ${normalizedName}.base.eth to ${limoUrl}`);
-                        targetLinkElement.href = limoUrl;
-                        targetLinkElement.style.cursor = 'pointer';
-                    } else {
-                        let limoUrl = `https://${normalizedName}.eth.limo`;
-                        console.log(`Setting profile avatar link for ${normalizedName}.eth to ${limoUrl}`);
-                        targetLinkElement.href = limoUrl;
-                        targetLinkElement.style.cursor = 'pointer';
-                    }
+            // Reset header (if provided)
+            if (headerTarget) {
+                headerTarget.style.backgroundImage = 'none';
+                headerTarget.style.display = 'none';
+                if (headerLink) {
+                    headerLink.href = '';
+                    headerLink.style.cursor = 'default';
+                    headerLink.style.pointerEvents = 'none';
                 }
             }
 
-            // If no name is provided, stop here
+            // Set avatar and header links (same eth.limo URL)
+            if (avatarLink && makeClickable && name && typeof name === 'string' && name.trim()) {
+                let normalizedName = name.trim().toLowerCase();
+                normalizedName = normalizedName.replace(/\.eth$/, '').replace(/\.base\.eth$/, '');
+                let limoUrl = name.endsWith('.base.eth')
+                    ? `https://${normalizedName}.base.eth.limo`
+                    : `https://${normalizedName}.eth.limo`;
+                console.log(`Setting avatar link for ${name} to ${limoUrl}`);
+                avatarLink.href = limoUrl;
+                avatarLink.style.cursor = 'pointer';
+                avatarLink.style.pointerEvents = 'auto';
+                if (headerLink) {
+                    console.log(`Setting header link for ${name} to ${limoUrl}`);
+                    headerLink.href = limoUrl;
+                    headerLink.style.cursor = 'pointer';
+                    headerLink.style.pointerEvents = 'auto';
+                }
+            }
+
             if (!name || !name.trim()) return;
 
-            // Fetch avatar image from API
             let url = `https://api.web3.bio/profile/ens/${name}`;
             if (name.endsWith('.base.eth')) {
                 url = `https://api.web3.bio/profile/basenames/${name}`;
@@ -561,27 +608,57 @@
             try {
                 const response = await fetch(url);
                 let avatarUrl = null;
+                let headerUrl = null;
                 if (response.ok) {
                     const data = await response.json();
                     avatarUrl = data.avatar;
+                    headerUrl = data.header;
                 }
 
+                // Set avatar image
                 if (avatarUrl) {
-                    const imageUrl = `url('${avatarUrl}')`;
-                    targetElement.style.backgroundImage = imageUrl;
-                    targetElement.textContent = '';
+                    // Preload image to ensure it loads correctly (handles GIFs)
+                    const img = new Image();
+                    img.src = avatarUrl;
+                    img.onload = () => {
+                        avatarTarget.style.backgroundImage = `url('${avatarUrl}')`;
+                        avatarTarget.textContent = '';
+                        console.log(`Avatar loaded for ${name}: ${avatarUrl}`);
+                    };
+                    img.onerror = () => {
+                        console.warn(`Failed to load avatar for ${name}: ${avatarUrl}`);
+                        avatarTarget.textContent = initial;
+                    };
                 } else {
                     console.warn(`No avatar URL found for ${name}`);
-                    targetElement.textContent = initial;
+                    avatarTarget.textContent = initial;
+                }
+
+                // Set header image (if headerTarget exists)
+                if (headerUrl && headerTarget) {
+                    const img = new Image();
+                    img.src = headerUrl;
+                    img.onload = () => {
+                        headerTarget.style.backgroundImage = `url('${headerUrl}')`;
+                        headerTarget.style.display = 'block';
+                        console.log(`Header loaded for ${name}: ${headerUrl}`);
+                    };
+                    img.onerror = () => {
+                        console.warn(`Failed to load header for ${name}: ${headerUrl}`);
+                        headerTarget.style.display = 'none';
+                    };
+                } else if (headerTarget) {
+                    console.warn(`No header URL found for ${name}`);
                 }
             } catch (err) {
-                console.error(`Avatar fetch error for ${name}:`, err);
-                targetElement.textContent = initial;
+                console.error(`Profile images fetch error for ${name}:`, err);
+                avatarTarget.textContent = initial;
+                if (headerTarget) headerTarget.style.display = 'none';
             }
         }
 
         // Set initial homepage avatar
-        setAvatar('geocities.eth', homepageAvatar, false, false);
+        setProfileImages('geocities.eth', homepageAvatar, null, false, false);
 
         // Main Search Function
         async function searchENS() {
@@ -651,33 +728,38 @@
             targetErrorElement.style.display = 'block';
 
             if (onProfilePage) {
-                setAvatar(null, profileAvatar, true, false);
+                setProfileImages(null, profileAvatar, profileHeader, true, false);
             }
         }
 
         // Helper to add the eth.limo iframe
         function updateProfileIframe(identityName, isBaseName) {
             console.log(`updateProfileIframe called for ${identityName}, isBaseName: ${isBaseName}`);
-            
-            // Remove any existing iframe
+
+            // Ensure iframe container exists
             let iframeContainer = document.getElementById('profile-iframe-container');
             if (!iframeContainer) {
+                console.log('Creating new #profile-iframe-container');
                 iframeContainer = document.createElement('div');
                 iframeContainer.id = 'profile-iframe-container';
                 profileRecords.parentNode.insertBefore(iframeContainer, registerButtonContainer);
             }
-            iframeContainer.innerHTML = ''; // Clear previous iframe
+
+            // Clear previous content
+            iframeContainer.innerHTML = '';
+            console.log('Cleared iframe container');
 
             // Normalize the name (strip .eth/.base.eth for URL construction)
             let normalizedName = identityName.trim().toLowerCase();
             normalizedName = normalizedName.replace(/\.eth$/, '').replace(/\.base\.eth$/, '');
 
+            // Construct the iframe URL
             let url = isBaseName
                 ? `https://${normalizedName}.base.eth.limo`
                 : `https://${normalizedName}.eth.limo`;
             console.log(`Creating iframe with URL: ${url}`);
 
-            // Create and style the iframe
+            // Create the iframe element
             const iframe = document.createElement('iframe');
             iframe.src = url;
             iframe.classList.add('profile-iframe');
@@ -686,8 +768,31 @@
             iframe.setAttribute('loading', 'lazy');
             iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
             iframe.title = 'eth.limo gateway';
+            console.log('Iframe element created with attributes');
 
+            // Handle successful load
+            iframe.onload = () => {
+                console.log(`Iframe loaded successfully for ${url}`);
+                try {
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    if (iframeDoc && iframeDoc.body) {
+                        console.log(`Iframe content detected: ${iframeDoc.body.innerHTML.substring(0, 100)}...`);
+                    } else {
+                        console.warn(`Iframe content is empty or inaccessible for ${url}`);
+                    }
+                } catch (err) {
+                    console.warn(`Cannot access iframe content for ${url} (likely cross-origin):`, err);
+                }
+            };
+
+            // Handle load errors
+            iframe.onerror = (err) => {
+                console.error(`Iframe failed to load for ${url}:`, err);
+            };
+
+            // Append iframe to container
             iframeContainer.appendChild(iframe);
+            console.log('Iframe appended to container');
         }
 
         // Display Unregistered Profile
@@ -698,11 +803,7 @@
             errorMessageProfile.style.display = 'none';
             errorMessageHome.style.display = 'none';
 
-            // Clear iframe
-            let iframeContainer = document.getElementById('profile-iframe-container');
-            if (iframeContainer) iframeContainer.innerHTML = '';
-
-            setAvatar(ensName, profileAvatar, true, true);
+            setProfileImages(ensName, profileAvatar, profileHeader, true, true);
 
             if (isBaseName) {
                 addProfileRecord('Base Name', ensName, true);
@@ -711,8 +812,6 @@
             }
 
             addProfileRecord('Status', 'Name not registered', false);
-
-            // Add iframe
             updateProfileIframe(ensName, isBaseName);
 
             const buttonText = isBaseName ? 'Register Base Name' : 'Register ENS Name';
@@ -743,9 +842,9 @@
 
             const identityName = ensData?.identity || searchedName;
 
-            setAvatar(identityName, profileAvatar, true, true);
+            setProfileImages(identityName, profileAvatar, profileHeader, true, true);
 
-            const specificOmissions = ['avatar', 'identity', 'address', 'displayName', 'description', 'email', 'location', 'status', 'createdAt', 'records', 'followers', 'platform', 'follower', 'following'];
+            const specificOmissions = ['avatar', 'header', 'contenthash', 'contentHash', 'identity', 'address', 'displayName', 'description', 'email', 'location', 'status', 'createdAt', 'records', 'followers', 'platform', 'follower', 'following'];
             const headerRenames = {
                 'email': 'Email',
                 'description': 'Bio',
@@ -767,7 +866,6 @@
                 'description': null,
                 'website': null,
                 'email': null,
-                'contentHash': null,
                 'createdAt': null
             };
             let otherRecords = [];
@@ -795,9 +893,6 @@
             }
             if (ensData.email) {
                 recordsMap['email'] = { label: 'Email', value: ensData.email };
-            }
-            if (ensData.records?.contenthash || ensData.records?.contentHash) {
-                recordsMap['contentHash'] = { label: 'contenthash', value: ensData.records.contenthash || ensData.records.contentHash };
             }
             if (ensData.createdAt) {
                 let formattedDate = ensData.createdAt;
@@ -860,7 +955,6 @@
             if (recordsMap['description']) orderedRecords.push(recordsMap['description']);
             if (recordsMap['email']) orderedRecords.push(recordsMap['email']);
             if (recordsMap['website']) orderedRecords.push(recordsMap['website']);
-            if (recordsMap['contentHash']) orderedRecords.push(recordsMap['contentHash']);
             otherRecords.sort((a, b) => a.label.localeCompare(b.label));
             orderedRecords = orderedRecords.concat(otherRecords);
             if (recordsMap['createdAt']) orderedRecords.push(recordsMap['createdAt']);
@@ -873,7 +967,6 @@
                 });
             }
 
-            // Add iframe
             const isBaseName = identityName.endsWith('.base.eth');
             updateProfileIframe(identityName, isBaseName);
         }
@@ -908,7 +1001,7 @@
             errorMessageHome.style.display = 'none';
             errorMessageProfile.style.display = 'none';
             profileRecords.innerHTML = '';
-            setAvatar(null, profileAvatar, true, false);
+            setProfileImages(null, profileAvatar, profileHeader, true, false);
             registerButtonContainer.style.display = 'none';
 
             // Clear iframe
@@ -921,7 +1014,7 @@
         ensInputProfile.addEventListener('keypress', (e) => { if (e.key === 'Enter') { e.preventDefault(); searchENS(); } });
 
         // Initial Setup
-        setAvatar(null, profileAvatar, true, false);
+        setProfileImages(null, profileAvatar, profileHeader, true, false);
     </script>
 </body>
 </html>
