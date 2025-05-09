@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GeoCities</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='50' font-size='80' text-anchor='middle' dominant-baseline='middle' fill='%23000'>G%3C/text%3E%3C/svg%3E" type="image/svg+xml">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Georgia&display=swap" rel="stylesheet">
+    <style>
+        /* Body Styles */
+        body {
+            font-family: sans-serif;
+            background: #000;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding-top: 60px;
+            transition: background 0.3s ease, color 0.3s ease;
+            position: relative;
+            padding-bottom: 60px;
+            box-sizing: border-box;
+        }
+        body.light-mode {
+            background: #fff;
+            color: #000;
+        }
+
+        /* Container Styles */
+        .container {
+            flex-direction: column;
+            display: flex;
+            align-items: center;
+            width: 90%;
+            max-width: 600px;
+            justify-content: flex-start;
+            flex-grow: 1;
+        }
+
+        /* Logo Box (Homepage Avatar) */
+        .logo-box {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 6em;
+            margin: 20px auto 0;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: border-color 0.3s ease, background-image 0.3s ease;
+            border-radius: 0;
+            overflow: hidden;
+            color: #fff;
+        }
+        .light-mode .logo-box {
+            border-color: #000;
+            color: #000;
+        }
+
+        /* Heading "GeoCities" below avatar */
+        h2#homepage-geocities {
+            margin: 0 auto 20px;
+            text-align: center;
+            display: block;
+            transition: color 0.3s ease, border-color 0.3s ease;
+            font-size: 1.2em;
+            border: 1px solid #fff;
+            border-top: none;
+            padding: 10px 0;
+            border-radius: 0;
+            width: 200px;
+        }
+        #homepage-geocities.light-mode {
+            border-color: #000;
+            color: #000;
+        }
+
+        /* Search Bar Container */
+        .search-container {
+            display: flex;
+            width: 100%;
+            margin-bottom: 20px;
+            height: 38px;
+        }
+
+        /* Search Input Field */
+        .search-input {
+            flex: 1;
+            padding: 10px;
+            background: #000;
+            color: #fff;
+            border: 1px solid #fff;
+            border-right: none;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            height: 100%;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .search-input.light-mode {
+            background: #fff;
+            color: #000;
+            border-color: #000;
+        }
+        .search-input::placeholder {
+            color: #aaa;
+        }
+        .search-input.light-mode::placeholder {
+            color: #555;
+        }
+        .search-input:focus {
+            font-size: 16px;
+            outline: none;
+        }
+
+        /* Search Button */
+        .search-button {
+            padding: 10px 15px;
+            background: #000;
+            color: #fff;
+            border: 1px solid #fff;
+            cursor: pointer;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            height: 100%;
+            font-size: 0.8em;
+            box-sizing: border-box;
+        }
+        .search-button.light-mode {
+            background: #fff;
+            color: #000;
+            border-color: #000;
+        }
+
+        /* Profile Page Container */
+        #profile-page {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        /* Neighborhood Dropdown */
+        .neighborhood-select {
+            width: 100%;
+            max-width: 200px;
+            height: 38px;
+            padding: 5px;
+            background: #000;
+            color: #fff;
+            border: 1px solid #fff;
+            border-radius: 0;
+            font-size: 0.9em;
+            font-family: sans-serif;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23fff' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 30px;
+        }
+        .neighborhood-select.light-mode {
+            background-color: #fff;
+            color: #000;
+            border: 1px solid #000;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23000' d='M2 4h8L6 8z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+
+        /* Neighborhood Container */
+        .neighborhood-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .neighborhood-geocities {
+            background: #000;
+            transition: background 0.3s ease;
+        }
+        .neighborhood-geocities.light-mode {
+            background: #fff;
+        }
+        .neighborhood-area51 {
+            background: #000 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23000" width="100" height="100"/%3E%3Ccircle fill="%23fff" cx="20" cy="20" r="2"/%3E%3Ccircle fill="%23fff" cx="80" cy="30" r="1"/%3E%3Ccircle fill="%23fff" cx="50" cy="70" r="1.5"/%3E%3Ccircle fill="%23fff" cx="30" cy="50" r="1"/%3E%3Ccircle fill="%23fff" cx="70" cy="10" r="2"/%3E%3C/svg%3E') repeat;
+            color: #00ff00;
+            font-family: 'Orbitron', sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-area51.light-mode {
+            background: linear-gradient(135deg, #e0e0e0 0%, #a0a0a0 100%);
+            color: #008000;
+        }
+        .neighborhood-athens {
+            background: #2f4f4f url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%232f4f4f" width="100" height="100"/%3E%3Cpath fill="%234f6f6f" d="M10 10h10v80H10zM80 10h10v80H80z"/%3E%3C/svg%3E') repeat;
+            color: #add8e6;
+            font-family: 'Georgia', serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-athens.light-mode {
+            background: #f5f5dc url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23f5f5dc" width="100" height="100"/%3E%3Cpath fill="%23e6e6c0" d="M10 10h10v80H10zM80 10h10v80H80z"/%3E%3C/svg%3E') repeat;
+            color: #00008b;
+        }
+        .neighborhood-augusta {
+            background: #006400 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23006400" width="100" height="100"/%3E%3Ccircle fill="%23fff" cx="50" cy="50" r="10"/%3E%3C/svg%3E') repeat;
+            color: #fff;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-augusta.light-mode {
+            background: #90ee90;
+            color: #006400;
+        }
+        .neighborhood-baja {
+            background: #f4a460 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23f4a460" width="100" height="100"/%3E%3Cpath fill="%23d2b48c" d="M10 90L30 70L50 90L70 70L90 90"/%3E%3C/svg%3E') repeat;
+            color: #ff4500;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-baja.light-mode {
+            background: #d2b48c;
+            color: #ff4500;
+        }
+        .neighborhood-bourbonstreet {
+            background: #800080 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23800080" width="100" height="100"/%3E%3Cpath fill="%23ffd700" d="M50 20c-10 10-15 20-10 30s15 20 25 20"/%3E%3C/svg%3E') repeat;
+            color: #ffd700;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-bourbonstreet.light-mode {
+            background: #ffd700;
+            color: #fff;
+        }
+        .neighborhood-broadway {
+            background: #000 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23000" width="100" height="100"/%3E%3Crect fill="%23ff00ff" x="45" y="10" width="10" height="80"/%3E%3C/svg%3E') repeat;
+            color: #ff0000;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-broadway.light-mode {
+            background: #fffdd0;
+            color: #ff0000;
+        }
+        .neighborhood-capecanaveral {
+            background: #000080 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23000080" width="100" height="100"/%3E%3Ccircle fill="%23fff" cx="20" cy="20" r="2"/%3E%3Ccircle fill="%23fff" cx="80" cy="80" r="2"/%3E%3C/svg%3E') repeat;
+            color: #fff;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-capecanaveral.light-mode {
+            background: #87ceeb;
+            color: #add8e6;
+        }
+        .neighborhood-capitolhill {
+            background: #000066 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23000066" width="100" height="100"/%3E%3Cpath fill="%234169e1" d="M50 20a20 20 0 00-20 20v40h40V40a20 20 0 00-20-20z"/%3E%3C/svg%3E') repeat;
+            color: #ff0000;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-capitolhill.light-mode {
+            background: #fff;
+            color: #fff;
+        }
+        .neighborhood-collegepark {
+            background: #228b22 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23228b22" width="100" height="100"/%3E%3Crect fill="%234169e1" x="40" y="30" width="20" height="40"/%3E%3C/svg%3E') repeat;
+            color: #000080;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-collegepark.light-mode {
+            background: #98fb98;
+            color: #fff;
+        }
+        .neighborhood-colosseum {
+            background: #d3c39a url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23d3c39a" width="100" height="100"/%3E%3Crect fill="%23a0522d" x="20" y="40" width="60" height="20"/%3E%3C/svg%3E') repeat;
+            color: #ff0000;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-colosseum.light-mode {
+            background: #f5f5dc;
+            color: #ffd700;
+        }
+        .neighborhood-enchantedforest {
+            background: #228b22 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23228b22" width="100" height="100"/%3E%3Cpath fill="%23006400" d="M50 20L30 60h40z"/%3E%3C/svg%3E') repeat;
+            color: #ffff00;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-enchantedforest.light-mode {
+            background: #90ee90;
+            color: #fff;
+        }
+        .neighborhood-eureka {
+            background: #808080 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23808080" width="100" height="100"/%3E%3Ccircle fill="%23666666" cx="50" cy="50" r="20" fill-opacity="0.5"/%3E%3C/svg%3E') repeat;
+            color: #000;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-eureka.light-mode {
+            background: #d3d3d3;
+            color: #0000ff;
+        }
+        .neighborhood-fashionavenue {
+            background: #ff69b4 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23ff69b4" width="100" height="100"/%3E%3Cpath fill="%23fff" d="M20 20h60v60h-60z"/%3E%3C/svg%3E') repeat;
+            color: #000;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-fashionavenue.light-mode {
+            background: #ffe4e1;
+            color: #fff;
+        }
+        .neighborhood-heartland {
+            background: #f5deb3 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23f5deb3" width="100" height="100"/%3E%3Crect fill="%23a0522d" x="30" y="20" width="40" height="60"/%3E%3C/svg%3E') repeat;
+            color: #a52a2a;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-heartland.light-mode {
+            background: #fffdd0;
+            color: #006400;
+        }
+        .neighborhood-hollywood {
+            background: #000 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23000" width="100" height="100"/%3E%3Ccircle fill="%23fff" cx="50" cy="50" r="20"/%3E%3C/svg%3E') repeat;
+            color: #ff0000;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-hollywood.light-mode {
+            background: #ffd700;
+            color: #fff;
+        }
+        .neighborhood-hotsprings {
+            background: #008080 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23008080" width="100" height="100"/%3E%3Cpath fill="%23add8e6" d="M50 20c-10 10-15 20-10 30"/%3E%3C/svg%3E') repeat;
+            color: #fff;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-hotsprings.light-mode {
+            background: #00ffff;
+            color: #000080;
+        }
+        .neighborhood-madisonavenue {
+            background: #708090 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23708090" width="100" height="100"/%3E%3Crect fill="%23fff" x="20" y="20" width="60" height="20"/%3E%3C/svg%3E') repeat;
+            color: #ffff00;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-madisonavenue.light-mode {
+            background: #c0c0c0;
+            color: #000;
+        }
+        .neighborhood-motorcity {
+            background: #4682b4 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%234682b4" width="100" height="100"/%3E%3Cpath fill="%23222" d="M10 90L30 70L50 90L70 70L90 90"/%3E%3C/svg%3E') repeat;
+            color: #ff0000;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-motorcity.light-mode {
+            background: #c0c0c0;
+            color: #000;
+        }
+        .neighborhood-napavalley {
+            background: #355e3b url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23355e3b" width="100" height="100"/%3E%3Cpath fill="%23228b22" d="M50 20c-10 10-15 20-10 30"/%3E%3C/svg%3E') repeat;
+            color: #800000;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-napavalley.light-mode {
+            background: #e6e6fa;
+            color: #fff;
+        }
+        .neighborhood-nashville {
+            background: #8b4513 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%238b4513" width="100" height="100"/%3E%3Cpath fill="%23d2b48c" d="M20 20h60v2h-60z"/%3E%3C/svg%3E') repeat;
+            color: #ffff00;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-nashville.light-mode {
+            background: #d2b48c;
+            color: #fff;
+        }
+        .neighborhood-paris {
+            background: #ffc1cc url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23ffc1cc" width="100" height="100"/%3E%3Cpath fill="%23000080" d="M50 20v60M40 60h20"/%3E%3C/svg%3E') repeat;
+            color: #000080;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-paris.light-mode {
+            background: #fffdd0;
+            color: #fff;
+        }
+        .neighborhood-pentagon {
+            background: #4b5320 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%234b5320" width="100" height="100"/%3E%3Cpath fill="%23228b22" d="M20 20h60v60h-60z"/%3E%3C/svg%3E') repeat;
+            color: #fff;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-pentagon.light-mode {
+            background: #f0e68c;
+            color: #000;
+        }
+        .neighborhood-petsburgh {
+            background: #a0522d url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23a0522d" width="100" height="100"/%3E%3Ccircle fill="%23fff" cx="30" cy="70" r="5"/%3E%3Ccircle fill="%23fff" cx="70" cy="70" r="5"/%3E%3C/svg%3E') repeat;
+            color: #006400;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-petsburgh.light-mode {
+            background: #f5f5dc;
+            color: #fff;
+        }
+        .neighborhood-picketfence {
+            background: #fff url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23fff" width="100" height="100"/%3E%3Crect fill="%23d3d3d3" x="20" y="60" width="10" height="20"/%3E%3Crect fill="%23d3d3d3" x="70" y="60" width="10" height="20"/%3E%3C/svg%3E') repeat;
+            color: #0000ff;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-picketfence.light-mode {
+            background: #d3d3d3;
+            color: #a52a2a;
+        }
+        .neighborhood-pipeline {
+            background: #ff4500 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23ff4500" width="100" height="100"/%3E%3Cpath fill="%23fff" d="M10 90L30 70L50 90L70 70L90 90"/%3E%3C/svg%3E') repeat;
+            color: #000;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-pipeline.light-mode {
+            background: #ffff00;
+            color: #fff;
+        }
+        .neighborhood-rainforest {
+            background: #2e8b57 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%232e8b57" width="100" height="100"/%3E%3Cpath fill="%23006400" d="M50 20c-10 10-15 20-10 30"/%3E%3C/svg%3E') repeat;
+            color: #fff;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-rainforest.light-mode {
+            background: #98fb98;
+            color: #ffff00;
+        }
+        .neighborhood-researchtriangle {
+            background: #1e90ff url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%231e90ff" width="100" height="100"/%3E%3Cpath fill="%23add8e6" d="M20 80L50 20L80 80z"/%3E%3C/svg%3E') repeat;
+            color: #fff;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-researchtriangle.light-mode {
+            background: #add8e6;
+            color: #000;
+        }
+        .neighborhood-rodeodrive {
+            background: #ffd700 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23ffd700" width="100" height="100"/%3E%3Crect fill="%23fff" x="40" y="20" width="20" height="60"/%3E%3C/svg%3E') repeat;
+            color: #000;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-rodeodrive.light-mode {
+            background: #fffff0;
+            color: #000080;
+        }
+        .neighborhood-siliconvalley {
+            background: #333 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23333" width="100" height="100"/%3E%3Cpath fill="%23666" d="M20 20h60v60h-60z"/%3E%3C/svg%3E') repeat;
+            color: #008000;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-siliconvalley.light-mode {
+            background: #d3d3d3;
+            color: #fff;
+        }
+        .neighborhood-soho {
+            background: #8b0000 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%238b0000" width="100" height="100"/%3E%3Crect fill="%23fff" x="20" y="20" width="60" height="60"/%3E%3C/svg%3E') repeat;
+            color: #fff;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-soho.light-mode {
+            background: #f5f5dc;
+            color: #000;
+        }
+        .neighborhood-southbeach {
+            background: #00b7eb url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%2300b7eb" width="100" height="100"/%3E%3Cpath fill="%23add8e6" d="M20 80c10-10 20-15 30-10"/%3E%3C/svg%3E') repeat;
+            color: #fff;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-southbeach.light-mode {
+            background: #ff7f50;
+            color: #ffff00;
+        }
+        .neighborhood-sunsetstrip {
+            background: #9932cc url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%239932cc" width="100" height="100"/%3E%3Crect fill="%23fff" x="45" y="20" width="10" height="60"/%3E%3C/svg%3E') repeat;
+            color: #fff;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-sunsetstrip.light-mode {
+            background: #ffb6c1;
+            color: #ffff00;
+        }
+        .neighborhood-televisioncity {
+            background: #000 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23000" width="100" height="100"/%3E%3Crect fill="%23666" x="20" y="20" width="10" height="10"/%3E%3Crect fill="%23666" x="70" y="70" width="10" height="10"/%3E%3C/svg%3E') repeat;
+            color: #ff0000;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-televisioncity.light-mode {
+            background: #c0c0c0;
+            color: #fff;
+        }
+        .neighborhood-thetropics {
+            background: #40e0d0 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%2340e0d0" width="100" height="100"/%3E%3Cpath fill="%23add8e6" d="M50 20c-10 10-15 20-10 30"/%3E%3C/svg%3E') repeat;
+            color: #fff;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-thetropics.light-mode {
+            background: #f4a460;
+            color: #000080;
+        }
+        .neighborhood-timessquare {
+            background: #000 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23000" width="100" height="100"/%3E%3Crect fill="%23ff0000" x="45" y="20" width="10" height="60"/%3E%3C/svg%3E') repeat;
+            color: #ffff00;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-timessquare.light-mode {
+            background: #fff;
+            color: #ff0000;
+        }
+        .neighborhood-tokyo {
+            background: #ff0000 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23ff0000" width="100" height="100"/%3E%3Ccircle fill="%23ffc1cc" cx="50" cy="50" r="10"/%3E%3C/svg%3E') repeat;
+            color: #fff;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-tokyo.light-mode {
+            background: #ffc1cc;
+            color: #000;
+        }
+        .neighborhood-vienna {
+            background: #4169e1 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%234169e1" width="100" height="100"/%3E%3Cpath fill="%23add8e6" d="M50 20c-10 10-15 20-10 30"/%3E%3C/svg%3E') repeat;
+            color: #fff;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-vienna.light-mode {
+            background: #add8e6;
+            color: #ffd700;
+        }
+        .neighborhood-wallstreet {
+            background: #008000 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23008000" width="100" height="100"/%3E%3Crect fill="%23fff" x="20" y="20" width="60" height="10"/%3E%3C/svg%3E') repeat;
+            color: #000;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-wallstreet.light-mode {
+            background: #fff;
+            color: #ff0000;
+        }
+        .neighborhood-wellesley {
+            background: #e6e6fa url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23e6e6fa" width="100" height="100"/%3E%3Crect fill="%23d8bfd8" x="40" y="30" width="20" height="40"/%3E%3C/svg%3E') repeat;
+            color: #000080;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-wellesley.light-mode {
+            background: #d8bfd8;
+            color: #fff;
+        }
+        .neighborhood-westhollywood {
+            background: linear-gradient(45deg, #ff0000, #ff9900, #33cc33, #3399ff, #cc33cc);
+            color: #fff;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-westhollywood.light-mode {
+            background: linear-gradient(45deg, #ff6666, #ffcc66, #66ff66, #66ccff, #ff66ff);
+            color: #000;
+        }
+        .neighborhood-yosemite {
+            background: #228b22 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23228b22" width="100" height="100"/%3E%3Cpath fill="%23006400" d="M20 80L50 20L80 80z"/%3E%3C/svg%3E') repeat;
+            color: #fff;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-yosemite.light-mode {
+            background: #90ee90;
+            color: #a52a2a;
+        }
+        .neighborhood-northpole {
+            background: #b0e0e6 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23b0e0e6" width="100" height="100"/%3E%3Cpath fill="%23fff" d="M50 50L45 45L50 40L55 45z"/%3E%3C/svg%3E') repeat;
+            color: #fff;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-northpole.light-mode {
+            background: #fff;
+            color: #ff0000;
+        }
+
+        /* Profile Header Display */
+        #profile-header {
+            width: 100%;
+            height: 0;
+            padding-bottom: 33.33%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: none;
+            border: 1px solid #fff;
+            box-sizing: border-box;
+            border-radius: 0;
+            overflow: hidden;
+            margin-bottom: 0;
+            transition: border-color 0.3s ease;
+        }
+        .light-mode #profile-header {
+            border-color: #000;
+        }
+        .neighborhood-area51 #profile-header {
+            border-color: #00ff00;
+        }
+        .neighborhood-area51.light-mode #profile-header {
+            border-color: #008000;
+        }
+        .neighborhood-athens #profile-header {
+            border-color: #c0c0c0;
+        }
+        .neighborhood-athens.light-mode #profile-header {
+            border-color: #ffd700;
+        }
+        .neighborhood-augusta #profile-header,
+        .neighborhood-baja #profile-header,
+        .neighborhood-bourbonstreet #profile-header,
+        .neighborhood-broadway #profile-header,
+        .neighborhood-capecanaveral #profile-header,
+        .neighborhood-capitolhill #profile-header,
+        .neighborhood-collegepark #profile-header,
+        .neighborhood-colosseum #profile-header,
+        .neighborhood-enchantedforest #profile-header,
+        .neighborhood-eureka #profile-header,
+        .neighborhood-fashionavenue #profile-header,
+        .neighborhood-heartland #profile-header,
+        .neighborhood-hollywood #profile-header,
+        .neighborhood-hotsprings #profile-header,
+        .neighborhood-madisonavenue #profile-header,
+        .neighborhood-motorcity #profile-header,
+        .neighborhood-napavalley #profile-header,
+        .neighborhood-nashville #profile-header,
+        .neighborhood-paris #profile-header,
+        .neighborhood-pentagon #profile-header,
+        .neighborhood-petsburgh #profile-header,
+        .neighborhood-picketfence #profile-header,
+        .neighborhood-pipeline #profile-header,
+        .neighborhood-rainforest #profile-header,
+        .neighborhood-researchtriangle #profile-header,
+        .neighborhood-rodeodrive #profile-header,
+        .neighborhood-siliconvalley #profile-header,
+        .neighborhood-soho #profile-header,
+        .neighborhood-southbeach #profile-header,
+        .neighborhood-sunsetstrip #profile-header,
+        .neighborhood-televisioncity #profile-header,
+        .neighborhood-thetropics #profile-header,
+        .neighborhood-timessquare #profile-header,
+        .neighborhood-tokyo #profile-header,
+        .neighborhood-vienna #profile-header,
+        .neighborhood-wallstreet #profile-header,
+        .neighborhood-wellesley #profile-header,
+        .neighborhood-westhollywood #profile-header,
+        .neighborhood-yosemite #profile-header,
+        .neighborhood-northpole #profile-header {
+            border-color: #fff;
+        }
+        .neighborhood-augusta.light-mode #profile-header,
+        .neighborhood-baja.light-mode #profile-header,
+        .neighborhood-bourbonstreet.light-mode #profile-header,
+        .neighborhood-broadway.light-mode #profile-header,
+        .neighborhood-capecanaveral.light-mode #profile-header,
+        .neighborhood-capitolhill.light-mode #profile-header,
+        .neighborhood-collegepark.light-mode #profile-header,
+        .neighborhood-colosseum.light-mode #profile-header,
+        .neighborhood-enchantedforest.light-mode #profile-header,
+        .neighborhood-eureka.light-mode #profile-header,
+        .neighborhood-fashionavenue.light-mode #profile-header,
+        .neighborhood-heartland.light-mode #profile-header,
+        .neighborhood-hollywood.light-mode #profile-header,
+        .neighborhood-hotsprings.light-mode #profile-header,
+        .neighborhood-madisonavenue.light-mode #profile-header,
+        .neighborhood-motorcity.light-mode #profile-header,
+        .neighborhood-napavalley.light-mode #profile-header,
+        .neighborhood-nashville.light-mode #profile-header,
+        .neighborhood-paris.light-mode #profile-header,
+        .neighborhood-pentagon.light-mode #profile-header,
+        .neighborhood-petsburgh.light-mode #profile-header,
+        .neighborhood-picketfence.light-mode #profile-header,
+        .neighborhood-pipeline.light-mode #profile-header,
+        .neighborhood-rainforest.light-mode #profile-header,
+        .neighborhood-researchtriangle.light-mode #profile-header,
+        .neighborhood-rodeodrive.light-mode #profile-header,
+        .neighborhood-siliconvalley.light-mode #profile-header,
+        .neighborhood-soho.light-mode #profile-header,
+        .neighborhood-southbeach.light-mode #profile-header,
+        .neighborhood-sunsetstrip.light-mode #profile-header,
+        .neighborhood-televisioncity.light-mode #profile-header,
+        .neighborhood-thetropics.light-mode #profile-header,
+        .neighborhood-timessquare.light-mode #profile-header,
+        .neighborhood-tokyo.light-mode #profile-header,
+        .neighborhood-vienna.light-mode #profile-header,
+        .neighborhood-wallstreet.light-mode #profile-header,
+        .neighborhood-wellesley.light-mode #profile-header,
+        .neighborhood-westhollywood.light-mode #profile-header,
+        .neighborhood-yosemite.light-mode #profile-header,
+        .neighborhood-northpole.light-mode #profile-header {
+            border-color: #000;
+        }
+
+        /* Profile Header Link Wrapper */
+        #profile-header-link {
+            display: block;
+            width: 100%;
+            text-decoration: none;
+            color: inherit;
+            cursor: default;
+            pointer-events: none;
+        }
+        #profile-header-link[href]:not([href=""]) {
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        /* Profile Avatar Display */
+        #profile-avatar {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10em;
+            border: 1px solid #fff;
+            box-sizing: border-box;
+            border-radius: 0;
+            overflow: hidden;
+            margin-bottom: 0;
+            color: #fff;
+            transition: border-color 0.3s ease, color 0.3s ease, background-image 0.3s ease;
+        }
+        .light-mode #profile-avatar {
+            border-color: #000;
+            color: #000;
+        }
+        .neighborhood-area51 #profile-avatar {
+            border-color: #00ff00;
+            color: #00ff00;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .neighborhood-area51.light-mode #profile-avatar {
+            border-color: #008000;
+            color: #008000;
+        }
+        .neighborhood-athens #profile-avatar {
+            border-color: #c0c0c0;
+            color: #add8e6;
+            font-family: 'Georgia', serif;
+        }
+        .neighborhood-athens.light-mode #profile-avatar {
+            border-color: #ffd700;
+            color: #00008b;
+        }
+        .neighborhood-augusta #profile-avatar {
+            border-color: #fff;
+            color: #fff;
+            font-family: sans-serif;
+        }
+        .neighborhood-augusta.light-mode #profile-avatar {
+            border-color: #000;
+            color: #006400;
+        }
+        .neighborhood-baja #profile-avatar {
+            border-color: #fff;
+            color: #ff4500;
+            font-family: sans-serif;
+        }
+        .neighborhood-baja.light-mode #profile-avatar {
+            border-color: #000;
+            color: #ff4500;
+        }
+        .neighborhood-bourbonstreet #profile-avatar {
+            border-color: #fff;
+            color: #ffd700;
+            font-family: sans-serif;
+        }
+        .neighborhood-bourbonstreet.light-mode #profile-avatar {
+            border-color: #000;
+            color: #fff;
+        }
+        .neighborhood-broadway #profile-avatar {
+            border-color: #fff;
+            color: #ff0000;
+            font-family: sans-serif;
+        }
+        .neighborhood-broadway.light-mode #profile-avatar {
+            border-color: #000;
+            color: #ff0000;
+        }
+        .neighborhood-capecanaveral #profile-avatar {
+            border-color: #fff;
+            color: #fff;
+            font-family: sans-serif;
+        }
+        .neighborhood-capecanaveral.light-mode #profile-avatar {
+            border-color: #000;
+            color: #add8e6;
+        }
+        .neighborhood-capitolhill #profile-avatar {
+            border-color: #fff;
+            color: #ff0000;
+            font-family: sans-serif;
+        }
+        .neighborhood-capitolhill.light-mode #profile-avatar {
+            border-color: #000;
+            color: #fff;
+        }
+        .neighborhood-collegepark #profile-avatar {
+            border-color: #fff;
+            color: #000080;
+            font-family: sans-serif;
+        }
+        .neighborhood-collegepark.light-mode #profile-avatar {
+            border-color: #000;
+            color: #fff;
+        }
+        .neighborhood-colosseum #profile-avatar {
+            border-color: #fff;
+            color: #ff0000;
+            font-family: sans-serif;
+        }
+        .neighborhood-colosseum.light-mode #profile-avatar {
+            border-color: #000;
+            color: #ffd700;
+        }
+        .neighborhood-enchantedforest #profile-avatar {
+            border-color: #fff;
+            color: #ffff00;
+            font-family: sans-serif;
+        }
+        .neighborhood-enchantedforest.light-mode #profile-avatar {
+            border-color: #000;
+            color: #fff;
+        }
+        .neighborhood-eureka #profile-avatar {
+            border-color: #fff;
+            color: #000;
+            font-family: sans-serif;
+        }
+        .neighborhood-eureka.light-mode #profile-avatar {
+            border-color: #000;
+            color: #0000ff;
+        }
+        .neighborhood-fashionavenue #profile-avatar {
+            border-color: #fff;
+            color: #000;
+            font-family: sans-serif;
+        }
+        .neighborhood-fashionavenue.light-mode #profile-avatar {
+            border-color: #000;
+            color: #fff;
+        }
+        .neighborhood-heartland #profile-avatar {
+            border-color: #fff;
+            color: #a52a2a;
+            font-family: sans-serif;
+        }
+        .neighborhood-heartland.light-mode #profile-avatar {
+            border-color: #000;
+            color: #006400;
+        }
+        .neighborhood-hollywood #profile-avatar {
+            border-color: #fff;
+            color: #ff0000;
+            font-family: sans-serif;
+        }
+        .neighborhood-hollywood.light-mode #profile-avatar {
+            border-color: #000;
+            color: #fff;
+        }
+        .neighborhood-hotsprings #profile-avatar {
+            border-color: #fff;
+            color: #fff;
+            font-family: sans-serif;
+        }
+        .neighborhood-hotsprings.light-mode #profile-avatar {
+            border-color: #000;
+            color: #000080;
+        }
+        .neighborhood-madisonavenue #profile-avatar {
+            border-color: #fff;
+            color: #ffff00;
+            font-family: sans-serif;
+        }
+        .neighborhood-madisonavenue.light-mode #profile-avatar {
+            border-color: #000;
+            color: #000;
+        }
+        .neighborhood-motorcity #profile-avatar {
+            border-color: #fff;
+            color: #ff0000;
+            font-family: sans-serif;
+        }
+        .neighborhood-motorcity.light-mode #profile-avatar {
+            border-color: #000;
+            color: #000;
+        }
+        .neighborhood-napavalley #profile-avatar {
+            border-color: #fff;
+            color: #800000;
+            font-family: sans-serif;
+        }
+        .neighborhood-napavalley.light-mode #profile-avatar {
+            border-color: #000;
+            color: #fff;
+        }
+        .neighborhood-nashville #profile-avatar {
+            border-color: #fff;
+            color: #ffff00;
+            font-family: sans-serif;
+        }
+        .neighborhood-nashville.light-mode #profile-avatar {
+            border-color: #000;
+            color: #fff;
+        }
+        .neighborhood-paris #profile-avatar {
+            border-color: #fff;
+            color: #000080;
+            font-family: sans-serif;
+        }
+        .neighborhood-paris.light-mode #profile-avatar {
+            border-color: #000;
+            color: #fff;
+        }
+        .neighborhood-pentagon #profile-avatar {
+            border-color: #fff;
+            color: #fff;
+            font-family: sans-serif;
+        }
+        .neighborhood-pentagon.light-mode #profile-avatar {
+            border-color: #000;
+            color: #000;
+        }
+        .neighborhood-petsburgh #profile-avatar {
+            border-color: #fff;
+            color: #006400;
+            font-family: sans-serif;
+        }
+        .neighborhood-petsburgh.light-mode #profile-avatar {
+            border-color: #000;
+            color: #fff;
+        }
+        .neighborhood-picketfence #profile-avatar {
+            border-color: #fff;
+            color: #0000ff;
+            font-family: sans-serif;
+        }
+        .neighborhood-picketfence.light-mode #profile-avatar {
+            border-color: #000;
+            color: #a52a2a;
+        }
+        .neighborhood-pipeline #profile-avatar {
+            border-color: #fff;
+            color: #000;
+            font-family: sans-serif;
+        }
+        .neighborhood-pipeline.light-mode #profile-avatar {
+            border-color: #000;
+            color: #fff;
+        }
+        .neighborhood-rainforest #profile-avatar {
+            border-color: #fff;
+            color: #fff;
+            font-family: sans-serif;
+        }
+        .neighborhood-rainforest.light-mode #profile-avatar {
+            border-color: #000;
+            color: #ffff00;
+        }
+        .neighborhood-researchtriangle #profile-avatar {
+            border-color: #fff;
+            color: #fff;
+            font-family: sans-serif;
+        }
+        .neighborhood-researchtriangle.light-mode #profile-avatar {
+            border-color: #000;
+            color: #000;
+        }
+        .neighborhood-rodeodrive #profile-avatar {
+            border-color: #fff;
+            color: #000;
+            font-family: sans-serif;
+        }
+        .neighborhood-rodeodrive.light-mode #profile-avatar {
+            border-color: #000;
+            color: #000080;
+        }
+        .neighborhood-siliconvalley #profile-avatar {
+            border-color: #fff;
+            color: #008000;
+            font-family: sans-serif;
+        }
+        .neighborhood-siliconvalley.light-mode #profile-avatar {
+            border-color: #000;
+            color: #fff;
+        }
+        .neighborhood-soho #profile-avatar {
+            border-color: #fff;
+            color: #fff;
+            font-family: sans-serif;
+        }
+        .neighborhood-soho.light-mode #profile-avatar {
+            border-color: #000;
+            color: #000;
+        }
+        .neighborhood-southbeach #profile-avatar {
+            border-color: #fff;
+            color: #fff;
+            font-family: sans-serif;
+        }
+        .neighborhood-southbeach.light-mode #profile-avatar {
+            border-color: #000;
+            color: #ffff00;
+        }
+        .neighborhood-sunsetstrip #profile-avatar {
+            border-color: #fff;
+            color: #fff;
+            font-family: sans-serif;
+        }
+        .neighborhood-sunsetstrip.light-mode #profile-avatar {
+            border-color: #000;
+            color: #ffff00;
+        }
+        .neighborhood-televisioncity #profile-avatar {
+            border-color: #fff;
+            color: #ff0000;
+            font-family: sans-serif;
+        }
+        .neighborhood-televisioncity.light-mode #profile-avatar {
+            border-color: #000;
+            color: #fff;
+        }
+        .neighborhood-thetropics #profile-avatar {
+            border-color: #fff;
+            color: #fff;
+            font-family: sans-serif;
+        }
+        .neighborhood-thetropics.light-mode #profile-avatar {
+            border-color: #000;
+            color: #000080;
+        }
+        .neighborhood-timessquare #profile-avatar {
+            border-color: #fff;
+            color: #ffff00;
+            font-family: sans-serif;
+        }
+        .neighborhood-timessquare.light-mode #profile-avatar {
+            border-color: #000;
+            color: #ff0000;
+        }
+        .neighborhood-tokyo #profile-avatar {
+            border-color: #fff;
+            color: #fff;
+            font-family: sans-serif;
+        }
+        .neighborhood-tokyo.light-mode #profile-avatar {
+            border-color: #000;
+            color: #000;
+        }
+        .neighborhood-vienna #profile-avatar {
+            border-color: #fff;
+            color: #fff;
+            font-family: sans-serif;
+        }
+        .neighborhood-vienna.light-mode #profile-avatar {
+            border-color: #000;
+            color: #ffd700;
+        }
+        .neighborhood-wallstreet #profile-avatar {
+            border-color: #fff;
+            color: #000;
+            font-family: sans-serif;
+        }
+        .neighborhood-wallstreet.light-mode #profile-avatar {
+            border-color: #000;
+            color: #ff0000;
+        }
+        .neighborhood-wellesley #profile-avatar {
+            border-color: #fff;
+            color: #000080;
+            font-family: sans-serif;
+        }
+        .neighborhood-wellesley.light-mode #profile-avatar {
+            border-color: #000;
+            color: #fff;
+        }
+        .neighborhood-westhollywood #profile-avatar {
+            border-color: #fff;
+            color: #fff;
+            font-family: sans-serif;
+        }
+        .neighborhood-westhollywood.light-mode #profile-avatar {
+            border-color: #000;
+            color: #000;
+        }
+        .neighborhood-yosemite #profile-avatar {
+            border-color: #fff;
+            color: #fff;
+            font-family: sans-serif;
+        }
+        .neighborhood-yosemite.light-mode #profile-avatar {
+            border-color: #000;
+            color: #a52a2a;
+        }
+        .neighborhood-northpole #profile-avatar {
+            border-color: #fff;
+            color: #fff;
+            font-family: sans-serif;
+        }
+        .neighborhood-northpole.light-mode #profile-avatar {
+            border-color: #000;
+            color: #ff0000;
+        }
+
+        /* Profile Avatar Link Wrapper */
+        #profile-avatar-link {
+            display: block;
+            width: 100%;
+            text-decoration: none;
+            color: inherit;
+            cursor: default;
+            pointer-events: none;
+        }
+        #profile-avatar-link[href]:not([href=""]) {
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        /* Container for Profile Records */
+        .profile-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            margin: 0;
+        }
+
+        /* Individual Profile Record Box */
+        .profile-box {
+            border: 1px solid #fff;
+            padding: 10px;
+            background: #000;
+            color: #fff;
+            word-break: break-word;
+            transition: all 0.3s ease;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+            border-top: none;
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 38px;
+        }
+        .profile-box:first-child {
+            border-top: 1px solid #fff;
+        }
+        .profile-box.light-mode {
+            background: #fff;
+            color: #000;
+            border-color: #000;
+        }
+        .profile-box.light-mode:first-child {
+            border-top: 1px solid #000;
+        }
+        .neighborhood-area51 .profile-box {
+            border-color: #00ff00;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ff00;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .neighborhood-area51 .profile-box:first-child {
+            border-top: 1px solid #00ff00;
+        }
+        .neighborhood-area51.light-mode .profile-box {
+            border-color: #008000;
+            background: rgba(255, 255, 255, 0.9);
+            color: #008000;
+        }
+        .neighborhood-area51.light-mode .profile-box:first-child {
+            border-top: 1px solid #008000;
+        }
+        .neighborhood-athens .profile-box {
+            border-color: #c0c0c0;
+            background: rgba(47, 79, 79, 0.8);
+            color: #add8e6;
+            font-family: 'Georgia', serif;
+        }
+        .neighborhood-athens .profile-box:first-child {
+            border-top: 1px solid #c0c0c0;
+        }
+        .neighborhood-athens.light-mode .profile-box {
+            border-color: #ffd700;
+            background: rgba(245, 245, 220, 0.9);
+            color: #00008b;
+        }
+        .neighborhood-athens.light-mode .profile-box:first-child {
+            border-top: 1px solid #ffd700;
+        }
+        .neighborhood-augusta .profile-box {
+            border-color: #fff;
+            background: rgba(0, 100, 0, 0.8);
+            color: #fff;
+            font-family: sans-serif;
+        }
+        .neighborhood-augusta .profile-box:first-child {
+            border-top: 1px solid #fff;
+        }
+        .neighborhood-augusta.light-mode .profile-box {
+            border-color: #000;
+            background: rgba(144, 238, 144, 0.9);
+            color: #006400;
+        }
+        .neighborhood-augusta.light-mode .profile-box:first-child {
+            border-top: 1px solid #000;
+        }
+        .neighborhood-baja .profile-box {
+            border-color: #fff;
+            background: rgba(244, 164, 96, 0.8);
+            color: #ff4500;
+            font-family: sans-serif;
+        }
+        .neighborhood-baja .profile-box:first-child {
+            border-top: 1px solid #fff;
+        }
+        .neighborhood-baja.light-mode .profile-box {
+            border-color: #000;
+            background: rgba(210, 180, 140, 0.9);
+            color: #ff4500;
+        }
+        .neighborhood-baja.light-mode .profile-box:first-child {
+            border-top: 1px solid #000;
+        }
+        .neighborhood-bourbonstreet .profile-box {
+            border-color: #fff;
+            background: rgba(128, 0, 128, 0.8);
+            color: #ffd700;
+            font-family: sans-serif;
+        }
+        .neighborhood-bourbonstreet .profile-box:first-child {
+            border-top: 1px solid #fff;
+        }
+        .neighborhood-bourbonstreet.light-mode .profile-box {
+            border-color: #000;
+            background: rgba(255, 215, 0, 0.9);
+            color: #fff;
+        }
+        .neighborhood-bourbonstreet.light-mode .profile-box:first-child {
+            border-top: 1px solid #000;
+        }
+        .neighborhood-broadway .profile-box {
+            border-color: #fff;
+            background: rgba(0, 0, 0, 0.8);
+            color: #ff0000;
+            font-family: sans-serif;
+        }
+        .neighborhood-broadway .profile-box:first-child {
+            border-top: 1px solid #fff;
+        }
+        .neighborhood-broadway.light-mode .profile-box {
+            border-color: #000;
+            background: rgba(255, 253, 208, 0.9);
+            color: #ff0000;
+        }
+        .neighborhood-broadway.light-mode .profile-box:first-child {
+            border-top: 1px solid #000;
+        }
+        .neighborhood-capecanaveral .profile-box {
+            border-color: #fff;
+            background: rgba(0, 0, 128, 0.8);
+            color: #fff;
+            font-family: sans-serif;
+        }
+        .neighborhood-capecanaveral .profile-box:first-child {
+            border-top: 1px solid #fff;
+        }
+        .neighborhood-capecanaveral.light-mode .profile-box {
+            border-color: #000;
+            background: rgba(135, 206, 235, 0.9);
+            color: #add8e6;
+        }
+        .neighborhood-capecanaveral.light-mode .profile-box:first-child {
+            border-top: 1px solid #000;
+        }
+        .neighborhood-capitolhill .profile-box {
+            border-color: #fff;
+            background: rgba(0, 0, 102, 0.8);
+            color: #ff0000;
+            font-family: sans-serif;
+        }
+        .neighborhood-capitolhill .profile-box:first-child {
+            border-top: 1px solid #fff;
+        }
+        .neighborhood-capitolhill.light-mode .profile-box {
+            border-color: #000;
+            background: rgba(255, 255, 255, 0.9);
+            color: #fff;
+        }
+        .neighborhood-capitolhill.light-mode .profile-box:first-child {
+            border-top: 1px solid #000;
+        }
+        .neighborhood-collegepark .profile-box {
+            border-color: #fff;
+            background: rgba(34, 139, 34, 0.8);
+            color: #000080;
+            font-family: sans-serif;
+        }
+        .neighborhood-collegepark .profile-box:first-child {
+            border-top: 1px solid #fff;
+        }
+        .neighborhood-collegepark.light-mode .profile-box {
+            border-color: #000;
+            background: rgba(152, 251, 152, 0.9);
+            color: #fff;
+        }
+        .neighborhood-collegepark.light-mode .profile-box:first-child {
+            border-top: 1px solid #000;
+        }
+        .neighborhood-colosseum .profile-box {
+            border-color: #fff;
+            background: rgba(211, 195, 154, 0.8);
+            color: #ff0000;
+            font-family: sans-serif;
+        }
+        .neighborhood-colosseum .profile-box:first-child {
+            border-top: 1px solid #fff;
+        }
+        .neighborhood-colosseum.light-mode .profile-box {
+            border-color: #000;
+            background: rgba(245, 245, 220, 0.9);
+            color: #ffd700;
+        }
+        .neighborhood-colosseum.light-mode .profile-box:first-child {
+            border-top: 1px solid #000;
+        }
+        .neighborhood-enchantedforest .profile-box {
+            border-color: #fff;
+            background: rgba(34, 139, 34, 0.8);
+            color: #ffff00;
+            font-family: sans-serif;
+        }
+        .neighborhood-enchantedforest .profile-box:first-child {
+            border-top: 1px solid #fff;
+        }
+        .neighborhood-enchantedforest.light-mode .profile-box {
+            border-color: #000;
+            background: rgba(144, 238, 144, 0.9);
+            color: #fff;
+        }
+        .neighborhood-enchantedforest.light-mode .profile-box:first-child
