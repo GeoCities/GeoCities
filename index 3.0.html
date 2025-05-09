@@ -3916,3 +3916,149 @@
         const searchInput = document.querySelector('.search-input');
         const searchButton = document.querySelector('.search-button');
         const profilePage = document.querySelector('#profile-page');
+        const neighborhoodSelect = document.querySelector('.neighborhood-select');
+        const profileHeader = document.querySelector('#profile-header');
+        const profileHeaderLink = document.querySelector('#profile-header-link');
+        const profileAvatar = document.querySelector('#profile-avatar');
+        const profileAvatarLink = document.querySelector('#profile-avatar-link');
+        const profileContainer = document.querySelector('.profile-container');
+        const followersButton = document.querySelector('#followers-button');
+        const followingButton = document.querySelector('#following-button');
+        const deployButton = document.querySelector('#deploy-button');
+        const toggleModeButton = document.querySelector('#toggle-mode');
+
+        // Initialize page
+        function initializePage() {
+            profilePage.style.display = 'none';
+            toggleModeButton.addEventListener('click', toggleMode);
+            searchButton.addEventListener('click', performSearch);
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') performSearch();
+            });
+            neighborhoodSelect.addEventListener('change', switchNeighborhood);
+            followersButton.addEventListener('click', showFollowers);
+            followingButton.addEventListener('click', showFollowing);
+            deployButton.addEventListener('click', deployToIPFS);
+        }
+
+        // Toggle light/dark mode
+        function toggleMode() {
+            document.body.classList.toggle('light-mode');
+            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+        }
+
+        // Load theme from localStorage
+        function loadTheme() {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'light') {
+                document.body.classList.add('light-mode');
+            }
+        }
+
+        // Perform search
+        async function performSearch() {
+            const query = searchInput.value.trim();
+            if (!query) return;
+
+            try {
+                const results = await mockAPI.search(query);
+                profilePage.style.display = 'block';
+                displayProfile(results[0]);
+            } catch (error) {
+                console.error('Search error:', error);
+                profileContainer.innerHTML = '<p>Error loading profile.</p>';
+            }
+        }
+
+        // Display profile
+        function displayProfile(user) {
+            if (!user) {
+                profileContainer.innerHTML = '<p>No user found.</p>';
+                return;
+            }
+
+            profileHeader.textContent = user.header || user.username;
+            profileHeaderLink.href = `https://geocities.com/${user.neighborhood}/${user.username}`;
+            profileAvatar.textContent = user.avatar || '?';
+            profileAvatarLink.href = `https://geocities.com/${user.neighborhood}/${user.username}`;
+            profileContainer.innerHTML = '';
+
+            user.records.forEach(record => {
+                const profileBox = document.createElement('div');
+                profileBox.className = 'profile-box';
+                profileBox.innerHTML = `
+                    <div class="profile-box-header">${record.key}</div>
+                    <div class="profile-box-content">${record.value}</div>
+                `;
+                profileContainer.appendChild(profileBox);
+            });
+
+            // Update neighborhood
+            switchNeighborhood({ target: { value: user.neighborhood } });
+        }
+
+        // Switch neighborhood
+        function switchNeighborhood(event) {
+            const neighborhood = event.target.value;
+            document.body.className = `neighborhood-${neighborhood} ${document.body.classList.contains('light-mode') ? 'light-mode' : ''}`;
+        }
+
+        // Show followers
+        async function showFollowers() {
+            const username = profileHeader.textContent;
+            try {
+                const followers = await mockAPI.getFollowers(username);
+                profileContainer.innerHTML = `
+                    <div class="profile-box">
+                        <div class="profile-box-header">Followers</div>
+                        <div class="profile-box-content">${followers.join(', ')}</div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error fetching followers:', error);
+                profileContainer.innerHTML = '<p>Error loading followers.</p>';
+            }
+        }
+
+        // Show following
+        async function showFollowing() {
+            const username = profileHeader.textContent;
+            try {
+                const following = await mockAPI.getFollowing(username);
+                profileContainer.innerHTML = `
+                    <div class="profile-box">
+                        <div class="profile-box-header">Following</div>
+                        <div class="profile-box-content">${following.join(', ')}</div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error fetching following:', error);
+                profileContainer.innerHTML = '<p>Error loading following.</p>';
+            }
+        }
+
+        // Deploy to IPFS
+        async function deployToIPFS() {
+            try {
+                const profileContent = JSON.stringify({
+                    header: profileHeader.textContent,
+                    avatar: profileAvatar.textContent,
+                    records: Array.from(profileContainer.querySelectorAll('.profile-box')).map(box => ({
+                        key: box.querySelector('.profile-box-header').textContent,
+                        value: box.querySelector('.profile-box-content').textContent
+                    }))
+                });
+                const result = await mockIPFS.add(profileContent);
+                alert(`Deployed to IPFS with CID: ${result.cid}`);
+            } catch (error) {
+                console.error('IPFS deploy error:', error);
+                alert('Error deploying to IPFS.');
+            }
+        }
+
+        // Initialize
+        initializePage();
+        loadTheme();
+    </script>
+</body>
+</html>
