@@ -2697,4 +2697,130 @@
                 },
                 'westhollywood': { 
                     dark: 'linear-gradient(45deg, #ff0000, #ff9900, #33cc33, #3399ff, #cc33cc)',
-                    light: 'linear-gradient(45deg, #ff
+                    light: 'linear-gradient(45deg, #ff6666, #ffcc66, #66ff66, #66ccff, #ff66ff)'
+                },
+                'yosemite': { 
+                    dark: '#228b22 url(\'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23228b22" width="100" height="100"/%3E%3Cpath fill="%23006400" d="M50 20L30 60h40z"/%3E%3C/svg%3E\') repeat',
+                    light: '#90ee90'
+                },
+                'northpole': { 
+                    dark: '#b0e0e6 url(\'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23b0e0e6" width="100" height="100"/%3E%3Ccircle fill="%23fff" cx="50" cy="50" r="20"/%3E%3C/svg%3E\') repeat',
+                    light: '#fff'
+                }
+            };
+            const isLightMode = body.classList.contains('light-mode');
+            body.style.background = isLightMode ? backgrounds[neighborhood].light : backgrounds[neighborhood].dark;
+            updateProfilePage(neighborhood);
+        }
+
+        // Profile Page Update Logic
+        function updateProfilePage(neighborhood) {
+            const profileHeader = document.getElementById('profile-header');
+            const profileHeaderLink = document.getElementById('profile-header-link');
+            const profileAvatar = document.getElementById('profile-avatar');
+            const profileAvatarLink = document.getElementById('profile-avatar-link');
+            const profileContainer = document.querySelector('.profile-container');
+
+            // Sample profile data
+            const profileData = {
+                name: `User_${neighborhood}`,
+                handle: `@${neighborhood}User`,
+                avatar: `https://via.placeholder.com/100?text=${neighborhood}`,
+                website: `https://${neighborhood}.example.com`,
+                location: neighborhood.charAt(0).toUpperCase() + neighborhood.slice(1),
+                joined: 'January 1996',
+                posts: Math.floor(Math.random() * 1000),
+                followers: Math.floor(Math.random() * 5000),
+                following: Math.floor(Math.random() * 500)
+            };
+
+            // Update header and avatar
+            profileHeader.innerHTML = `
+                <h2>${profileData.name}</h2>
+                <p>${profileData.handle}</p>
+            `;
+            profileHeaderLink.href = `https://geocities.example.com/${neighborhood}`;
+            profileAvatar.innerHTML = `<img src="${profileData.avatar}" alt="${profileData.name} avatar" style="width:100px;height:100px;border-radius:0;">`;
+            profileAvatarLink.href = profileData.avatar;
+
+            // Update profile details
+            profileContainer.innerHTML = `
+                <div class="profile-box">
+                    <a href="${profileData.website}">
+                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1h-6v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                        ${profileData.website}
+                    </a>
+                </div>
+                <div class="profile-box">
+                    <a href="#">
+                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                        ${profileData.location}
+                    </a>
+                </div>
+                <div class="profile-box">
+                    <a href="#">
+                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                        Joined ${profileData.joined}
+                    </a>
+                </div>
+                <div class="profile-box">
+                    <a href="#">
+                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                        ${profileData.posts} Posts
+                    </a>
+                </div>
+                <div class="profile-box">
+                    <a href="#" class="followers-link">
+                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                        ${profileData.followers} Followers
+                    </a>
+                </div>
+                <div class="profile-box">
+                    <a href="#" class="following-link">
+                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                        ${profileData.following} Following
+                    </a>
+                </div>
+            `;
+        }
+
+        // Search Functionality
+        const searchButton = document.querySelector('.search-button');
+        const searchInput = document.getElementById('search-input');
+        searchButton.addEventListener('click', () => {
+            const query = searchInput.value.trim().toLowerCase();
+            if (query) {
+                const neighborhoods = Array.from(document.getElementById('neighborhood-select').options).map(opt => opt.value);
+                const matchedNeighborhood = neighborhoods.find(n => n.toLowerCase().includes(query));
+                if (matchedNeighborhood) {
+                    neighborhoodSelect.value = matchedNeighborhood;
+                    changeNeighborhood(matchedNeighborhood);
+                } else {
+                    alert('No matching neighborhood found!');
+                }
+            }
+        });
+
+        // IPFS Deployment Simulation
+        const deployButton = document.querySelector('.deploy-button');
+        deployButton.addEventListener('click', () => {
+            const currentNeighborhood = neighborhoodSelect.value;
+            alert(`Deploying ${currentNeighborhood} profile to IPFS...\nCID: ipfs://${currentNeighborhood}_${Date.now()}`);
+        });
+
+        // Followers/Following Click Handlers
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.followers-link')) {
+                e.preventDefault();
+                alert(`Viewing followers for ${document.getElementById('profile-header').querySelector('p').textContent}`);
+            } else if (e.target.closest('.following-link')) {
+                e.preventDefault();
+                alert(`Viewing following for ${document.getElementById('profile-header').querySelector('p').textContent}`);
+            }
+        });
+
+        // Initialize with default neighborhood
+        changeNeighborhood('geocities');
+    </script>
+</body>
+</html>
