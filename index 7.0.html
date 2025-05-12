@@ -1,0 +1,799 @@
+
+
+<body>
+    <div class="header">
+        <div class="header-title-box" onclick="showHomepage()" title="Go to Homepage">
+            <div class="header-title">G</div>
+        </div>
+        <div class="header-button-wrapper">
+            <button class="toggle-button" onclick="toggleTheme()">Light</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="homepage">
+            <div class="logo-box" id="homepage-avatar"></div>
+            <h2 id="homepage-geocities">GeoCities</h2>
+            <div class="search-container" id="home-search-container">
+                <input type="text" id="ens-query-home" class="search-input" placeholder="Enter ENS or Base name">
+                <button class="search-button" id="home-search-button" onclick="searchENS()">Search</button>
+            </div>
+            <div id="error-message-home" class="error-message"></div>
+        </div>
+
+        <div id="profile-page">
+            <div class="search-container" id="profile-search-container">
+                <input type="text" id="ens-query-profile" class="search-input" placeholder="Enter ENS or Base name">
+                <button class="search-button" id="profile-search-button" onclick="searchENS()">Search</button>
+            </div>
+            <div id="error-message-profile" class="error-message"></div>
+            <div id="success-message-profile" class="success-message"></div>
+            <select id="neighborhood-select" class="neighborhood-select" onchange="changeNeighborhood()">
+                <option value="geocities">GeoCities</option>
+                <option value="area51">Area51</option>
+                <option value="athens">Athens</option>
+                <option value="augusta">Augusta</option>
+                <option value="baja">Baja</option>
+                <option value="bourbonstreet">BourbonStreet</option>
+                <option value="broadway">Broadway</option>
+                <option value="capecanaveral">CapeCanaveral</option>
+                <option value="capitolhill">CapitolHill</option>
+                <option value="collegepark">CollegePark</option>
+                <option value="colosseum">Colosseum</option>
+                <option value="enchantedforest">EnchantedForest</option>
+                <option value="eureka">Eureka</option>
+                <option value="fashionavenue">FashionAvenue</option>
+                <option value="heartland">Heartland</option>
+                <option value="hollywood">Hollywood</option>
+                <option value="hotsprings">HotSprings</option>
+                <option value="madisonavenue">MadisonAvenue</option>
+                <option value="motorcity">MotorCity</option>
+                <option value="napavalley">NapaValley</option>
+                <option value="nashville">Nashville</option>
+                <option value="paris">Paris</option>
+                <option value="pentagon">Pentagon</option>
+                <option value="petsburgh">Petsburgh</option>
+                <option value="picketfence">PicketFence</option>
+                <option value="pipeline">Pipeline</option>
+                <option value="rainforest">RainForest</option>
+                <option value="researchtriangle">ResearchTriangle</option>
+                <option value="rodeodrive">RodeoDrive</option>
+                <option value="siliconvalley">SiliconValley</option>
+                <option value="soho">SoHo</option>
+                <option value="southbeach">SouthBeach</option>
+                <option value="sunsetstrip">SunsetStrip</option>
+                <option value="televisioncity">TelevisionCity</option>
+                <option value="thetropics">TheTropics</option>
+                <option value="timessquare">TimesSquare</option>
+                <option value="tokyo">Tokyo</option>
+                <option value="vienna">Vienna</option>
+                <option value="wallstreet">Wallstreet</option>
+                <option value="wellesley">Wellesley</option>
+                <option value="westhollywood">WestHollywood</option>
+                <option value="yosemite">Yosemite</option>
+                <option value="northpole">Northpole</option>
+            </select>
+            <div id="neighborhood-container" class="neighborhood-container neighborhood-geocities"></div>
+            <div id="register-button-container" class="register-button-container">
+                <button id="register-name-button" class="register-button"></button>
+                <button id="ipfs-button" class="ipfs-button" onclick="deployToIPFS()">Deploy to IPFS</button>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        GeoCities®️
+    </footer>
+
+    <script>
+        // DOM Element References
+        const homepage = document.getElementById('homepage');
+        const profilePage = document.getElementById('profile-page');
+        const ensInputHome = document.getElementById('ens-query-home');
+        const ensInputProfile = document.getElementById('ens-query-profile');
+        const profileRecords = document.getElementById('profile-records');
+        const errorMessageHome = document.getElementById('error-message-home');
+        const errorMessageProfile = document.getElementById('error-message-profile');
+        const successMessageProfile = document.getElementById('success-message-profile');
+        const homepageAvatar = document.getElementById('homepage-avatar');
+        const profileAvatar = document.getElementById('profile-avatar');
+        const profileHeader = document.getElementById('profile-header');
+        const profileAvatarLink = document.getElementById('profile-avatar-link');
+        const profileHeaderLink = document.getElementById('profile-header-link');
+        const pageBody = document.body;
+        const homeSearchButton = document.getElementById('home-search-button');
+        const profileSearchButton = document.getElementById('profile-search-button');
+        const themeBtn = document.querySelector('.toggle-button');
+        const headerLogo = document.querySelector('.header-title');
+        const headerBox = document.querySelector('.header-title-box');
+        const headerElement = document.querySelector('.header');
+        const geoCitiesTitle = document.getElementById('homepage-geocities');
+        const footerElement = document.querySelector('.footer');
+        const registerButtonContainer = document.getElementById('register-button-container');
+        const registerButton = document.getElementById('register-name-button');
+        const ipfsButton = document.getElementById('ipfs-button');
+        const neighborhoodSelect = document.getElementById('neighborhood-select');
+        const neighborhoodContainer = document.getElementById('neighborhood-container');
+
+        // State Variables
+        let lightMode = false;
+        let currentNeighborhood = 'geocities';
+        let currentEnsData = null;
+        let currentEnsName = '';
+
+        // Theme Toggling Function
+        function toggleTheme() {
+            lightMode = !lightMode;
+            pageBody.classList.toggle('light-mode', lightMode);
+            headerElement.classList.toggle('light-mode', lightMode);
+            footerElement.classList.toggle('light-mode', lightMode);
+            ensInputHome.classList.toggle('light-mode', lightMode);
+            ensInputProfile.classList.toggle('light-mode', lightMode);
+            homeSearchButton.classList.toggle('light-mode', lightMode);
+            profileSearchButton.classList.toggle('light-mode', lightMode);
+            themeBtn.classList.toggle('light-mode', lightMode);
+            headerLogo.classList.toggle('light-mode', lightMode);
+            headerBox.classList.toggle('light-mode', lightMode);
+            geoCitiesTitle.classList.toggle('light-mode', lightMode);
+            homepageAvatar.classList.toggle('light-mode', lightMode);
+            neighborhoodSelect.classList.toggle('light-mode', lightMode);
+            registerButton.classList.toggle('light-mode', lightMode);
+            ipfsButton.classList.toggle('light-mode', lightMode);
+            neighborhoodContainer.classList.toggle('light-mode', lightMode);
+
+            // Update profile content and background for current neighborhood
+            changeNeighborhood();
+
+            themeBtn.textContent = lightMode ? 'Dark' : 'Light';
+        }
+
+        // Set Profile Images (Avatar and Header)
+        async function setProfileImages(name, avatarElement, headerElement, isProfile = false, makeClickable = true) {
+            const avatarTarget = avatarElement;
+            const headerTarget = headerElement || null;
+            const avatarLink = isProfile ? profileAvatarLink : null;
+            const headerLink = isProfile ? profileHeaderLink : null;
+
+            // Reset avatar
+            avatarTarget.style.backgroundImage = 'none';
+            const initial = name ? name[0].toUpperCase() : 'G';
+            avatarTarget.textContent = initial;
+
+            // Reset header (if provided)
+            if (headerTarget) {
+                headerTarget.style.backgroundImage = 'none';
+                headerTarget.style.display = 'none';
+                if (headerLink) {
+                    headerLink.href = '';
+                    headerLink.style.cursor = 'default';
+                    headerLink.style.pointerEvents = 'none';
+                }
+            }
+
+            // Set avatar and header links
+            if (avatarLink && makeClickable && name && typeof name === 'string' && name.trim()) {
+                let normalizedName = name.trim().toLowerCase();
+                normalizedName = normalizedName.replace(/\.eth$/, '').replace(/\.base\.eth$/, '');
+                let limoUrl = name.endsWith('.base.eth')
+                    ? `https://${normalizedName}.base.eth.limo`
+                    : `https://${normalizedName}.eth.limo`;
+                avatarLink.href = limoUrl;
+                avatarLink.style.cursor = 'pointer';
+                avatarLink.style.pointerEvents = 'auto';
+                if (headerLink) {
+                    headerLink.href = limoUrl;
+                    headerLink.style.cursor = 'pointer';
+                    headerLink.style.pointerEvents = 'auto';
+                }
+            }
+
+            if (!name || !name.trim()) return;
+
+            let url = `https://api.web3.bio/profile/ens/${name}`;
+            if (name.endsWith('.base.eth')) {
+                url = `https://api.web3.bio/profile/basenames/${name}`;
+            }
+
+            try {
+                const response = await fetch(url);
+                let avatarUrl = null;
+                let headerUrl = null;
+                if (response.ok) {
+                    const data = await response.json();
+                    avatarUrl = data.avatar;
+                    headerUrl = data.header;
+                }
+
+                // Set avatar image
+                if (avatarUrl) {
+                    const img = new Image();
+                    img.src = avatarUrl;
+                    img.onload = () => {
+                        avatarTarget.style.backgroundImage = `url('${avatarUrl}')`;
+                        avatarTarget.textContent = '';
+                    };
+                    img.onerror = () => {
+                        avatarTarget.textContent = initial;
+                    };
+                } else {
+                    avatarTarget.textContent = initial;
+                }
+
+                // Set header image
+                if (headerUrl && headerTarget) {
+                    const img = new Image();
+                    img.src = headerUrl;
+                    img.onload = () => {
+                        headerTarget.style.backgroundImage = `url('${headerUrl}')`;
+                        headerTarget.style.display = 'block';
+                    };
+                    img.onerror = () => {
+                        headerTarget.style.display = 'none';
+                    };
+                } else if (headerTarget) {
+                    headerTarget.style.display = 'none';
+                }
+            } catch (err) {
+                avatarTarget.textContent = initial;
+                if (headerTarget) headerTarget.style.display = 'none';
+            }
+        }
+
+        // Set initial homepage avatar
+        setProfileImages('geocities.eth', homepageAvatar, null, false, false);
+
+        // Add Profile Record to DOM
+        function addProfileRecord(container, label, value, isFirst, isLink = false, linkUrl = '') {
+            const recordDiv = document.createElement('div');
+            recordDiv.classList.add('profile-box');
+            if (lightMode) recordDiv.classList.add('light-mode');
+
+            const headerElement = document.createElement('div');
+            headerElement.classList.add('profile-box-header');
+            if (lightMode) headerElement.classList.add('light-mode');
+            headerElement.textContent = label;
+
+            const valueContainer = document.createElement('div');
+            valueContainer.classList.add('profile-box-value');
+            if (lightMode) valueContainer.classList.add('light-mode');
+
+            if (isLink && linkUrl) {
+                const linkElement = document.createElement('a');
+                linkElement.href = linkUrl;
+                linkElement.target = '_blank';
+                linkElement.rel = 'noopener noreferrer';
+                linkElement.textContent = (typeof value === 'object' && value !== null) ? JSON.stringify(value) : value;
+                valueContainer.appendChild(linkElement);
+            } else {
+                valueContainer.textContent = (typeof value === 'object' && value !== null) ? JSON.stringify(value) : value;
+            }
+
+            recordDiv.appendChild(headerElement);
+            recordDiv.appendChild(valueContainer);
+            container.appendChild(recordDiv);
+        }
+
+        // Helper function to normalize URLs
+        function normalizeUrl(url) {
+            if (!url) return url;
+            // If the URL already has a protocol, return it as is
+            if (/^https?:\/\//i.test(url)) return url;
+            // If the URL is a valid domain or path, prepend https://
+            if (/^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/.*)?$/.test(url)) return `https://${url}`;
+            // For other cases, return as is to avoid breaking ipc:// or other protocols
+            return url;
+        }
+
+        // Generate Profile HTML
+        function generateProfileHtml(ensData, ensName, neighborhood) {
+            neighborhoodContainer.innerHTML = '';
+            neighborhoodContainer.className = `neighborhood-container neighborhood-${neighborhood}`;
+            if (lightMode) neighborhoodContainer.classList.add('light-mode');
+
+            // Create profile elements
+            const headerLink = document.createElement('a');
+            headerLink.id = 'profile-header-link';
+            headerLink.target = '_blank';
+            headerLink.rel = 'noopener noreferrer';
+
+            const headerDiv = document.createElement('div');
+            headerDiv.id = 'profile-header';
+            headerLink.appendChild(headerDiv);
+
+            const avatarLink = document.createElement('a');
+            avatarLink.id = 'profile-avatar-link';
+            avatarLink.target = '_blank';
+            avatarLink.rel = 'noopener noreferrer';
+
+            const avatarDiv = document.createElement('div');
+            avatarDiv.id = 'profile-avatar';
+            avatarLink.appendChild(avatarDiv);
+
+            const recordsDiv = document.createElement('div');
+            recordsDiv.id = 'profile-records';
+            recordsDiv.className = 'profile-container';
+
+            neighborhoodContainer.appendChild(headerLink);
+            neighborhoodContainer.appendChild(avatarLink);
+            neighborhoodContainer.appendChild(recordsDiv);
+
+            // Set profile images
+            const identityName = ensData?.identity || ensName;
+            setProfileImages(identityName, avatarDiv, headerDiv, true, true);
+
+            // Populate records
+            const specificOmissions = ['avatar', 'header', 'contenthash', 'contentHash', 'identity', 'address', 'displayName', 'description', 'email', 'location', 'status', 'createdAt', 'records', 'followers', 'platform', 'follower', 'following', 'social'];
+            const headerRenames = {
+                'email': 'Email',
+                'description': 'Bio',
+                'location': 'Location',
+                'status': 'Status',
+                'keywords': 'Tags',
+                'com.discord': 'Discord',
+                'com.twitter': 'Twitter',
+                'com.github': 'GitHub',
+                'org.telegram': 'Telegram'
+            };
+            const linkableRecords = ['Website', 'Twitter', 'GitHub', 'Discord', 'Telegram'];
+
+            let recordsMap = {
+                'address': null,
+                'identity': null,
+                'displayName': null,
+                'followers': null,
+                'following': null,
+                'location': null,
+                'status': null,
+                'description': null,
+                'website': null,
+                'email': null,
+                'createdAt': null
+            };
+            let otherRecords = [];
+
+            if (ensData.address) recordsMap['address'] = { label: 'Address', value: ensData.address };
+            if (ensData.identity) {
+                const isBase = ensData.identity.endsWith('.base.eth');
+                const displayLabel = isBase ? 'Base Name' : 'ENS';
+                recordsMap['identity'] = { label: displayLabel, value: ensData.identity };
+            }
+            if (ensData.displayName && ensData.displayName !== ensData.identity) {
+                recordsMap['displayName'] = { label: 'Name', value: ensData.displayName };
+            }
+            if (ensData.social?.follower != null) {
+                recordsMap['followers'] = { label: 'Followers', value: ensData.social.follower };
+            }
+            if (ensData.social?.following != null) {
+                recordsMap['following'] = { label: 'Following', value: ensData.social.following };
+            }
+            if (ensData.location) {
+                recordsMap['location'] = { label: 'Location', value: ensData.location };
+            }
+            if (ensData.status) {
+                recordsMap['status'] = { label: 'Status', value: ensData.status };
+            }
+            if (ensData.description) {
+                recordsMap['description'] = { label: 'Bio', value: ensData.description };
+            }
+            if (ensData.links?.website?.handle) {
+                recordsMap['website'] = { 
+                    label: 'Website', 
+                    value: ensData.links.website.handle, 
+                    isLink: true, 
+                    linkUrl: ensData.links.website.link || normalizeUrl(ensData.links.website.handle) 
+                };
+            }
+            if (ensData.email) {
+                recordsMap['email'] = { label: 'Email', value: ensData.email };
+            }
+            if (ensData.createdAt) {
+                let formattedDate = ensData.createdAt;
+                try {
+                    const date = new Date(ensData.createdAt);
+                    if (!isNaN(date.getTime())) { formattedDate = date.toLocaleDateString(); }
+                } catch (err) { }
+                recordsMap['createdAt'] = { label: 'Created', value: formattedDate };
+            }
+
+            function processValue(key, value, targetArray) {
+                if (value === null || value === undefined || value === '' || specificOmissions.includes(key)) return;
+
+                const label = headerRenames[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+
+                if (recordsMap[key] || targetArray.some(r => r.label === label)) return;
+
+                if (typeof value === 'object') {
+                    if (key === 'links') {
+                        Object.entries(value).forEach(([linkName, linkData]) => {
+                            if (linkName !== 'website' && linkData && linkData.handle && linkData.link) {
+                                const formattedLabel = headerRenames[linkName] || linkName.replace(/^./, c => c.toUpperCase());
+                                targetArray.push({ 
+                                    label: formattedLabel, 
+                                    value: linkData.handle, 
+                                    isLink: true, 
+                                    linkUrl: linkData.link 
+                                });
+                            }
+                        });
+                    }
+                    else if (key === 'records') {
+                        Object.entries(value).forEach(([recordKey, recordValue]) => {
+                            if (recordKey !== 'contenthash' && recordKey !== 'contentHash' && recordValue) {
+                                const recordLabel = headerRenames[recordKey] || recordKey.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                                let isLink = linkableRecords.includes(recordLabel);
+                                let linkUrl = '';
+                                if (isLink) {
+                                    linkUrl = recordKey === 'com.twitter' ? `https://x.com/${recordValue}`
+                                        : recordKey === 'com.github' ? `https://github.com/${recordValue}`
+                                        : recordKey === 'com.discord' ? `https://discord.com/users/${recordValue}`
+                                        : recordKey === 'org.telegram' ? `https://t.me/${recordValue}`
+                                        : normalizeUrl(recordValue);
+                                }
+                                targetArray.push({ label: recordLabel, value: recordValue, isLink: isLink, linkUrl: linkUrl });
+                            }
+                        });
+                    }
+                } else {
+                    let isLink = linkableRecords.includes(label);
+                    let linkUrl = '';
+                    if (isLink) {
+                        linkUrl = key === 'com.twitter' ? `https://x.com/${value}`
+                            : key === 'com.github' ? `https://github.com/${value}`
+                            : key === 'com.discord' ? `https://discord.com/users/${value}`
+                            : key === 'org.telegram' ? `https://t.me/${value}`
+                            : normalizeUrl(value);
+                    }
+                    targetArray.push({ label: label, value: value, isLink: isLink, linkUrl: linkUrl });
+                }
+            }
+
+            Object.entries(ensData).forEach(([key, value]) => {
+                if (!Object.keys(recordsMap).includes(key)) {
+                    processValue(key, value, otherRecords);
+                }
+            });
+
+            let orderedRecords = [];
+            if (recordsMap['address']) orderedRecords.push(recordsMap['address']);
+            if (recordsMap['identity']) orderedRecords.push(recordsMap['identity']);
+            if (recordsMap['displayName']) orderedRecords.push(recordsMap['displayName']);
+            if (recordsMap['followers']) orderedRecords.push(recordsMap['followers']);
+            if (recordsMap['following']) orderedRecords.push(recordsMap['following']);
+            if (recordsMap['location']) orderedRecords.push(recordsMap['location']);
+            if (recordsMap['status']) orderedRecords.push(recordsMap['status']);
+            if (recordsMap['description']) orderedRecords.push(recordsMap['description']);
+            if (recordsMap['email']) orderedRecords.push(recordsMap['email']);
+            if (recordsMap['website']) orderedRecords.push(recordsMap['website']);
+            otherRecords.sort((a, b) => a.label.localeCompare(b.label));
+            orderedRecords = orderedRecords.concat(otherRecords);
+            if (recordsMap['createdAt']) orderedRecords.push(recordsMap['createdAt']);
+
+            if (orderedRecords.length === 0) {
+                addProfileRecord(recordsDiv, 'Status', 'No profile records found.', true);
+            } else {
+                orderedRecords.forEach((record, index) => {
+                    addProfileRecord(recordsDiv, record.label, record.value, index === 0, record.isLink, record.linkUrl);
+                });
+            }
+        }
+
+        // Display Unregistered Profile
+        function displayUnregisteredProfile(ensName, isBaseName) {
+            homepage.style.display = 'none';
+            profilePage.style.display = 'flex';
+            neighborhoodContainer.innerHTML = '';
+            neighborhoodContainer.className = `neighborhood-container neighborhood-${currentNeighborhood}`;
+            if (lightMode) neighborhoodContainer.classList.add('light-mode');
+            errorMessageProfile.style.display = 'none';
+            errorMessageHome.style.display = 'none';
+            successMessageProfile.style.display = 'none';
+
+            // Create profile elements
+            const headerLink = document.createElement('a');
+            headerLink.id = 'profile-header-link';
+            headerLink.target = '_blank';
+            headerLink.rel = 'noopener noreferrer';
+
+            const headerDiv = document.createElement('div');
+            headerDiv.id = 'profile-header';
+            headerLink.appendChild(headerDiv);
+
+            const avatarLink = document.createElement('a');
+            avatarLink.id = 'profile-avatar-link';
+            headerLink.target = '_blank';
+            headerLink.rel = 'noopener noreferrer';
+
+            const avatarDiv = document.createElement('div');
+            avatarDiv.id = 'profile-avatar';
+            avatarLink.appendChild(avatarDiv);
+
+            const recordsDiv = document.createElement('div');
+            recordsDiv.id = 'profile-records';
+            recordsDiv.className = 'profile-container';
+
+            neighborhoodContainer.appendChild(headerLink);
+            neighborhoodContainer.appendChild(avatarLink);
+            neighborhoodContainer.appendChild(recordsDiv);
+
+            setProfileImages(ensName, avatarDiv, headerDiv, true, true);
+
+            if (isBaseName) {
+                addProfileRecord(recordsDiv, 'Base Name', ensName, true);
+            } else {
+                addProfileRecord(recordsDiv, 'ENS', ensName, true);
+            }
+
+            addProfileRecord(recordsDiv, 'Status', 'Name not registered', false);
+
+            const buttonText = isBaseName ? 'Register Base Name' : 'Register ENS Name';
+            let registerUrl = '';
+
+            if (isBaseName) {
+                const baseNameOnly = ensName.replace(/\.base\.eth$/, '');
+                registerUrl = `https://www.base.org/names?claim=${baseNameOnly}`;
+            } else {
+                registerUrl = `https://app.ens.domains/${ensName}/register`;
+            }
+
+            registerButton.textContent = buttonText;
+            registerButton.onclick = () => window.open(registerUrl, '_blank');
+            registerButton.className = 'register-button';
+            if (lightMode) registerButton.classList.add('light-mode');
+            registerButtonContainer.style.display = 'flex';
+            registerButton.style.display = 'inline-block';
+            ipfsButton.style.display = 'none';
+        }
+
+        // Change Neighborhood
+        function changeNeighborhood() {
+            currentNeighborhood = neighborhoodSelect.value;
+            if (currentNeighborhood === 'area51') {
+                pageBody.style.background = lightMode ? '#E0E0E0' : '#0A0A0A';
+            } else if (currentNeighborhood === 'athens') {
+                pageBody.style.background = lightMode ? '#F5F5DC' : '#2F4F4F';
+            } else if (currentNeighborhood === 'augusta') {
+                pageBody.style.background = lightMode ? '#90EE90' : '#006400';
+            } else if (currentNeighborhood === 'baja') {
+                pageBody.style.background = lightMode ? '#D2B48C' : '#F4A460';
+            } else if (currentNeighborhood === 'bourbonstreet') {
+                pageBody.style.background = lightMode ? '#E6E6FA' : '#4B0082';
+            } else if (currentNeighborhood === 'broadway') {
+                pageBody.style.background = lightMode ? '#FFFDD0' : '#1C2526';
+            } else if (currentNeighborhood === 'capecanaveral') {
+                pageBody.style.background = lightMode ? '#E6F3FA' : '#001F3F';
+            } else if (currentNeighborhood === 'capitolhill') {
+                pageBody.style.background = lightMode ? '#F5F5F5' : '#3C2F2F';
+            } else if (currentNeighborhood === 'collegepark') {
+                pageBody.style.background = lightMode ? '#FFF8DC' : '#2E1E0F';
+            } else if (currentNeighborhood === 'colosseum') {
+                pageBody.style.background = lightMode ? '#FFE4C4' : '#4A2C2A';
+            } else if (currentNeighborhood === 'enchantedforest') {
+                pageBody.style.background = lightMode ? '#F0FFF0' : '#2E2E2E';
+            } else if (currentNeighborhood === 'eureka') {
+                pageBody.style.background = lightMode ? '#F5FFFA' : '#1A2421';
+            } else if (currentNeighborhood === 'fashionavenue') {
+                pageBody.style.background = lightMode ? '#FFF0F5' : '#1C1C1C';
+            } else if (currentNeighborhood === 'heartland') {
+                pageBody.style.background = lightMode ? '#FAF0E6' : '#3F2A1D';
+            } else if (currentNeighborhood === 'hollywood') {
+                pageBody.style.background = lightMode ? '#F5F5F5' : '#0F0F0F';
+            } else if (currentNeighborhood === 'hotsprings') {
+                pageBody.style.background = lightMode ? '#F0FFF0' : '#2F4F4F';
+            } else if (currentNeighborhood === 'madisonavenue') {
+                pageBody.style.background = lightMode ? '#F0F8FF' : '#1B263B';
+            } else if (currentNeighborhood === 'motorcity') {
+                pageBody.style.background = lightMode ? '#F5F5F5' : '#2C2C2C';
+            } else if (currentNeighborhood === 'napavalley') {
+                pageBody.style.background = lightMode ? '#FFF5EE' : '#4A2C2A';
+            } else if (currentNeighborhood === 'nashville') {
+                pageBody.style.background = lightMode ? '#FAEBD7' : '#3C2F2F';
+            } else if (currentNeighborhood === 'paris') {
+                pageBody.style.background = lightMode ? '#FFF0F5' : '#2E1E2E';
+            } else if (currentNeighborhood === 'pentagon') {
+                pageBody.style.background = lightMode ? '#F5FFFA' : '#1A2421';
+            } else if (currentNeighborhood === 'petsburgh') {
+                pageBody.style.background = lightMode ? '#FAF0E6' : '#3F2A1D';
+            } else if (currentNeighborhood === 'picketfence') {
+                pageBody.style.background = lightMode ? '#F0FFF0' : '#2F4F4F';
+            } else if (currentNeighborhood === 'pipeline') {
+                pageBody.style.background = lightMode ? '#FFFDD0' : '#1C2526';
+            } else if (currentNeighborhood === 'rainforest') {
+                pageBody.style.background = lightMode ? '#F0FFF0' : '#1A3C34';
+            } else if (currentNeighborhood === 'researchtriangle') {
+                pageBody.style.background = lightMode ? '#E6F3FA' : '#001F3F';
+            } else if (currentNeighborhood === 'rodeodrive') {
+                pageBody.style.background = lightMode ? '#FFF0F5' : '#1C1C1C';
+            } else if (currentNeighborhood === 'siliconvalley') {
+                pageBody.style.background = lightMode ? '#E0E0E0' : '#0A0A0A';
+            } else if (currentNeighborhood === 'soho') {
+                pageBody.style.background = lightMode ? '#FFF0F5' : '#2E1E2E';
+            } else if (currentNeighborhood === 'southbeach') {
+                pageBody.style.background = lightMode ? '#F0F8FF' : '#1B263B';
+            } else if (currentNeighborhood === 'sunsetstrip') {
+                pageBody.style.background = lightMode ? '#FFFDD0' : '#1C2526';
+            } else if (currentNeighborhood === 'televisioncity') {
+                pageBody.style.background = lightMode ? '#F5F5F5' : '#0F0F0F';
+            } else if (currentNeighborhood === 'thetropics') {
+                pageBody.style.background = lightMode ? '#FFF5EE' : '#1A3C34';
+            } else if (currentNeighborhood === 'timessquare') {
+                pageBody.style.background = lightMode ? '#F0FFF0' : '#1C1C1C';
+            } else if (currentNeighborhood === 'tokyo') {
+                pageBody.style.background = lightMode ? '#F5F5F5' : '#2C2C2C';
+            } else if (currentNeighborhood === 'vienna') {
+                pageBody.style.background = lightMode ? '#FAEBD7' : '#3C2F2F';
+            } else if (currentNeighborhood === 'wallstreet') {
+                pageBody.style.background = lightMode ? '#F5FFFA' : '#1A2421';
+            } else if (currentNeighborhood === 'wellesley') {
+                pageBody.style.background = lightMode ? '#FFF0F5' : '#2E1E2E';
+            } else if (currentNeighborhood === 'westhollywood') {
+                pageBody.style.background = lightMode ? '#FFFDD0' : '#1C2526';
+            } else if (currentNeighborhood === 'yosemite') {
+                pageBody.style.background = lightMode ? '#FFF5EE' : '#1A3C34';
+            } else if (currentNeighborhood === 'northpole') {
+                pageBody.style.background = lightMode ? '#F0FFF0' : '#2F4F4F';
+            } else {
+                pageBody.style.background = lightMode ? '#FFF' : '#000';
+            }
+
+            if (currentEnsData) {
+                generateProfileHtml(currentEnsData, currentEnsName, currentNeighborhood);
+                registerButtonContainer.style.display = 'flex';
+                registerButton.style.display = 'none';
+                ipfsButton.style.display = 'inline-block';
+            } else if (currentEnsName) {
+                displayUnregisteredProfile(currentEnsName, currentEnsName.endsWith('.base.eth'));
+            }
+        }
+
+        // Deploy to IPFS
+        async function deployToIPFS() {
+            if (!currentEnsData) return;
+
+            // Generate HTML for IPFS
+            const htmlContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${currentEnsName} - GeoCities Profile</title>
+    <style>
+        body {
+            font-family: ${currentNeighborhood === 'area51' ? "'Orbitron', sans-serif" : currentNeighborhood === 'athens' ? "'Georgia', serif" : 'sans-serif'};
+            background: ${currentNeighborhood === 'area51' ? '#0A0A0A' : currentNeighborhood === 'athens' ? '#2F4F4F' : currentNeighborhood === 'augusta' ? '#006400' : currentNeighborhood === 'baja' ? '#F4A460' : currentNeighborhood === 'bourbonstreet' ? '#4B0082' : currentNeighborhood === 'broadway' ? '#1C2526' : currentNeighborhood === 'capecanaveral' ? '#001F3F' : currentNeighborhood === 'capitolhill' ? '#3C2F2F' : currentNeighborhood === 'collegepark' ? '#2E1E0F' : currentNeighborhood === 'colosseum' ? '#4A2C2A' : currentNeighborhood === 'enchantedforest' ? '#2E2E2E' : currentNeighborhood === 'eureka' ? '#1A2421' : currentNeighborhood === 'fashionavenue' ? '#1C1C1C' : currentNeighborhood === 'heartland' ? '#3F2A1D' : currentNeighborhood === 'hollywood' ? '#0F0F0F' : currentNeighborhood === 'hotsprings' ? '#2F4F4F' : currentNeighborhood === 'madisonavenue' ? '#1B263B' : currentNeighborhood === 'motorcity' ? '#2C2C2C' : currentNeighborhood === 'napavalley' ? '#4A2C2A' : currentNeighborhood === 'nashville' ? '#3C2F2F' : currentNeighborhood === 'paris' ? '#2E1E2E' : currentNeighborhood === 'pentagon' ? '#1A2421' : currentNeighborhood === 'petsburgh' ? '#3F2A1D' : currentNeighborhood === 'picketfence' ? '#2F4F4F' : currentNeighborhood === 'pipeline' ? '#1C2526' : currentNeighborhood === 'rainforest' ? '#1A3C34' : currentNeighborhood === 'researchtriangle' ? '#001F3F' : currentNeighborhood === 'rodeodrive' ? '#1C1C1C' : currentNeighborhood === 'siliconvalley' ? '#0A0A0A' : currentNeighborhood === 'soho' ? '#2E1E2E' : currentNeighborhood === 'southbeach' ? '#1B263B' : currentNeighborhood === 'sunsetstrip' ? '#1C2526' : currentNeighborhood === 'televisioncity' ? '#0F0F0F' : currentNeighborhood === 'thetropics' ? '#1A3C34' : currentNeighborhood === 'timessquare' ? '#1C1C1C' : currentNeighborhood === 'tokyo' ? '#2C2C2C' : currentNeighborhood === 'vienna' ? '#3C2F2F' : currentNeighborhood === 'wallstreet' ? '#1A2421' : currentNeighborhood === 'wellesley' ? '#2E1E2E' : currentNeighborhood === 'westhollywood' ? '#1C2526' : currentNeighborhood === 'yosemite' ? '#1A3C34' : currentNeighborhood === 'northpole' ? '#2F4F4F' : '#000'};
+            color: ${currentNeighborhood === 'area51' ? '#00FF00' : currentNeighborhood === 'athens' ? '#ADD8E6' : currentNeighborhood === 'augusta' ? '#FFFFFF' : currentNeighborhood === 'baja' ? '#FF4500' : currentNeighborhood === 'bourbonstreet' ? '#FFFF00' : currentNeighborhood === 'broadway' ? '#FF4040' : currentNeighborhood === 'capecanaveral' ? '#00B7EB' : currentNeighborhood === 'capitolhill' ? '#FFD700' : currentNeighborhood === 'collegepark' ? '#FFA500' : currentNeighborhood === 'colosseum' ? '#FFFFFF' : currentNeighborhood === 'enchantedforest' ? '#FF69B4' : currentNeighborhood === 'eureka' ? '#FFDAB9' : currentNeighborhood === 'fashionavenue' ? '#FF00FF' : currentNeighborhood === 'heartland' ? '#F5DEB3' : currentNeighborhood === 'hollywood' ? '#FFD700' : currentNeighborhood === 'hotsprings' ? '#98FB98' : currentNeighborhood === 'madisonavenue' ? '#FF4500' : currentNeighborhood === 'motorcity' ? '#FF0000' : currentNeighborhood === 'napavalley' ? '#FFE4B5' : currentNeighborhood === 'nashville' ? '#DEB887' : currentNeighborhood === 'paris' ? '#FFB6C1' : currentNeighborhood === 'pentagon' ? '#B0C4DE' : currentNeighborhood === 'petsburgh' ? '#FFDAB9' : currentNeighborhood === 'picketfence' ? '#F5F5DC' : currentNeighborhood === 'pipeline' ? '#FF4500' : currentNeighborhood === 'rainforest' ? '#98FB98' : currentNeighborhood === 'researchtriangle' ? '#00CED1' : currentNeighborhood === 'rodeodrive' ? '#FFD700' : currentNeighborhood === 'siliconvalley' ? '#00FF7F' : currentNeighborhood === 'soho' ? '#FF69B4' : currentNeighborhood === 'southbeach' ? '#FFDAB9' : currentNeighborhood === 'sunsetstrip' ? '#FF00FF' : currentNeighborhood === 'televisioncity' ? '#FF4500' : currentNeighborhood === 'thetropics' ? '#FFDAB9' : currentNeighborhood === 'timessquare' ? '#00FF7F' : currentNeighborhood === 'tokyo' ? '#FF69B4' : currentNeighborhood === 'vienna' ? '#FFD700' : currentNeighborhood === 'wallstreet' ? '#FFD700' : currentNeighborhood === 'wellesley' ? '#FFB6C1' : currentNeighborhood === 'westhollywood' ? '#FF69B4' : currentNeighborhood === 'yosemite' ? '#F5DEB3' : currentNeighborhood === 'northpole' ? '#FF4040' : '#FFF'};
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .profile-container {
+            width: 90%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .profile-header {
+            width: 100%;
+            height: 0;
+            padding-bottom: 33.33%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border: 1px solid ${currentNeighborhood === 'area51' ? '#00FF00' : currentNeighborhood === 'athens' ? '#ADD8E6' : currentNeighborhood === 'augusta' ? '#FFFFFF' : currentNeighborhood === 'baja' ? '#FF4500' : currentNeighborhood === 'bourbonstreet' ? '#FFFF00' : currentNeighborhood === 'broadway' ? '#FF4040' : currentNeighborhood === 'capecanaveral' ? '#00B7EB' : currentNeighborhood === 'capitolhill' ? '#FFD700' : currentNeighborhood === 'collegepark' ? '#FFA500' : currentNeighborhood === 'colosseum' ? '#FFFFFF' : currentNeighborhood === 'enchantedforest' ? '#FF69B4' : currentNeighborhood === 'eureka' ? '#FFDAB9' : currentNeighborhood === 'fashionavenue' ? '#FF00FF' : currentNeighborhood === 'heartland' ? '#F5DEB3' : currentNeighborhood === 'hollywood' ? '#FFD700' : currentNeighborhood === 'hotsprings' ? '#98FB98' : currentNeighborhood === 'madisonavenue' ? '#FF4500' : currentNeighborhood === 'motorcity' ? '#FF0000' : currentNeighborhood === 'napavalley' ? '#FFE4B5' : currentNeighborhood === 'nashville' ? '#DEB887' : currentNeighborhood === 'paris' ? '#FFB6C1' : currentNeighborhood === 'pentagon' ? '#B0C4DE' : currentNeighborhood === 'petsburgh' ? '#FFDAB9' : currentNeighborhood === 'picketfence' ? '#F5F5DC' : currentNeighborhood === 'pipeline' ? '#FF4500' : currentNeighborhood === 'rainforest' ? '#98FB98' : currentNeighborhood === 'researchtriangle' ? '#00CED1' : currentNeighborhood === 'rodeodrive' ? '#FFD700' : currentNeighborhood === 'siliconvalley' ? '#00FF7F' : currentNeighborhood === 'soho' ? '#FF69B4' : currentNeighborhood === 'southbeach' ? '#FFDAB9' : currentNeighborhood === 'sunsetstrip' ? '#FF00FF' : currentNeighborhood === 'televisioncity' ? '#FF4500' : currentNeighborhood === 'thetropics' ? '#FFDAB9' : currentNeighborhood === 'timessquare' ? '#00FF7F' : currentNeighborhood === 'tokyo' ? '#FF69B4' : currentNeighborhood === 'vienna' ? '#FFD700' : currentNeighborhood === 'wallstreet' ? '#FFD700' : currentNeighborhood === 'wellesley' ? '#FFB6C1' : currentNeighborhood === 'westhollywood' ? '#FF69B4' : currentNeighborhood === 'yosemite' ? '#F5DEB3' : currentNeighborhood === 'northpole' ? '#FF4040' : '#FFF'};
+            box-sizing: border-box;
+        }
+        .profile-avatar {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10em;
+            border: 1px solid ${currentNeighborhood === 'area51' ? '#00FF00' : currentNeighborhood === 'athens' ? '#ADD8E6' : currentNeighborhood === 'augusta' ? '#FFFFFF' : currentNeighborhood === 'baja' ? '#FF4500' : currentNeighborhood === 'bourbonstreet' ? '#FFFF00' : currentNeighborhood === 'broadway' ? '#FF4040' : currentNeighborhood === 'capecanaveral' ? '#00B7EB' : currentNeighborhood === 'capitolhill' ? '#FFD700' : currentNeighborhood === 'collegepark' ? '#FFA500' : currentNeighborhood === 'colosseum' ? '#FFFFFF' : currentNeighborhood === 'enchantedforest' ? '#FF69B4' : currentNeighborhood === 'eureka' ? '#FFDAB9' : currentNeighborhood === 'fashionavenue' ? '#FF00FF' : currentNeighborhood === 'heartland' ? '#F5DEB3' : currentNeighborhood === 'hollywood' ? '#FFD700' : currentNeighborhood === 'hotsprings' ? '#98FB98' : currentNeighborhood === 'madisonavenue' ? '#FF4500' : currentNeighborhood === 'motorcity' ? '#FF0000' : currentNeighborhood === 'napavalley' ? '#FFE4B5' : currentNeighborhood === 'nashville' ? '#DEB887' : currentNeighborhood === 'paris' ? '#FFB6C1' : currentNeighborhood === 'pentagon' ? '#B0C4DE' : currentNeighborhood === 'petsburgh' ? '#FFDAB9' : currentNeighborhood === 'picketfence' ? '#F5F5DC' : currentNeighborhood === 'pipeline' ? '#FF4500' : currentNeighborhood === 'rainforest' ? '#98FB98' : currentNeighborhood === 'researchtriangle' ? '#00CED1' : currentNeighborhood === 'rodeodrive' ? '#FFD700' : currentNeighborhood === 'siliconvalley' ? '#00FF7F' : currentNeighborhood === 'soho' ? '#FF69B4' : currentNeighborhood === 'southbeach' ? '#FFDAB9' : currentNeighborhood === 'sunsetstrip' ? '#FF00FF' : currentNeighborhood === 'televisioncity' ? '#FF4500' : currentNeighborhood === 'thetropics' ? '#FFDAB9' : currentNeighborhood === 'timessquare' ? '#00FF7F' : currentNeighborhood === 'tokyo' ? '#FF69B4' : currentNeighborhood === 'vienna' ? '#FFD700' : currentNeighborhood === 'wallstreet' ? '#FFD700' : currentNeighborhood === 'wellesley' ? '#FFB6C1' : currentNeighborhood === 'westhollywood' ? '#FF69B4' : currentNeighborhood === 'yosemite' ? '#F5DEB3' : currentNeighborhood === 'northpole' ? '#FF4040' : '#FFF'};
+            box-sizing: border-box;
+            color: ${currentNeighborhood === 'area51' ? '#00FF00' : currentNeighborhood === 'athens' ? '#ADD8E6' : currentNeighborhood === 'augusta' ? '#FFFFFF' : currentNeighborhood === 'baja' ? '#FF4500' : currentNeighborhood === 'bourbonstreet' ? '#FFFF00' : currentNeighborhood === 'broadway' ? '#FF4040' : currentNeighborhood === 'capecanaveral' ? '#00B7EB' : currentNeighborhood === 'capitolhill' ? '#FFD700' : currentNeighborhood === 'collegepark' ? '#FFA500' : currentNeighborhood === 'colosseum' ? '#FFFFFF' : currentNeighborhood === 'enchantedforest' ? '#FF69B4' : currentNeighborhood === 'eureka' ? '#FFDAB9' : currentNeighborhood === 'fashionavenue' ? '#FF00FF' : currentNeighborhood === 'heartland' ? '#F5DEB3' : currentNeighborhood === 'hollywood' ? '#FFD700' : currentNeighborhood === 'hotsprings' ? '#98FB98' : currentNeighborhood === 'madisonavenue' ? '#FF4500' : currentNeighborhood === 'motorcity' ? '#FF0000' : currentNeighborhood === 'napavalley' ? '#FFE4B5' : currentNeighborhood === 'nashville' ? '#DEB887' : currentNeighborhood === 'paris' ? '#FFB6C1' : currentNeighborhood === 'pentagon' ? '#B0C4DE' : currentNeighborhood === 'petsburgh' ? '#FFDAB9' : currentNeighborhood === 'picketfence' ? '#F5F5DC' : currentNeighborhood === 'pipeline' ? '#FF4500' : currentNeighborhood === 'rainforest' ? '#98FB98' : currentNeighborhood === 'researchtriangle' ? '#00CED1' : currentNeighborhood === 'rodeodrive' ? '#FFD700' : currentNeighborhood === 'siliconvalley' ? '#00FF7F' : currentNeighborhood === 'soho' ? '#FF69B4' : currentNeighborhood === 'southbeach' ? '#FFDAB9' : currentNeighborhood === 'sunsetstrip' ? '#FF00FF' : currentNeighborhood === 'televisioncity' ? '#FF4500' : currentNeighborhood === 'thetropics' ? '#FFDAB9' : currentNeighborhood === 'timessquare' ? '#00FF7F' : currentNeighborhood === 'tokyo' ? '#FF69B4' : currentNeighborhood === 'vienna' ? '#FFD700' : currentNeighborhood === 'wallstreet' ? '#FFD700' : currentNeighborhood === 'wellesley' ? '#FFB6C1' : currentNeighborhood === 'westhollywood' ? '#FF69B4' : currentNeighborhood === 'yosemite' ? '#F5DEB3' : currentNeighborhood === 'northpole' ? '#FF4040' : '#FFF'};
+        }
+        .profile-box {
+            border: 1px solid ${currentNeighborhood === 'area51' ? '#00FF00' : currentNeighborhood === 'athens' ? '#ADD8E6' : currentNeighborhood === 'augusta' ? '#FFFFFF' : currentNeighborhood === 'baja' ? '#FF4500' : currentNeighborhood === 'bourbonstreet' ? '#FFFF00' : currentNeighborhood === 'broadway' ? '#FF4040' : currentNeighborhood === 'capecanaveral' ? '#00B7EB' : currentNeighborhood === 'capitolhill' ? '#FFD700' : currentNeighborhood === 'collegepark' ? '#FFA500' : currentNeighborhood === 'colosseum' ? '#FFFFFF' : currentNeighborhood === 'enchantedforest' ? '#FF69B4' : currentNeighborhood === 'eureka' ? '#FFDAB9' : currentNeighborhood === 'fashionavenue' ? '#FF00FF' : currentNeighborhood === 'heartland' ? '#F5DEB3' : currentNeighborhood === 'hollywood' ? '#FFD700' : currentNeighborhood === 'hotsprings' ? '#98FB98' : currentNeighborhood === 'madisonavenue' ? '#FF4500' : currentNeighborhood === 'motorcity' ? '#FF0000' : currentNeighborhood === 'napavalley' ? '#FFE4B5' : currentNeighborhood === 'nashville' ? '#DEB887' : currentNeighborhood === 'paris' ? '#FFB6C1' : currentNeighborhood === 'pentagon' ? '#B0C4DE' : currentNeighborhood === 'petsburgh' ? '#FFDAB9' : currentNeighborhood === 'picketfence' ? '#F5F5DC' : currentNeighborhood === 'pipeline' ? '#FF4500' : currentNeighborhood === 'rainforest' ? '#98FB98' : currentNeighborhood === 'researchtriangle' ? '#00CED1' : currentNeighborhood === 'rodeodrive' ? '#FFD700' : currentNeighborhood === 'siliconvalley' ? '#00FF7F' : currentNeighborhood === 'soho' ? '#FF69B4' : currentNeighborhood === 'southbeach' ? '#FFDAB9' : currentNeighborhood === 'sunsetstrip' ? '#FF00FF' : currentNeighborhood === 'televisioncity' ? '#FF4500' : currentNeighborhood === 'thetropics' ? '#FFDAB9' : currentNeighborhood === 'timessquare' ? '#00FF7F' : currentNeighborhood === 'tokyo' ? '#FF69B4' : currentNeighborhood === 'vienna' ? '#FFD700' : currentNeighborhood === 'wallstreet' ? '#FFD700' : currentNeighborhood === 'wellesley' ? '#FFB6C1' : currentNeighborhood === 'westhollywood' ? '#FF69B4' : currentNeighborhood === 'yosemite' ? '#F5DEB3' : currentNeighborhood === 'northpole' ? '#FF4040' : '#FFF'};
+            padding: 10px;
+            background: ${currentNeighborhood === 'area51' ? 'rgba(0, 0, 0, 0.8)' : currentNeighborhood === 'athens' ? 'rgba(47, 79, 79, 0.8)' : currentNeighborhood === 'augusta' ? 'rgba(0, 100, 0, 0.8)' : currentNeighborhood === 'baja' ? 'rgba(244, 164, 96, 0.8)' : currentNeighborhood === 'bourbonstreet' ? 'rgba(75, 0, 130, 0.8)' : currentNeighborhood === 'broadway' ? 'rgba(28, 37, 38, 0.8)' : currentNeighborhood === 'capecanaveral' ? 'rgba(0, 31, 63, 0.8)' : currentNeighborhood === 'capitolhill' ? 'rgba(60, 47, 47, 0.8)' : currentNeighborhood === 'collegepark' ? 'rgba(46, 30, 15, 0.8)' : currentNeighborhood === 'colosseum' ? 'rgba(74, 44, 42, 0.8)' : currentNeighborhood === 'enchantedforest' ? 'rgba(46, 46, 46, 0.8)' : currentNeighborhood === 'eureka' ? 'rgba(26, 36, 33, 0.8)' : currentNeighborhood === 'fashionavenue' ? 'rgba(28, 28, 28, 0.8)' : currentNeighborhood === 'heartland' ? 'rgba(63, 42, 29, 0.8)' : currentNeighborhood === 'hollywood' ? 'rgba(15, 15, 15, 0.8)' : currentNeighborhood === 'hotsprings' ? 'rgba(47, 79, 79, 0.8)' : currentNeighborhood === 'madisonavenue' ? 'rgba(27, 38, 59, 0.8)' : currentNeighborhood === 'motorcity' ? 'rgba(44, 44, 44, 0.8)' : currentNeighborhood === 'napavalley' ? 'rgba(74, 44, 42, 0.8)' : currentNeighborhood === 'nashville' ? 'rgba(60, 47, 47, 0.8)' : currentNeighborhood === 'paris' ? 'rgba(46, 30, 46, 0.8)' : currentNeighborhood === 'pentagon' ? 'rgba(26, 36, 33, 0.8)' : currentNeighborhood === 'petsburgh' ? 'rgba(63, 42, 29, 0.8)' : currentNeighborhood === 'picketfence' ? 'rgba(47, 79, 79, 0.8)' : currentNeighborhood === 'pipeline' ? 'rgba(28, 37, 38, 0.8)' : currentNeighborhood === 'rainforest' ? 'rgba(26, 60, 52, 0.8)' : currentNeighborhood === 'researchtriangle' ? 'rgba(0, 31, 63, 0.8)' : currentNeighborhood === 'rodeodrive' ? 'rgba(28, 28, 28, 0.8)' : currentNeighborhood === 'siliconvalley' ? 'rgba(0, 0, 0, 0.8)' : currentNeighborhood === 'soho' ? 'rgba(46, 30, 46, 0.8)' : currentNeighborhood === 'southbeach' ? 'rgba(27, 38, 59, 0.8)' : currentNeighborhood === 'sunsetstrip' ? 'rgba(28, 37, 38, 0.8)' : currentNeighborhood === 'televisioncity' ? 'rgba(15, 15, 15, 0.8)' : currentNeighborhood === 'thetropics' ? 'rgba(26, 60, 52, 0.8)' : currentNeighborhood === 'timessquare' ? 'rgba(28, 28, 28, 0.8)' : currentNeighborhood === 'tokyo' ? 'rgba(44, 44, 44, 0.8)' : currentNeighborhood === 'vienna' ? 'rgba(60, 47, 47, 0.8)' : currentNeighborhood === 'wallstreet' ? 'rgba(26, 36, 33, 0.8)' : currentNeighborhood === 'wellesley' ? 'rgba(46, 30, 46, 0.8)' : currentNeighborhood === 'westhollywood' ? 'rgba(28, 37, 38, 0.8)' : currentNeighborhood === 'yosemite' ? 'rgba(26, 60, 52, 0.8)' : currentNeighborhood === 'northpole' ? 'rgba(47, 79, 79, 0.8)' : '#000'};
+            color: ${currentNeighborhood === 'area51' ? '#00FF00' : currentNeighborhood === 'athens' ? '#ADD8E6' : currentNeighborhood === 'augusta' ? '#FFFFFF' : currentNeighborhood === 'baja' ? '#FF4500' : currentNeighborhood === 'bourbonstreet' ? '#FFFF00' : currentNeighborhood === 'broadway' ? '#FF4040' : currentNeighborhood === 'capecanaveral' ? '#00B7EB' : currentNeighborhood === 'capitolhill' ? '#FFD700' : currentNeighborhood === 'collegepark' ? '#FFA500' : currentNeighborhood === 'colosseum' ? '#FFFFFF' : currentNeighborhood === 'enchantedforest' ? '#FF69B4' : currentNeighborhood === 'eureka' ? '#FFDAB9' : currentNeighborhood === 'fashionavenue' ? '#FF00FF' : currentNeighborhood === 'heartland' ? '#F5DEB3' : currentNeighborhood === 'hollywood' ? '#FFD700' : currentNeighborhood === 'hotsprings' ? '#98FB98' : currentNeighborhood === 'madisonavenue' ? '#FF4500' : currentNeighborhood === 'motorcity' ? '#FF0000' : currentNeighborhood === 'napavalley' ? '#FFE4B5' : currentNeighborhood === 'nashville' ? '#DEB887' : currentNeighborhood === 'paris' ? '#FFB6C1' : currentNeighborhood === 'pentagon' ? '#B0C4DE' : currentNeighborhood === 'petsburgh' ? '#FFDAB9' : currentNeighborhood === 'picketfence' ? '#F5F5DC' : currentNeighborhood === 'pipeline' ? '#FF4500' : currentNeighborhood === 'rainforest' ? '#98FB98' : currentNeighborhood === 'researchtriangle' ? '#00CED1' : currentNeighborhood === 'rodeodrive' ? '#FFD700' : currentNeighborhood === 'siliconvalley' ? '#00FF7F' : currentNeighborhood === 'soho' ? '#FF69B4' : currentNeighborhood === 'southbeach' ? '#FFDAB9' : currentNeighborhood === 'sunsetstrip' ? '#FF00FF' : currentNeighborhood === 'televisioncity' ? '#FF4500' : currentNeighborhood === 'thetropics' ? '#FFDAB9' : currentNeighborhood === 'timessquare' ? '#00FF7F' : currentNeighborhood === 'tokyo' ? '#FF69B4' : currentNeighborhood === 'vienna' ? '#FFD700' : currentNeighborhood === 'wallstreet' ? '#FFD700' : currentNeighborhood === 'wellesley' ? '#FFB6C1' : currentNeighborhood === 'westhollywood' ? '#FF69B4' : currentNeighborhood === 'yosemite' ? '#F5DEB3' : currentNeighborhood === 'northpole' ? '#FF4040' : '#FFF'};
+            word-break: break-word;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-top: none;
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 38px;
+            ${currentNeighborhood === 'area51' ? 'box-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00;' : ''}
+            ${currentNeighborhood === 'augusta' ? 'background-image: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%);' : ''}
+            ${currentNeighborhood === 'baja' ? 'transition: transform 0.2s ease;' : ''}
+            ${currentNeighborhood === 'bourbonstreet' ? 'animation: fadeIn 1s ease-in;' : ''}
+            ${currentNeighborhood === 'broadway' ? 'transition: box-shadow 0.3s ease;' : ''}
+            ${currentNeighborhood === 'capecanaveral' ? 'background: linear-gradient(to right, #001F3F, #00B7EB);' : ''}
+            ${currentNeighborhood === 'collegepark' ? 'box-shadow: 5px 5px 10px rgba(0,0,0,0.2);' : ''}
+            ${currentNeighborhood === 'colosseum' ? 'transition: transform 0.3s ease;' : ''}
+            ${currentNeighborhood === 'enchantedforest' ? 'animation: sparkle 2s infinite;' : ''}
+            ${currentNeighborhood === 'fashionavenue' ? 'transition: background 0.3s ease;' : ''}
+            ${currentNeighborhood === 'hollywood' ? 'animation: cinematicFade 1.5s;' : ''}
+            ${currentNeighborhood === 'hotsprings' ? 'transition: transform 0.3s ease;' : ''}
+            ${currentNeighborhood === 'madisonavenue' ? 'transition: background-color 0.3s ease;' : ''}
+            ${currentNeighborhood === 'motorcity' ? 'transition: transform 0.3s ease;' : ''}
+            ${currentNeighborhood === 'nashville' ? 'animation: fadeIn 1s ease-in;' : ''}
+            ${currentNeighborhood === 'paris' ? 'transition: transform 0.3s ease;' : ''}
+            ${currentNeighborhood === 'petsburgh' ? 'transition: background-image 0.3s ease;' : ''}
+            ${currentNeighborhood === 'pipeline' ? 'transition: transform 0.3s ease;' : ''}
+            ${currentNeighborhood === 'rainforest' ? 'animation: rustle 2s;' : ''}
+            ${currentNeighborhood === 'rodeodrive' ? 'animation: shine 2s infinite;' : ''}
+            ${currentNeighborhood === 'siliconvalley' ? 'background: linear-gradient(to bottom, #000, #00FF7F);' : ''}
+            ${currentNeighborhood === 'soho' ? 'transition: background 0.3s ease;' : ''}
+            ${currentNeighborhood === 'southbeach' ? 'animation: wave 2s;' : ''}
+            ${currentNeighborhood === 'sunsetstrip' ? 'animation: pulse 1.5s infinite;' : ''}
+            ${currentNeighborhood === 'televisioncity' ? 'transition: opacity 0.3s ease;' : ''}
+            ${currentNeighborhood === 'thetropics' ? 'box-shadow: 0 0 10px #FFDAB9;' : ''}
+            ${currentNeighborhood === 'timessquare' ? 'animation: flicker 0.5s;' : ''}
+            ${currentNeighborhood === 'tokyo' ? 'animation: petalFall 3s;' : ''}
+            ${currentNeighborhood === 'wallstreet' ? 'animation: ticker 5s linear infinite;' : ''}
+            ${currentNeighborhood === 'westhollywood' ? 'background: linear-gradient(45deg, red, orange, yellow, green, blue);' : ''}
+            ${currentNeighborhood === 'yosemite' ? 'box-shadow: 5px 5px 10px rgba(0,0,0,0.3);' : ''}
+            ${currentNeighborhood === 'northpole' ? 'animation: snowfall 5s;' : ''}
+        }
+        .profile-box:hover {
+            ${currentNeighborhood === 'baja' ? 'transform: scale(1.02);' : ''}
+            ${currentNeighborhood === 'broadway' ? 'box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);' : ''}
+            ${currentNeighborhood === 'colosseum' ? 'transform: scale(1.05);' : ''}
+            ${currentNeighborhood === 'fashionavenue' ? 'background: linear-gradient(45deg, #FF00FF, #FFF);' : ''}
+            ${currentNeighborhood === 'hotsprings' ? 'animation: pulse 1s;' : ''}
+            ${currentNeighborhood === 'motorcity' ? 'transform: translateX(5px);' : ''}
+            ${currentNeighborhood === 'paris' ? 'animation: heartbeat 1.5s;' : ''}
+            ${currentNeighborhood === 'petsburgh' ? 'background-image: url(\\'paw-print.png\\');' : ''}
+            ${currentNeighborhood === 'pipeline' ? 'transform: rotate(2deg);' : ''}
+            ${currentNeighborhood === 'soho' ? 'background: radial-gradient(#FF69B4, #2E1E2E);' : ''}
+            ${currentNeighborhood === 'televisioncity' ? 'opacity: 0.7;' : ''}
+        }
+        .profile-box:first-child {
+            border-top: 1px solid ${currentNeighborhood === 'area51' ? '#00FF00' : currentNeighborhood === 'athens' ? '#ADD8E6' : currentNeighborhood === 'augusta' ? '#FFFFFF' : currentNeighborhood === 'baja' ? '#FF4500' : currentNeighborhood === 'bourbonstreet' ? '#FFFF00' : currentNeighborhood === 'broadway' ? '#FF4040' : currentNeighborhood === 'capecanaveral' ? '#00B7EB' : currentNeighborhood === 'capitolhill' ? '#FFD700' : currentNeighborhood === 'collegepark' ? '#FFA500' : currentNeighborhood === 'colosseum' ? '#FFFFFF' : currentNeighborhood === 'enchantedforest' ? '#FF69B4' : currentNeighborhood === 'eureka' ? '#FFDAB9' : currentNeighborhood === 'fashionavenue' ? '#FF00FF' : currentNeighborhood === 'heartland' ? '#F5DEB3' : currentNeighborhood === 'hollywood' ? '#FFD700' : currentNeighborhood === 'hotsprings' ? '#98FB98' : currentNeighborhood === 'madisonavenue' ? '#FF4500' : currentNeighborhood === 'motorcity' ? '#FF0000' : currentNeighborhood === 'napavalley' ? '#FFE4B5' : currentNeighborhood === 'nashville' ? '#DEB887' : currentNeighborhood === 'paris' ? '#FFB6C1' : currentNeighborhood === 'pentagon' ? '#B0C4DE' : currentNeighborhood === 'petsburgh' ? '#FFDAB9' : currentNeighborhood === 'picketfence' ? '#F5F5DC' : currentNeighborhood === 'pipeline' ? '#FF4500' : currentNeighborhood === 'rainforest' ? '#98FB98' : currentNeighborhood === 'researchtriangle' ? '#00CED1' : currentNeighborhood === 'rodeodrive' ? '#FFD700' : currentNeighborhood === 'siliconvalley' ? '#00FF7F' : currentNeighborhood === 'soho' ? '#FF69B4' : currentNeighborhood === 'southbeach' ? '#FFDAB9' : currentNeighborhood === 'sunsetstrip' ? '#FF00FF' : currentNeighborhood === 'televisioncity' ? '#FF4500' : currentNeighborhood === 'thetropics' ? '#FFDAB9' : currentNeighborhood === 'timessquare' ? '#00FF7F' : currentNeighborhood === 'tokyo' ? '#FF69B4' : currentNeighborhood === 'vienna' ? '#FFD700' : currentNeighborhood === 'wallstreet' ? '#FFD700' : currentNeighborhood === 'wellesley' ? '#FFB6C1' : currentNeighborhood === 'westhollywood' ? '#FF69B4' : currentNeighborhood === 'yosemite' ? '#F5DEB3' : currentNeighborhood === 'northpole' ? '#FF4040' : '#FFF'};
+        }
+        .profile-box-header {
+            font-weight: bold;
+            color: ${currentNeighborhood === 'area51' ? '#00FF00' : currentNeighborhood === 'athens' ? '#ADD8E6' : currentNeighborhood === 'augusta' ? '#FFFFFF' : currentNeighborhood === 'baja' ? '#FF4500' : currentNeighborhood === 'bourbonstreet' ? '#FFFF00' : currentNeighborhood === 'broadway' ? '#FF4040' : currentNeighborhood === 'capecanaveral' ? '#00B7EB' : currentNeighborhood === 'capitolhill' ? '#FFD700' : currentNeighborhood === 'collegepark' ? '#FFA500' : currentNeighborhood === 'colosseum' ? '#FFFFFF' : currentNeighborhood === 'enchantedforest' ? '#FF69B4' : currentNeighborhood === 'eureka' ? '#FFDAB9' : currentNeighborhood === 'fashionavenue' ? '#FF00FF' : currentNeighborhood === 'heartland' ? '#F5DEB3' : currentNeighborhood === 'hollywood' ? '#FFD700' : currentNeighborhood === 'hotsprings' ? '#98FB98' : currentNeighborhood === 'madisonavenue' ? '#FF4500' : currentNeighborhood === 'motorcity' ? '#FF0000' : currentNeighborhood === 'napavalley' ? '#FFE4B5' : currentNeighborhood === 'nashville' ? '#DEB887' : currentNeighborhood === 'paris' ? '#FFB6C1' : currentNeighborhood === 'pentagon' ? '#B0C4DE' : currentNeighborhood === 'petsburgh' ? '#FFDAB9' : currentNeighborhood === 'picketfence' ? '#F5F5DC' : currentNeighborhood === 'pipeline' ? '#FF4500' : currentNeighborhood === 'rainforest' ? '#98FB98' : currentNeighborhood === 'researchtriangle' ? '#00CED1' : currentNeighborhood === 'rodeodrive' ? '#FFD700' : currentNeighborhood === 'siliconvalley' ? '#00FF7F' : currentNeighborhood === 'soho' ? '#FF69B4' : currentNeighborhood === 'southbeach' ? '#FFDAB9' : currentNeighborhood === 'sunsetstrip' ? '#FF00FF' : currentNeighborhood === 'televisioncity' ? '#FF4500' : currentNeighborhood === 'thetropics' ? '#FFDAB9' : currentNeighborhood === 'timessquare' ? '#00FF7F' : currentNeighborhood === 'tokyo' ? '#FF69B4' : currentNeighborhood === 'vienna' ? '#FFD700' : currentNeighborhood === 'wallstreet' ? '#FFD700' : currentNeighborhood === 'wellesley' ? '#FFB6C1' : currentNeighborhood === 'westhollywood' ? '#FF69B4' : currentNeighborhood === 'yosemite' ? '#F5DEB3' : currentNeighborhood === 'northpole' ? '#FF4040' : '#FFF'};
+            flex: 0 0 100px;
+            min-width: 80px;
+            text-align: left;
+        }
+        .profile-box-value {
+            flex: 1;
+            text-align: left;
+            word-break: break-all;
+            color: ${currentNeighborhood === 'area51' ? '#00FF00' : currentNeighborhood === 'athens' ? '#ADD8E6' : currentNeighborhood === 'augusta' ? '#FFFFFF' : currentNeighborhood === 'baja' ? '#FF4500' : currentNeighborhood === 'bourbonstreet' ? '#FFFF00' : currentNeighborhood === 'broadway' ? '#FF4040' : currentNeighborhood === 'capecanaveral' ? '#00B7EB' : currentNeighborhood === 'capitolhill' ? '#FFD700' : currentNeighborhood === 'collegepark' ? '#FFA500' : currentNeighborhood === 'colosseum' ? '#FFFFFF' : currentNeighborhood === 'enchantedforest' ? '#FF69B4' : currentNeighborhood === 'eureka' ? '#FFDAB9' : currentNeighborhood === 'fashionavenue' ? '#FF00FF' : currentNeighborhood === 'heartland' ? '#F5DEB3' : currentNeighborhood === 'hollywood' ? '#FFD700' : currentNeighborhood === 'hotsprings' ? '#98FB98' : currentNeighborhood === 'madisonavenue' ? '#FF4500' : currentNeighborhood === 'motorcity' ? '#FF0000' : currentNeighborhood === 'napavalley' ? '#FFE4B5' : currentNeighborhood === 'nashville' ? '#DEB887' : currentNeighborhood === 'paris' ? '#FFB6C1' : currentNeighborhood === 'pentagon' ? '#B0C4DE' : currentNeighborhood === 'petsburgh' ? '#FFDAB9' : currentNeighborhood === 'picketfence' ? '#F5F5DC' : currentNeighborhood === 'pipeline' ? '#FF4500' : currentNeighborhood === 'rainforest' ? '#98FB98' : currentNeighborhood === 'researchtriangle' ? '#00CED1' : currentNeighborhood === 'rodeodrive' ? '#FFD700' : currentNeighborhood === 'siliconvalley' ? '#00FF7F' : currentNeighborhood === 'soho' ? '#FF69B4' : currentNeighborhood === 'southbeach' ? '#FFDAB9' : currentNeighborhood === 'sunsetstrip' ? '#FF00FF' : currentNeighborhood === 'televisioncity' ? '#FF4500' : currentNeighborhood === 'thetropics' ? '#FFDAB9' : currentNeighborhood === 'timessquare' ? '#00FF7F' : currentNeighborhood === 'tokyo' ? '#FF69B4' : currentNeighborhood === 'vienna' ? '#FFD700' : currentNeighborhood === 'wallstreet' ? '#FFD700' : currentNeighborhood === 'wellesley' ? '#FFB6C1' : currentNeighborhood === 'westhollywood' ? '#FF69B4' : currentNeighborhood === 'yosemite' ? '#F5DEB3' : currentNeighborhood === 'northpole' ? '#FF4040' : '#FFF'};
+        }
+        .profile-box-value a {
+            color: inherit;
+            text-decoration: underline;
+        }
+        .profile-box-value a:hover {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <a href="${profileHeaderLink.href}" target="_blank" rel="noopener noreferrer">
+            <div class="profile-header" style="background-image: url('${profileHeader.style.backgroundImage ? profileHeader.style.backgroundImage.slice(5, -2) : ''}'); display: ${profileHeader.style.display};"></div>
+        </a>
+        <a href="${profileAvatarLink.href}" target="_blank" rel="noopener noreferrer">
+            <div class="profile-avatar" style="background-image: url('${profileAvatar.style.backgroundImage ? profileAvatar.style.backgroundImage.slice(5, -2) : ''}');">${profileAvatar.textContent}</div>
+        </a>
+        <div class="profile-records">
+            ${Array.from(document.querySelectorAll('.profile-box')).map(box => `
+                <div class="profile-box">
+                    <div class="profile-box-header">${box.querySelector('.profile-box-header').textContent}</div>
+                    <div class="profile-box-value">${box.querySelector('.profile-box-value').innerHTML
