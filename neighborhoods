@@ -1,0 +1,340 @@
+Below is a list of all the neighborhoods from your provided list, along with their dark and light mode CSS color schemes (background and text colors). I've designed the colors to reflect the theme or essence of each neighborhood while ensuring readability and aesthetic coherence. Each neighborhood has a dark mode (used in the default dark theme) and a light mode (used when the light theme is toggled). The colors are provided in hexadecimal format.
+
+### Neighborhoods and Color Schemes
+
+1. **Area51**  
+   - **Dark Mode**:  
+     - Background: `#000000` (Black, mysterious, sci-fi void)  
+     - Text: `#00FF00` (Neon green, alien tech glow)  
+   - **Light Mode**:  
+     - Background: `linear-gradient(135deg, #e0e0e0 0%, #a0a0a0 100%)` (Metallic gray gradient, futuristic lab)  
+     - Text: `#008000` (Dark green, grounded sci-fi tone)
+
+2. **Athens**  
+   - **Dark Mode**:  
+     - Background: `#2F4F4F` (Dark slate teal, classical wisdom)  
+     - Text: `#ADD8E6` (Light sky blue, poetic clarity)  
+   - **Light Mode**:  
+     - Background: `#F5F5DC` (Beige parchment, ancient scrolls)  
+     - Text: `#00008B` (Dark blue, scholarly ink)
+
+3. **Augusta**  
+   - **Dark Mode**:  
+     - Background: `#006400` (Dark green, lush fairways)  
+     - Text: `#FFFFFF` (White, clean and crisp)  
+   - **Light Mode**:  
+     - Background: `#90EE90` (Light green, vibrant grass)  
+     - Text: `#006400` (Dark green, natural contrast)
+
+4. **Baja**  
+   - **Dark Mode**:  
+     - Background: `#F4A460` (Sandy brown, desert trails)  
+     - Text: `#FF4500` (Orange-red, adventure energy)  
+   - **Light Mode**:  
+     - Background: `#D2B48C` (Tan, sunlit dunes)  
+     - Text: `#FF4500` (Orange-red, bold vibrancy)
+
+5. **BourbonStreet**  
+   - **Dark Mode**:  
+     - Background: `#4B0082` (Deep indigo, jazzy nights)  
+     - Text: `#FFFF00` (Bright yellow, Mardi Gras glow)  
+   - **Light Mode**:  
+     - Background: `#E6E6FA` (Lavender, soft southern charm)  
+     - Text: `#4B0082` (Deep indigo, cultural depth)
+
+6. **Broadway**  
+   - **Dark Mode**:  
+     - Background: `#000000` (Black, theater curtains)  
+     - Text: `#FF0000` (Bright red, marquee lights)  
+   - **Light Mode**:  
+     - Background: `#FFFDD0` (Cream, stage spotlight)  
+     - Text: `#8B0000` (Dark red, elegant drama)
+
+7. **CapeCanaveral**  
+   - **Dark Mode**:  
+     - Background: `#1C2526` (Dark blue-gray, night sky)  
+     - Text: `#00B7EB` (Cyan, rocket flame)  
+   - **Light Mode**:  
+     - Background: `#E6F3FA` (Light blue, clear skies)  
+     - Text: `#0047AB` (Cobalt blue, engineering precision)
+
+8. **CapitolHill**  
+   - **Dark Mode**:  
+     - Background: `#2C3539` (Dark charcoal, serious governance)  
+     - Text: `#FFD700` (Gold, authoritative)  
+   - **Light Mode**:  
+     - Background: `#F5F6F5` (Light gray, marble halls)  
+     - Text: `#800000` (Maroon, dignified contrast)
+
+9. **CollegePark**  
+   - **Dark Mode**:  
+     - Background: `#4A2F6F` (Deep purple, academic spirit)  
+     - Text: `#FFB6C1` (Light pink, youthful energy)  
+   - **Light Mode**:  
+     - Background: `#FFF5EE` (Seashell, bright campus)  
+     - Text: `#483D8B` (Slate blue, studious tone)
+
+10. **Colosseum**  
+    - **Dark Mode**:  
+      - Background: `#8B0000` (Dark red, arena intensity)  
+      - Text: `#FFFFFF` (White, bold contrast)  
+    - **Light Mode**:  
+      - Background: `#FFE4C4` (Bisque, sunlit stadium)  
+      - Text: `#8B0000` (Dark red, athletic vigor)
+
+11. **EnchantedForest**  
+    - **Dark Mode**:  
+      - Background: `#013220` (Dark green, mystical woods)  
+      - Text: `#98FB98` (Pale green, fairy glow)  
+    - **Light Mode**:  
+      - Background: `#F0FFF0` (Honeydew, bright forest)  
+      - Text: `#228B22` (Forest green, natural charm)
+
+12. **Eureka**  
+    - **Dark Mode**:  
+      - Background: `#3C2F2F` (Dark brown, cozy office)  
+      - Text: `#FFCC00` (Amber, innovative spark)  
+    - **Light Mode**:  
+      - Background: `#FFF8DC` (Cornsilk, warm workspace)  
+      - Text: `#8B4513` (Saddle brown, grounded ambition)
+
+13. **FashionAvenue**  
+    - **Dark Mode**:  
+      - Background: `#1C1C1C` (Near black, chic runway)  
+      - Text: `#FF69B4` (Hot pink, glamorous flair)  
+    - **Light Mode**:  
+      - Background: `#F5F5F5` (Light gray, clean elegance)  
+      - Text: `#C71585` (Medium violet red, stylish pop)
+
+14. **Heartland**  
+    - **Dark Mode**:  
+      - Background: `#5C4033` (Dark brown, rustic warmth)  
+      - Text: `#F5DEB3` (Wheat, homely glow)  
+    - **Light Mode**:  
+      - Background: `#FAEBD7` (Antique white, sunny fields)  
+      - Text: `#8B4513` (Saddle brown, earthy tone)
+
+15. **Hollywood**  
+    - **Dark Mode**:  
+      - Background: `#2A1F3D` (Dark purple, starry night)  
+      - Text: `#FFD700` (Gold, glamorous shine)  
+    - **Light Mode**:  
+      - Background: `#FFF0F5` (Lavender blush, red carpet)  
+      - Text: `#B22222` (Firebrick, cinematic drama)
+
+16. **HotSprings**  
+    - **Dark Mode**:  
+      - Background: `#004953` (Dark teal, soothing waters)  
+      - Text: `#00CED1` (Dark turquoise, refreshing)  
+    - **Light Mode**:  
+      - Background: `#E0FFFF` (Light cyan, spa clarity)  
+      - Text: `#008B8B` (Dark cyan, calming contrast)
+
+17. **MadisonAvenue**  
+    - **Dark Mode**:  
+      - Background: `#333333` (Dark gray, urban sleek)  
+      - Text: `#FFA500` (Orange, bold ads)  
+    - **Light Mode**:  
+      - Background: `#F0F0F0` (Light gray, modern office)  
+      - Text: `#D2691E` (Chocolate, warm persuasion)
+
+18. **MotorCity**  
+    - **Dark Mode**:  
+      - Background: `#1A2421` (Dark gray-green, industrial)  
+      - Text: `#FF4500` (Orange-red, engine fire)  
+    - **Light Mode**:  
+      - Background: `#DCDCDC` (Gainsboro, metallic shine)  
+      - Text: `#8B0000` (Dark red, robust energy)
+
+19. **NapaValley**  
+    - **Dark Mode**:  
+      - Background: `#4A2C2A` (Dark burgundy, rich wine)  
+      - Text: `#F5F5DC` (Beige, creamy finish)  
+    - **Light Mode**:  
+      - Background: `#FFFACD` (Lemon chiffon, sunny vineyards)  
+      - Text: `#800000` (Maroon, deep grape)
+
+20. **Nashville**  
+    - **Dark Mode**:  
+      - Background: `#462C1A` (Dark brown, wooden stage)  
+      - Text: `#FF8C00` (Dark orange, country twang)  
+    - **Light Mode**:  
+      - Background: `#FFE4B5` (Moccasin, warm barn)  
+      - Text: `#8B4500` (Dark orange-brown, rustic vibe)
+
+21. **Paris**  
+    - **Dark Mode**:  
+      - Background: `#191970` (Midnight blue, romantic night)  
+      - Text: `#FFB6C1` (Light pink, soft romance)  
+    - **Light Mode**:  
+      - Background: `#FFF0F5` (Lavender blush, Parisian dawn)  
+      - Text: `#4682B4` (Steel blue, artistic depth)
+
+22. **Pentagon**  
+    - **Dark Mode**:  
+      - Background: `#2F4F4F` (Dark slate gray, military rigor)  
+      - Text: `#B0C4DE` (Light steel blue, disciplined)  
+    - **Light Mode**:  
+      - Background: `#F5F5F5` (Light gray, official documents)  
+      - Text: `#2F4F4F` (Dark slate gray, authoritative)
+
+23. **Petsburgh**  
+    - **Dark Mode**:  
+      - Background: `#3C2005` (Dark brown, cozy pet bed)  
+      - Text: `#FFDAB9` (Peach puff, playful fur)  
+    - **Light Mode**:  
+      - Background: `#FFF5EE` (Seashell, bright pet park)  
+      - Text: `#8B4513` (Saddle brown, earthy love)
+
+24. **PicketFence**  
+    - **Dark Mode**:  
+      - Background: `#483C32` (Dark taupe, wooden fence)  
+      - Text: `#F0F8FF` (Alice blue, homey glow)  
+    - **Light Mode**:  
+      - Background: `#F5FFFA` (Mint cream, fresh lawn)  
+      - Text: `#556B2F` (Dark olive green, natural accent)
+
+25. **Pipeline**  
+    - **Dark Mode**:  
+      - Background: `#1C2526` (Dark blue-gray, rugged terrain)  
+      - Text: `#FF6347` (Tomato, adrenaline rush)  
+    - **Light Mode**:  
+      - Background: `#E6E6E6` (Light gray, dusty trails)  
+      - Text: `#B22222` (Firebrick, bold action)
+
+26. **RainForest**  
+    - **Dark Mode**:  
+      - Background: `#004225` (Dark green, dense jungle)  
+      - Text: `#ADFF2F` (Green yellow, vibrant flora)  
+    - **Light Mode**:  
+      - Background: `#F0FFF0` (Honeydew, lush canopy)  
+      - Text: `#228B22` (Forest green, eco-conscious)
+
+27. **ResearchTriangle**  
+    - **Dark Mode**:  
+      - Background: `#252850` (Dark blue, tech lab)  
+      - Text: `#00FFFF` (Cyan, digital innovation)  
+    - **Light Mode**:  
+      - Background: `#F0F8FF` (Alice blue, clean research)  
+      - Text: `#0000CD` (Medium blue, precise data)
+
+28. **RodeoDrive**  
+    - **Dark Mode**:  
+      - Background: `#1A1A1A` (Near black, luxury boutique)  
+      - Text: `#FFD700` (Gold, opulent shine)  
+    - **Light Mode**:  
+      - Background: `#F5F5F5` (Light gray, upscale elegance)  
+      - Text: `#B8860B` (Dark goldenrod, refined taste)
+
+29. **SiliconValley**  
+    - **Dark Mode**:  
+      - Background: `#0A0A23` (Dark navy, tech night)  
+      - Text: `#39FF14` (Neon green, code glow)  
+    - **Light Mode**:  
+      - Background: `#F5F5F5` (Light gray, startup office)  
+      - Text: `#006400` (Dark green, tech stability)
+
+30. **SoHo**  
+    - **Dark Mode**:  
+      - Background: `#2F2F2F` (Dark gray, artist loft)  
+      - Text: `#FF4500` (Orange-red, creative spark)  
+    - **Light Mode**:  
+      - Background: `#FFF8DC` (Cornsilk, gallery light)  
+      - Text: `#A52A2A` (Brown, bohemian warmth)
+
+31. **SouthBeach**  
+    - **Dark Mode**:  
+      - Background: `#003087` (Deep blue, ocean night)  
+      - Text: `#FF00FF` (Magenta, vibrant nightlife)  
+    - **Light Mode**:  
+      - Background: `#E0FFFF` (Light cyan, sunny beach)  
+      - Text: `#FF00FF` (Magenta, lively vibe)
+
+32. **SunsetStrip**  
+    - **Dark Mode**:  
+      - Background: `#1C0F13` (Dark purple-black, club scene)  
+      - Text: `#FF1493` (Deep pink, rock energy)  
+    - **Light Mode**:  
+      - Background: `#FFF0F5` (Lavender blush, sunset glow)  
+      - Text: `#C71585` (Medium violet red, punk edge)
+
+33. **TelevisionCity**  
+    - **Dark Mode**:  
+      - Background: `#1F1F1F` (Dark gray, studio dark)  
+      - Text: `#FF4500` (Orange-red, TV spotlight)  
+    - **Light Mode**:  
+      - Background: `#F5F5F5` (Light gray, bright set)  
+      - Text: `#B22222` (Firebrick, dynamic screen)
+
+34. **TheTropics**  
+    - **Dark Mode**:  
+      - Background: `#004B49` (Dark teal, tropical night)  
+      - Text: `#FFD700` (Gold, sunny warmth)  
+    - **Light Mode**:  
+      - Background: `#E0FFFF` (Light cyan, island breeze)  
+      - Text: `#008B8B` (Dark cyan, ocean depth)
+
+35. **TimesSquare**  
+    - **Dark Mode**:  
+      - Background: `#000000` (Black, neon-lit night)  
+      - Text: `#FF0000` (Bright red, arcade flash)  
+    - **Light Mode**:  
+      - Background: `#F5F5F5` (Light gray, bustling day)  
+      - Text: `#8B0000` (Dark red, vibrant energy)
+
+36. **Tokyo**  
+    - **Dark Mode**:  
+      - Background: `#2E1A47` (Dark purple, neon Tokyo)  
+      - Text: `#FF69B4` (Hot pink, anime vibrancy)  
+    - **Light Mode**:  
+      - Background: `#FFF0F5` (Lavender blush, cherry blossoms)  
+      - Text: `#9932CC` (Dark orchid, cultural pop)
+
+37. **Vienna**  
+    - **Dark Mode**:  
+      - Background: `#2C1A2E` (Dark purple, opera hall)  
+      - Text: `#FFD700` (Gold, classical elegance)  
+    - **Light Mode**:  
+      - Background: `#FFF8DC` (Cornsilk, concert hall)  
+      - Text: `#4B0082` (Indigo, refined artistry)
+
+38. **Wallstreet**  
+    - **Dark Mode**:  
+      - Background: `#1C2526` (Dark blue-gray, financial night)  
+      - Text: `#FFD700` (Gold, wealth shine)  
+    - **Light Mode**:  
+      - Background: `#F5F5F5` (Light gray, stock exchange)  
+      - Text: `#006400` (Dark green, money hue)
+
+39. **Wellesley**  
+    - **Dark Mode**:  
+      - Background: `#4A2F6F` (Dark purple, empowering)  
+      - Text: `#FFB6C1` (Light pink, feminine strength)  
+    - **Light Mode**:  
+      - Background: `#FFF0F5` (Lavender blush, soft community)  
+      - Text: `#483D8B` (Slate blue, confident voice)
+
+40. **WestHollywood**  
+    - **Dark Mode**:  
+      - Background: `#1A1A3D` (Dark navy, vibrant night)  
+      - Text: `#FF69B4` (Hot pink, inclusive pride)  
+    - **Light Mode**:  
+      - Background: `#F5F5F5` (Light gray, open community)  
+      - Text: `#FF1493` (Deep pink, bold identity)
+
+41. **Yosemite**  
+    - **Dark Mode**:  
+      - Background: `#2F4F4F` (Dark slate teal, mountain night)  
+      - Text: `#B0C4DE` (Light steel blue, crisp air)  
+    - **Light Mode**:  
+      - Background: `#F0FFF0` (Honeydew, green valley)  
+      - Text: `#228B22` (Forest green, outdoor spirit)
+
+42. **Northpole**  
+    - **Dark Mode**:  
+      - Background: `#003366` (Deep blue, polar night)  
+      - Text: `#F0F8FF` (Alice blue, snowy glow)  
+    - **Light Mode**:  
+      - Background: `#E6F3FA` (Light blue, winter day)  
+      - Text: `#B22222` (Firebrick, festive warmth)
+
