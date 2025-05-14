@@ -332,9 +332,9 @@ Below is a list of all the neighborhoods from your provided list, along with the
 
 42. **Northpole**  
     - **Dark Mode**:  
-      - Background: `#003366` (Deep blue, polar night)  
-      - Text: `#F0F8FF` (Alice blue, snowy glow)  
+      - Background: `#` (christmas green)  
+      - Text: `#` (christmas red)  
     - **Light Mode**:  
-      - Background: `#E6F3FA` (Light blue, winter day)  
-      - Text: `#B22222` (Firebrick, festive warmth)
+      - Background: `#` (snow)  
+      - Text: `#E6F3FA` (Light blue, winter day)
 
