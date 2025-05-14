@@ -2,249 +2,1362 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GeoCities®️</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GeoCities</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='50' font-size='80' text-anchor='middle' dominant-baseline='middle' fill='%23000'>G%3C/text%3E%3C/svg%3E" type="image/svg+xml">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Georgia&display=swap" rel="stylesheet">
     <style>
+        /* Body Styles */
         body {
             font-family: sans-serif;
             background: #000;
-            color: #FFF;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
+            color: #fff;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding-top: 60px;
+            transition: background 0.3s ease, color 0.3s ease;
+            position: relative;
+            padding-bottom: 60px;
             box-sizing: border-box;
         }
         body.light-mode {
-            background: #FFF;
+            background: #fff;
             color: #000;
         }
-        .page-container {
-            flex: 1;
-            display: flex;
+
+        /* Container Styles */
+        .container {
             flex-direction: column;
-            min-height: 100vh;
-        }
-        .header {
-            width: 100%;
-            background: #000;
-            color: #FFF;
-            padding: 10px 0;
-            box-sizing: border-box;
-            border-bottom: 1px solid #FFF;
-        }
-        .header.light-mode {
-            background: #FFF;
-            color: #000;
-            border-bottom: 1px solid #000;
-        }
-        .header-content {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            box-sizing: border-box;
-        }
-        .header-box {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .header-box.light-mode {
-            color: #000;
-        }
-        .header-logo {
-            width: 50px;
-            height: 50px;
-            background: url('https://i.imgur.com/V7qF6qF.png') no-repeat center;
-            background-size: contain;
-        }
-        .header-logo.light-mode {
-            background: url('https://i.imgur.com/3zXz7pB.png') no-repeat center;
-            background-size: contain;
-        }
-        .geocities-title {
-            font-size: 1.5em;
-            margin: 0;
-        }
-        .geocities-title.light-mode {
-            color: #000;
-        }
-        .nav-links {
-            display: flex;
-            gap: 15px;
-        }
-        .nav-links a {
-            color: #FFF;
-            text-decoration: none;
-            font-size: 0.9em;
-        }
-        .nav-links.light-mode a {
-            color: #000;
-        }
-        .nav-links a:hover {
-            text-decoration: underline;
-        }
-        .theme-btn {
-            padding: 5px 10px;
-            background: #FFF;
-            color: #000;
-            border: 1px solid #FFF;
-            cursor: pointer;
-            border-radius: 0;
-            transition: all 0.3s ease;
-        }
-        .theme-btn.light-mode {
-            background: #000;
-            color: #FFF;
-            border: 1px solid #000;
-        }
-        .homepage, .profile-page {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        .homepage {
-            display: flex;
-        }
-        .profile-page {
-            display: none;
-        }
-        .homepage-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            width: 100%;
+            width: 90%;
             max-width: 600px;
+            justify-content: flex-start;
+            flex-grow: 1;
         }
-        .homepage-avatar {
-            width: 100%;
-            max-width: 300px;
-            aspect-ratio: 1 / 1;
-            background: url('https://i.imgur.com/V7qF6qF.png') no-repeat center;
+
+        /* Logo Box (Homepage Avatar) */
+        .logo-box {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 6em;
+            margin: 20px auto 0;
             background-size: contain;
-            border: 1px solid #FFF;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: border-color 0.3s ease, background-image 0.3s ease;
+            border-radius: 0;
+            overflow: hidden;
+            color: #fff;
         }
-        .homepage-avatar.light-mode {
-            border: 1px solid #000;
-            background: url('https://i.imgur.com/3zXz7pB.png') no-repeat center;
-            background-size: contain;
+        .light-mode .logo-box {
+            border-color: #000;
+            color: #000;
         }
+
+        /* Heading "GeoCities" below avatar */
+        h2#homepage-geocities {
+            margin: 0 auto 20px;
+            text-align: center;
+            display: block;
+            transition: color 0.3s ease, border-color 0.3s ease;
+            font-size: 1.2em;
+            border: 1px solid #fff;
+            border-top: none;
+            padding: 10px 0;
+            border-radius: 0;
+            width: 200px;
+        }
+        #homepage-geocities.light-mode {
+            border-color: #000;
+            color: #000;
+        }
+
+        /* Search Bar Container */
         .search-container {
             display: flex;
-            gap: 10px;
             width: 100%;
-            max-width: 400px;
+            margin-bottom: 20px;
+            height: 38px;
         }
-        .ens-input {
+
+        /* Search Input Field */
+        .search-input {
             flex: 1;
             padding: 10px;
             background: #000;
-            color: #FFF;
-            border: 1px solid #FFF;
-            font-size: 0.9em;
+            color: #fff;
+            border: 1px solid #fff;
+            border-right: none;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            height: 100%;
             box-sizing: border-box;
+            font-size: 16px;
         }
-        .ens-input.light-mode {
-            background: #FFF;
+        .search-input.light-mode {
+            background: #fff;
             color: #000;
-            border: 1px solid #000;
+            border-color: #000;
         }
+        .search-input::placeholder {
+            color: #aaa;
+        }
+        .search-input.light-mode::placeholder {
+            color: #555;
+        }
+        .search-input:focus {
+            font-size: 16px;
+            outline: none;
+        }
+
+        /* Search Button */
         .search-button {
             padding: 10px 15px;
-            background: #FFF;
-            color: #000;
-            border: 1px solid #FFF;
+            background: #000;
+            color: #fff;
+            border: 1px solid #fff;
             cursor: pointer;
             border-radius: 0;
             transition: all 0.3s ease;
-            font-size: 0.9em;
+            height: 100%;
+            font-size: 0.8em;
+            box-sizing: border-box;
         }
         .search-button.light-mode {
-            background: #000;
-            color: #FFF;
-            border: 1px solid #000;
+            background: #fff;
+            color: #000;
+            border-color: #000;
         }
-        .error-message, .success-message {
-            margin-top: 10px;
+
+        /* Profile Page Container */
+        #profile-page {
             width: 100%;
-            max-width: 400px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        /* Neighborhood Dropdown */
+        .neighborhood-select {
+            width: 100%;
+            max-width: 200px;
+            height: 38px;
+            padding: 5px;
+            background: #000;
+            color: #fff;
+            border: 1px solid #fff;
+            border-radius: 0;
+            font-size: 0.9em;
+            font-family: sans-serif;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23fff' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 30px;
+        }
+        .neighborhood-select.light-mode {
+            background-color: #fff;
+            color: #000;
+            border: 1px solid #000;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23000' d='M2 4h8L6 8z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+
+        /* Animations for Special Effects */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Neighborhood Container */
+        .neighborhood-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .neighborhood-geocities {
+            background: #000;
+            transition: background 0.3s ease;
+        }
+        .neighborhood-geocities.light-mode {
+            background: #fff;
+        }
+        .neighborhood-area51 {
+            background: #0A0A0A;
+            color: #00FF00;
+            font-family: 'Orbitron', sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-area51.light-mode {
+            background: #E0E0E0;
+            color: #008000;
+        }
+        .neighborhood-athens {
+            background: #2F4F4F;
+            color: #ADD8E6;
+            font-family: 'Georgia', serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-athens.light-mode {
+            background: #F5F5DC;
+            color: #00008B;
+        }
+        .neighborhood-augusta {
+            background: #006400;
+            color: #FFFFFF;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-augusta.light-mode {
+            background: #90EE90;
+            color: #006400;
+        }
+        .neighborhood-baja {
+            background: #F4A460;
+            color: #FF4500;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-baja.light-mode {
+            background: #D2B48C;
+            color: #FF4500;
+        }
+        .neighborhood-bourbonstreet {
+            background: #4B0082;
+            color: #FFFF00;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-bourbonstreet.light-mode {
+            background: #E6E6FA;
+            color: #4B0082;
+        }
+        .neighborhood-broadway {
+            background: #1C2526;
+            color: #FF4040;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-broadway.light-mode {
+            background: #FFFDD0;
+            color: #8B0000;
+        }
+
+        /* Profile Header Display */
+        #profile-header {
+            width: 100%;
+            height: 0;
+            padding-bottom: 33.33% !important;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: none;
+            border: 1px solid #fff;
+            box-sizing: border-box;
+            border-radius: 0;
+            overflow: hidden;
+            margin-bottom: 0;
+            transition: border-color 0.3s ease;
+        }
+        .light-mode #profile-header {
+            border-color: #000;
+        }
+        .neighborhood-area51 #profile-header {
+            border-color: #00FF00;
+        }
+        .neighborhood-area51.light-mode #profile-header {
+            border-color: #008000;
+        }
+        .neighborhood-athens #profile-header {
+            border-color: #ADD8E6;
+        }
+        .neighborhood-athens.light-mode #profile-header {
+            border-color: #00008B;
+        }
+        .neighborhood-augusta #profile-header {
+            border-color: #FFFFFF;
+        }
+        .neighborhood-augusta.light-mode #profile-header {
+            border-color: #006400;
+        }
+        .neighborhood-baja #profile-header {
+            border-color: #FF4500;
+        }
+        .neighborhood-baja.light-mode #profile-header {
+            border-color: #FF4500;
+        }
+        .neighborhood-bourbonstreet #profile-header {
+            border-color: #FFFF00;
+        }
+        .neighborhood-bourbonstreet.light-mode #profile-header {
+            border-color: #4B0082;
+        }
+        .neighborhood-broadway #profile-header {
+            border-color: #FF4040;
+        }
+        .neighborhood-broadway.light-mode #profile-header {
+            border-color: #8B0000;
+        }
+
+        /* Profile Header Link Wrapper */
+        #profile-header-link {
+            display: block;
+            width: 100%;
+            text-decoration: none;
+            color: inherit;
+            cursor: default;
+            pointer-events: none;
+        }
+        #profile-header-link[href]:not([href=""]) {
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        /* Profile Avatar Display */
+        #profile-avatar {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10em;
+            border: 1px solid #fff;
+            box-sizing: border-box;
+            border-radius: 0;
+            overflow: hidden;
+            margin-bottom: 0;
+            color: #fff;
+            transition: border-color 0.3s ease, color 0.3s ease, background-image 0.3s ease;
+        }
+        .light-mode #profile-avatar {
+            border-color: #000;
+            color: #000;
+        }
+        .neighborhood-area51 #profile-avatar {
+            border-color: #00FF00;
+            color: #00FF00;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .neighborhood-area51.light-mode #profile-avatar {
+            border-color: #008000;
+            color: #008000;
+        }
+        .neighborhood-athens #profile-avatar {
+            border-color: #ADD8E6;
+            color: #ADD8E6;
+            font-family: 'Georgia', serif;
+        }
+        .neighborhood-athens.light-mode #profile-avatar {
+            border-color: #00008B;
+            color: #00008B;
+        }
+        .neighborhood-augusta #profile-avatar {
+            border-color: #FFFFFF;
+            color: #FFFFFF;
+            font-family: sans-serif;
+        }
+        .neighborhood-augusta.light-mode #profile-avatar {
+            border-color: #006400;
+            color: #006400;
+        }
+        .neighborhood-baja #profile-avatar {
+            border-color: #FF4500;
+            color: #FF4500;
+            font-family: sans-serif;
+        }
+        .neighborhood-baja.light-mode #profile-avatar {
+            border-color: #FF4500;
+            color: #FF4500;
+        }
+        .neighborhood-bourbonstreet #profile-avatar {
+            border-color: #FFFF00;
+            color: #FFFF00;
+            font-family: sans-serif;
+        }
+        .neighborhood-bourbonstreet.light-mode #profile-avatar {
+            border-color: #4B0082;
+            color: #4B0082;
+        }
+        .neighborhood-broadway #profile-avatar {
+            border-color: #FF4040;
+            color: #FF4040;
+            font-family: sans-serif;
+        }
+        .neighborhood-broadway.light-mode #profile-avatar {
+            border-color: #8B0000;
+            color: #8B0000;
+        }
+
+        /* Profile Avatar Link Wrapper */
+        #profile-avatar-link {
+            display: block;
+            width: 100%;
+            text-decoration: none;
+            color: inherit;
+            cursor: default;
+            pointer-events: none;
+        }
+        #profile-avatar-link[href]:not([href=""]) {
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        /* Container for Profile Records */
+        .profile-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            margin: 0;
+        }
+
+        /* Individual Profile Record Box */
+        .profile-box {
+            border: 1px solid #fff;
+            padding: 10px;
+            background: #000;
+            color: #fff;
+            word-break: break-word;
+            transition: all 0.3s ease;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+            border-top: none;
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 38px;
+        }
+        .profile-box:first-child {
+            border-top: 1px solid #fff;
+        }
+        .profile-box.light-mode {
+            background: #fff;
+            color: #000;
+            border-color: #000;
+        }
+        .profile-box.light-mode:first-child {
+            border-top: 1px solid #000;
+        }
+        .neighborhood-area51 .profile-box {
+            border-color: #00FF00;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00FF00;
+            box-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .neighborhood-area51 .profile-box:first-child {
+            border-top: 1px solid #00FF00;
+        }
+        .neighborhood-area51.light-mode .profile-box {
+            border-color: #008000;
+            background: rgba(255, 255, 255, 0.9);
+            color: #008000;
+            box-shadow: none;
+        }
+        .neighborhood-area51.light-mode .profile-box:first-child {
+            border-top: 1px solid #008000;
+        }
+        .neighborhood-athens .profile-box {
+            border-color: #ADD8E6;
+            background: rgba(47, 79, 79, 0.8);
+            color: #ADD8E6;
+            font-family: 'Georgia', serif;
+        }
+        .neighborhood-athens .profile-box:first-child {
+            border-top: 1px solid #ADD8E6;
+        }
+        .neighborhood-athens.light-mode .profile-box {
+            border-color: #00008B;
+            background: rgba(245, 245, 220, 0.9);
+            color: #00008B;
+        }
+        .neighborhood-athens.light-mode .profile-box:first-child {
+            border-top: 1px solid #00008B;
+        }
+        .neighborhood-augusta .profile-box {
+            border-color: #FFFFFF;
+            background: rgba(0, 100, 0, 0.8);
+            background-image: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%);
+            color: #FFFFFF;
+            font-family: sans-serif;
+        }
+        .neighborhood-augusta .profile-box:first-child {
+            border-top: 1px solid #FFFFFF;
+        }
+        .neighborhood-augusta.light-mode .profile-box {
+            border-color: #006400;
+            background: rgba(144, 238, 144, 0.9);
+            background-image: linear-gradient(45deg, rgba(0,0,0,0.1) 25%, transparent 25%);
+            color: #006400;
+        }
+        .neighborhood-augusta.light-mode .profile-box:first-child {
+            border-top: 1px solid #006400;
+        }
+        .neighborhood-baja .profile-box {
+            border-color: #FF4500;
+            background: rgba(244, 164, 96, 0.8);
+            color: #FF4500;
+            font-family: sans-serif;
+            transition: transform 0.2s ease;
+        }
+        .neighborhood-baja .profile-box:hover {
+            transform: scale(1.02);
+        }
+        .neighborhood-baja .profile-box:first-child {
+            border-top: 1px solid #FF4500;
+        }
+        .neighborhood-baja.light-mode .profile-box {
+            border-color: #FF4500;
+            background: rgba(210, 180, 140, 0.9);
+            color: #FF4500;
+        }
+        .neighborhood-baja.light-mode .profile-box:first-child {
+            border-top: 1px solid #FF4500;
+        }
+        .neighborhood-bourbonstreet .profile-box {
+            border-color: #FFFF00;
+            background: rgba(75, 0, 130, 0.8);
+            color: #FFFF00;
+            font-family: sans-serif;
+            animation: fadeIn 1s ease-in;
+        }
+        .neighborhood-bourbonstreet .profile-box:first-child {
+            border-top: 1px solid #FFFF00;
+        }
+        .neighborhood-bourbonstreet.light-mode .profile-box {
+            border-color: #4B0082;
+            background: rgba(230, 230, 250, 0.9);
+            color: #4B0082;
+            animation: fadeIn 1s ease-in;
+        }
+        .neighborhood-bourbonstreet.light-mode .profile-box:first-child {
+            border-top: 1px solid #4B0082;
+        }
+        .neighborhood-broadway .profile-box {
+            border-color: #FF4040;
+            background: rgba(28, 37, 38, 0.8);
+            color: #FF4040;
+            font-family: sans-serif;
+            transition: box-shadow 0.3s ease;
+        }
+        .neighborhood-broadway .profile-box:hover {
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        .neighborhood-broadway .profile-box:first-child {
+            border-top: 1px solid #FF4040;
+        }
+        .neighborhood-broadway.light-mode .profile-box {
+            border-color: #8B0000;
+            background: rgba(255, 253, 208, 0.9);
+            color: #8B0000;
+        }
+        .neighborhood-broadway.light-mode .profile-box:first-child {
+            border-top: 1px solid #8B0000;
+        }
+
+        /* Header part of Profile Box */
+        .profile-box-header {
+            font-weight: bold;
+            margin: 0;
+            color: #fff;
+            transition: color 0.3s ease;
+            flex: 0 0 100px;
+            min-width: 80px;
+            text-align: left;
+        }
+        .profile-box-header.light-mode {
+            color: #000;
+        }
+        .neighborhood-area51 .profile-box-header {
+            color: #00FF00;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .neighborhood-area51.light-mode .profile-box-header {
+            color: #008000;
+        }
+        .neighborhood-athens .profile-box-header {
+            color: #ADD8E6;
+            font-family: 'Georgia', serif;
+        }
+        .neighborhood-athens.light-mode .profile-box-header {
+            color: #00008B;
+        }
+        .neighborhood-augusta .profile-box-header {
+            color: #FFFFFF;
+            font-family: sans-serif;
+        }
+        .neighborhood-augusta.light-mode .profile-box-header {
+            color: #006400;
+        }
+        .neighborhood-baja .profile-box-header {
+            color: #FF4500;
+            font-family: sans-serif;
+        }
+        .neighborhood-baja.light-mode .profile-box-header {
+            color: #FF4500;
+        }
+        .neighborhood-bourbonstreet .profile-box-header {
+            color: #FFFF00;
+            font-family: sans-serif;
+        }
+        .neighborhood-bourbonstreet.light-mode .profile-box-header {
+            color: #4B0082;
+        }
+        .neighborhood-broadway .profile-box-header {
+            color: #FF4040;
+            font-family: sans-serif;
+        }
+        .neighborhood-broadway.light-mode .profile-box-header {
+            color: #8B0000;
+        }
+
+        /* Value part of Profile Box */
+        .profile-box-value {
+            flex: 1;
+            text-align: left;
+            word-break: break-all;
+            color: #fff;
+            transition: color 0.3s ease;
+        }
+        .profile-box-value.light-mode {
+            color: #000;
+        }
+        .neighborhood-area51 .profile-box-value {
+            color: #00FF00;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .neighborhood-area51.light-mode .profile-box-value {
+            color: #008000;
+        }
+        .neighborhood-athens .profile-box-value {
+            color: #ADD8E6;
+            font-family: 'Georgia', serif;
+        }
+        .neighborhood-athens.light-mode .profile-box-value {
+            color: #00008B;
+        }
+        .neighborhood-augusta .profile-box-value {
+            color: #FFFFFF;
+            font-family: sans-serif;
+        }
+        .neighborhood-augusta.light-mode .profile-box-value {
+            color: #006400;
+        }
+        .neighborhood-baja .profile-box-value {
+            color: #FF4500;
+            font-family: sans-serif;
+        }
+        .neighborhood-baja.light-mode .profile-box-value {
+            color: #FF4500;
+        }
+        .neighborhood-bourbonstreet .profile-box-value {
+            color: #FFFF00;
+            font-family: sans-serif;
+        }
+        .neighborhood-bourbonstreet.light-mode .profile-box-value {
+            color: #4B0082;
+        }
+        .neighborhood-broadway .profile-box-value {
+            color: #FF4040;
+            font-family: sans-serif;
+        }
+        .neighborhood-broadway.light-mode .profile-box-value {
+            color: #8B0000;
+        }
+        .profile-box-value a {
+            color: inherit;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+        .profile-box-value a:hover {
+            text-decoration: none;
+        }
+
+        /* Error Message Styling */
+        .error-message {
+            color: red;
+            margin-top: Tues: 10px;
+            transition: color 0.3s ease;
+            display: none;
+            width: 100%;
             text-align: center;
             padding: 5px;
             box-sizing: border-box;
-            display: none;
+            min-height: 20px;
         }
-        .error-message {
-            color: red;
-        }
+
+        /* Success Message Styling */
         .success-message {
-            color: green;
-        }
-        .neighborhood-container {
-            width: 90%;
-            max-width: 600px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .neighborhood-select-container {
-            width: 100%;
-            max-width: 400px;
-            margin-bottom: 10px;
-        }
-        .neighborhood-select {
-            width: 100%;
-            padding: 10px;
-            background: #000;
-            color: #FFF;
-            border: 1px solid #FFF;
-            font-size: 0.9em;
-            box-sizing: border-box;
-        }
-        .neighborhood-select.light-mode {
-            background: #FFF;
-            color: #000;
-            border: 1px solid #000;
-        }
-        .register-button-container {
-            width: 100%;
-            max-width: 400px;
-            display: flex;
-            gap: 10px;
+            color: #00ff00;
             margin-top: 10px;
+            transition: color 0.3s ease;
             display: none;
+            width: 100%;
+            text-align: center;
+            padding: 5px;
+            box-sizing: border-box;
+            min-height: 20px;
         }
-        .register-button {
-            flex: 1;
+        .success-message.light-mode {
+            color: #008000;
+        }
+
+        /* Theme Toggle Button */
+        .toggle-button {
             padding: 10px 15px;
-            background: #000;
-            color: #FFF;
-            border: 1px solid #FFF;
+            color: #fff;
+            border: 1px solid #fff;
             cursor: pointer;
             border-radius: 0;
             transition: all 0.3s ease;
             font-size: 0.8em;
+            min-width: 80px;
             text-align: center;
             height: 38px;
+            background: #000;
             box-sizing: border-box;
         }
-        .register-button.light-mode {
-            background: #FFF;
+        .toggle-button.light-mode {
+            background: #fff;
+            color: #000;
+            border-color: #000;
+        }
+
+        /* Register Button Container */
+        .register-button-container {
+            width: 100%;
+            display: none;
+            flex-direction: row;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* Register and Download Buttons */
+        .register-button, .download-button {
+            padding: 10px 15px;
+            color: #fff;
+            border: 1px solid #fff;
+            cursor: pointer;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            font-size: 0.8	http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23fff' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 30px;
+        }
+        .neighborhood-select.light-mode {
+            background-color: #fff;
             color: #000;
             border: 1px solid #000;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23000' d='M2 4h8L6 8z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
         }
-        .download-button {
+
+        /* Animations for Special Effects */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Neighborhood Container */
+        .neighborhood-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .neighborhood-geocities {
+            background: #000;
+            transition: background 0.3s ease;
+        }
+        .neighborhood-geocities.light-mode {
+            background: #fff;
+        }
+        .neighborhood-area51 {
+            background: #0A0A0A;
+            color: #00FF00;
+            font-family: 'Orbitron', sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-area51.light-mode {
+            background: #E0E0E0;
+            color: #008000;
+        }
+        .neighborhood-athens {
+            background: #2F4F4F;
+            color: #ADD8E6;
+            font-family: 'Georgia', serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-athens.light-mode {
+            background: #F5F5DC;
+            color: #00008B;
+        }
+        .neighborhood-augusta {
+            background: #006400;
+            color: #FFFFFF;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-augusta.light-mode {
+            background: #90EE90;
+            color: #006400;
+        }
+        .neighborhood-baja {
+            background: #F4A460;
+            color: #FF4500;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-baja.light-mode {
+            background: #D2B48C;
+            color: #FF4500;
+        }
+        .neighborhood-bourbonstreet {
+            background: #4B0082;
+            color: #FFFF00;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-bourbonstreet.light-mode {
+            background: #E6E6FA;
+            color: #4B0082;
+        }
+        .neighborhood-broadway {
+            background: #1C2526;
+            color: #FF4040;
+            font-family: sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .neighborhood-broadway.light-mode {
+            background: #FFFDD0;
+            color: #8B0000;
+        }
+
+        /* Profile Header Display */
+        #profile-header {
+            width: 100%;
+            height: 0;
+            padding-bottom: 33.33% !important;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: none;
+            border: 1px solid #fff;
+            box-sizing: border-box;
+            border-radius: 0;
+            overflow: hidden;
+            margin-bottom: 0;
+            transition: border-color 0.3s ease;
+        }
+        .light-mode #profile-header {
+            border-color: #000;
+        }
+        .neighborhood-area51 #profile-header {
+            border-color: #00FF00;
+        }
+        .neighborhood-area51.light-mode #profile-header {
+            border-color: #008000;
+        }
+        .neighborhood-athens #profile-header {
+            border-color: #ADD8E6;
+        }
+        .neighborhood-athens.light-mode #profile-header {
+            border-color: #00008B;
+        }
+        .neighborhood-augusta #profile-header {
+            border-color: #FFFFFF;
+        }
+        .neighborhood-augusta.light-mode #profile-header {
+            border-color: #006400;
+        }
+        .neighborhood-baja #profile-header {
+            border-color: #FF4500;
+        }
+        .neighborhood-baja.light-mode #profile-header {
+            border-color: #FF4500;
+        }
+        .neighborhood-bourbonstreet #profile-header {
+            border-color: #FFFF00;
+        }
+        .neighborhood-bourbonstreet.light-mode #profile-header {
+            border-color: #4B0082;
+        }
+        .neighborhood-broadway #profile-header {
+            border-color: #FF4040;
+        }
+        .neighborhood-broadway.light-mode #profile-header {
+            border-color: #8B0000;
+        }
+
+        /* Profile Header Link Wrapper */
+        #profile-header-link {
+            display: block;
+            width: 100%;
+            text-decoration: none;
+            color: inherit;
+            cursor: default;
+            pointer-events: none;
+        }
+        #profile-header-link[href]:not([href=""]) {
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        /* Profile Avatar Display */
+        #profile-avatar {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10em;
+            border: 1px solid #fff;
+            box-sizing: border-box;
+            border-radius: 0;
+            overflow: hidden;
+            margin-bottom: 0;
+            color: #fff;
+            transition: border-color 0.3s ease, color 0.3s ease, background-image 0.3s ease;
+        }
+        .light-mode #profile-avatar {
+            border-color: #000;
+            color: #000;
+        }
+        .neighborhood-area51 #profile-avatar {
+            border-color: #00FF00;
+            color: #00FF00;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .neighborhood-area51.light-mode #profile-avatar {
+            border-color: #008000;
+            color: #008000;
+        }
+        .neighborhood-athens #profile-avatar {
+            border-color: #ADD8E6;
+            color: #ADD8E6;
+            font-family: 'Georgia', serif;
+        }
+        .neighborhood-athens.light-mode #profile-avatar {
+            border-color: #00008B;
+            color: #00008B;
+        }
+        .neighborhood-augusta #profile-avatar {
+            border-color: #FFFFFF;
+            color: #FFFFFF;
+            font-family: sans-serif;
+        }
+        .neighborhood-augusta.light-mode #profile-avatar {
+            border-color: #006400;
+            color: #006400;
+        }
+        .neighborhood-baja #profile-avatar {
+            border-color: #FF4500;
+            color: #FF4500;
+            font-family: sans-serif;
+        }
+        .neighborhood-baja.light-mode #profile-avatar {
+            border-color: #FF4500;
+            color: #FF4500;
+        }
+        .neighborhood-bourbonstreet #profile-avatar {
+            border-color: #FFFF00;
+            color: #FFFF00;
+            font-family: sans-serif;
+        }
+        .neighborhood-bourbonstreet.light-mode #profile-avatar {
+            border-color: #4B0082;
+            color: #4B0082;
+        }
+        .neighborhood-broadway #profile-avatar {
+            border-color: #FF4040;
+            color: #FF4040;
+            font-family: sans-serif;
+        }
+        .neighborhood-broadway.light-mode #profile-avatar {
+            border-color: #8B0000;
+            color: #8B0000;
+        }
+
+        /* Profile Avatar Link Wrapper */
+        #profile-avatar-link {
+            display: block;
+            width: 100%;
+            text-decoration: none;
+            color: inherit;
+            cursor: default;
+            pointer-events: none;
+        }
+        #profile-avatar-link[href]:not([href=""]) {
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        /* Container for Profile Records */
+        .profile-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            margin: 0;
+        }
+
+        /* Individual Profile Record Box */
+        .profile-box {
+            border: 1px solid #fff;
+            padding: 10px;
+            background: #000;
+            color: #fff;
+            word-break: break-word;
+            transition: all 0.3s ease;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+            border-top: none;
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 38px;
+        }
+        .profile-box:first-child {
+            border-top: 1px solid #fff;
+        }
+        .profile-box.light-mode {
+            background: # بود; 
+            color: #000;
+            border-color: #000;
+        }
+        .profile-box.light-mode:first-child {
+            border-top: 1px solid #000;
+        }
+        .neighborhood-area51 .profile-box {
+            border-color: #00FF00;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00FF00;
+            box-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .neighborhood-area51 .profile-box:first-child {
+            border-top: 1px solid #00FF00;
+        }
+        .neighborhood-area51.light-mode .profile-box {
+            border-color: #008000;
+            background: rgba(255, 255, 255, 0.9);
+            color: #008000;
+            box-shadow: none;
+        }
+        .neighborhood-area51.light-mode .profile-box:first-child {
+            border-top: 1px solid #008000;
+        }
+        .neighborhood-athens .profile-box {
+            border-color: #ADD8E6;
+            background: rgba(47, 79, 79, 0.8);
+            color: #ADD8E6;
+            font-family: 'Georgia', serif;
+        }
+        .neighborhood-athens .profile-box:first-child {
+            border-top: 1px solid #ADD8E6;
+        }
+        .neighborhood-athens.light-mode .profile-box {
+            border-color: #00008B;
+            background: rgba(245, 245, 220, 0.9);
+            color: #00008B;
+        }
+        .neighborhood-athens.light-mode .profile-box:first-child {
+            border-top: 1px solid #00008B;
+        }
+        .neighborhood-augusta .profile-box {
+            border-color: #FFFFFF;
+            background: rgba(0, 100, 0, 0.8);
+            background-image: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%);
+            color: #FFFFFF;
+            font-family: sans-serif;
+        }
+        .neighborhood-augusta .profile-box:first-child {
+            border-top: 1px solid #FFFFFF;
+        }
+        .neighborhood-augusta.light-mode .profile-box {
+            border-color: #006400;
+            background: rgba(144, 238, 144, 0.9);
+            background-image: linear-gradient(45deg, rgba(0,0,0,0.1) 25%, transparent 25%);
+            color: #006400;
+        }
+        .neighborhood-augusta.light-mode .profile-box:first-child {
+            border-top: 1px solid #006400;
+        }
+        .neighborhood-baja .profile-box {
+            border-color: #FF4500;
+            background: rgba(244, 164, 96, 0.8);
+            color: #FF4500;
+            font-family: sans-serif;
+            transition: transform 0.2s ease;
+        }
+        .neighborhood-baja .profile-box:hover {
+            transform: scale(1.02);
+        }
+        .neighborhood-baja .profile-box:first-child {
+            border-top: 1px solid #FF4500;
+        }
+        .neighborhood-baja.light-mode .profile-box {
+            border-color: #FF4500;
+            background: rgba(210, 180, 140, 0.9);
+            color: #FF4500;
+        }
+        .neighborhood-baja.light-mode .profile-box:first-child {
+            border-top: 1px solid #FF4500;
+        }
+        .neighborhood-bourbonstreet .profile-box {
+            border-color: #FFFF00;
+            background: rgba(75, 0, 130, 0.8);
+            color: #FFFF00;
+            font-family: sans-serif;
+            animation: fadeIn 1s ease-in;
+        }
+        .neighborhood-bourbonstreet .profile-box:first-child {
+            border-top: 1px solid #FFFF00;
+        }
+        .neighborhood-bourbonstreet.light-mode .profile-box {
+            border-color: #4B0082;
+            background: rgba(230, 230, 250, 0.9);
+            color: #4B0082;
+            animation: fadeIn 1s ease-in;
+        }
+        .neighborhood-bourbonstreet.light-mode .profile-box:first-child {
+            border-top: 1px solid #4B0082;
+        }
+        .neighborhood-broadway .profile-box {
+            border-color: #FF4040;
+            background: rgba(28, 37, 38, 0.8);
+            color: #FF4040;
+            font-family: sans-serif;
+            transition: box-shadow 0.3s ease;
+        }
+        .neighborhood-broadway .profile-box:hover {
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        .neighborhood-broadway .profile-box:first-child {
+            border-top: 1px solid #FF4040;
+        }
+        .neighborhood-broadway.light-mode .profile-box {
+            border-color: #8B0000;
+            background: rgba(255, 253, 208, 0.9);
+            color: #8B0000;
+        }
+        .neighborhood-broadway.light-mode .profile-box:first-child {
+            border-top: 1px solid #8B0000;
+        }
+
+        /* Header part of Profile Box */
+        .profile-box-header {
+            font-weight: bold;
+            margin: 0;
+            color: #fff;
+            transition: color 0.3s ease;
+            flex: 0 0 100px;
+            min-width: 80px;
+            text-align: left;
+        }
+        .profile-box-header.light-mode {
+            color: #000;
+        }
+        .neighborhood-area51 .profile-box-header {
+            color: #00FF00;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .neighborhood-area51.light-mode .profile-box-header {
+            color: #008000;
+        }
+        .neighborhood-athens .profile-box-header {
+            color: #ADD8E6;
+            font-family: 'Georgia', serif;
+        }
+        .neighborhood-athens.light-mode .profile-box-header {
+            color: #00008B;
+        }
+        .neighborhood-augusta .profile-box-header {
+            color: #FFFFFF;
+            font-family: sans-serif;
+        }
+        .neighborhood-augusta.light-mode .profile-box-header {
+            color: #006400;
+        }
+        .neighborhood-baja .profile-box-header {
+            color: #FF4500;
+            font-family: sans-serif;
+        }
+        .neighborhood-baja.light-mode .profile-box-header {
+            color: #FF4500;
+        }
+        .neighborhood-bourbonstreet .profile-box-header {
+            color: #FFFF00;
+            font-family: sans-serif;
+        }
+        .neighborhood-bourbonstreet.light-mode .profile-box-header {
+            color: #4B0082;
+        }
+        .neighborhood-broadway .profile-box-header {
+            color: #FF4040;
+            font-family: sans-serif;
+        }
+        .neighborhood-broadway.light-mode .profile-box-header {
+            color: #8B0000;
+        }
+
+        /* Value part of Profile Box */
+        .profile-box-value {
+            flex: 1;
+            text-align: left;
+            word-break: break-all;
+            color: #fff;
+            transition: color 0.3s ease;
+        }
+        .profile-box-value.light-mode {
+            color: #000;
+        }
+        .neighborhood-area51 .profile-box-value {
+            color: #00FF00;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .neighborhood-area51.light-mode .profile-box-value {
+            color: #008000;
+        }
+        .neighborhood-athens .profile-box-value {
+            color: #ADD8E6;
+            font-family: 'Georgia', serif;
+        }
+        .neighborhood-athens.light-mode .profile-box-value {
+            color: #00008B;
+        }
+        .neighborhood-augusta .profile-box-value {
+            color: #FFFFFF;
+            font-family: sans-serif;
+        }
+        .neighborhood-augusta.light-mode .profile-box-value {
+            color: #006400;
+        }
+        .neighborhood-baja .profile-box-value {
+            color: #FF4500;
+            font-family: sans-serif;
+        }
+        .neighborhood-baja.light-mode .profile-box-value {
+            color: #FF4500;
+        }
+        .neighborhood-bourbonstreet .profile-box-value {
+            color: #FFFF00;
+            font-family: sans-serif;
+        }
+        .neighborhood-bourbonstreet.light-mode .profile-box-value {
+            color: #4B0082;
+        }
+        .neighborhood-broadway .profile-box-value {
+            color: #FF4040;
+            font-family: sans-serif;
+        }
+        .neighborhood-broadway.light-mode .profile-box-value {
+            color: #8B0000;
+        }
+        .profile-box-value a {
+            color: inherit;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+        .profile-box-value a:hover {
+            text-decoration: none;
+        }
+
+        /* Error Message Styling */
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            transition: color 0.3s ease;
+            display: none;
+            width: 100%;
+            text-align: center;
+            padding: 5px;
+            box-sizing: border-box;
+            min-height: 20px;
+        }
+
+        /* Success Message Styling */
+        .success-message {
+            color: #00ff00;
+            margin-top: 10px;
+            transition: color 0.3s ease;
+            display: none;
+            width: 100%;
+            text-align: center;
+            padding: 5px;
+            box-sizing: border-box;
+            min-height: 20px;
+        }
+        .success-message.light-mode {
+            color: #008000;
+        }
+
+        /* Theme Toggle Button */
+        .toggle-button {
             padding: 10px 15px;
-            color: #FFF;
-            border: 1px solid #FFF;
+            color: #fff;
+            border: 1px solid #fff;
+            cursor: pointer;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            font-size: 0.8em;
+            min-width: 80px;
+            text-align: center;
+            height: 38px;
+            background: #000;
+            box-sizing: border-box;
+        }
+        .toggle-button.light-mode {
+            background: #fff;
+            color: #000;
+            border-color: #000;
+        }
+
+        /* Register Button Container */
+        .register-button-container {
+            width: 100%;
+            display: none;
+            flex-direction: row;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* Register and Download Buttons */
+        .register-button, .download-button {
+            padding: 10px 15px;
+            color: #fff;
+            border: 1px solid #fff;
             cursor: pointer;
             border-radius: 0;
             transition: all 0.3s ease;
@@ -255,501 +1368,256 @@
             box-sizing: border-box;
             display: inline-block;
         }
-        .download-button.light-mode {
-            background: #FFF;
+        .register-button.light-mode, .download-button.light-mode {
+            background: #fff;
             color: #000;
             border-color: #000;
         }
-        .profile-header {
-            width: 100%;
-            height: 0;
-            padding-bottom: 33.33%;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            border: 1px solid #FFF;
-            box-sizing: border-box;
-            display: none;
+        .neighborhood-area51 .register-button, .neighborhood-area51 .download-button {
+            border-color: #00FF00;
+            color: #00FF00;
+            background: rgba(0, 0, 0, 0.8);
         }
-        .profile-avatar {
+        .neighborhood-area51.light-mode .register-button, .neighborhood-area51.light-mode .download-button {
+            border-color: #008000;
+            color: #008000;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        .neighborhood-athens .register-button, .neighborhood-athens .download-button {
+            border-color: #ADD8E6;
+            color: #ADD8E6;
+            background: rgba(47, 79, 79, 0.8);
+        }
+        .neighborhood-athens.light-mode .register-button, .neighborhood-athens.light-mode .download-button {
+            border-color: #00008B;
+            color: #00008B;
+            background: rgba(245, 245, 220, 0.9);
+        }
+        .neighborhood-augusta .register-button, .neighborhood-augusta .download-button {
+            border-color: #FFFFFF;
+            color: #FFFFFF;
+            background: rgba(0, 100, 0, 0.8);
+        }
+        .neighborhood-augusta.light-mode .register-button, .neighborhood-augusta.light-mode .download-button {
+            border-color: #006400;
+            color: #006400;
+            background: rgba(144, 238, 144, 0.9);
+        }
+        .neighborhood-baja .register-button, .neighborhood-baja .download-button {
+            border-color: #FF4500;
+            color: #FF4500;
+            background: rgba(244, 164, 96, 0.8);
+        }
+        .neighborhood-baja.light-mode .register-button, .neighborhood-baja.light-mode .download-button {
+            border-color: #FF4500;
+            color: #FF4500;
+            background: rgba(210, 180, 140, 0.9);
+        }
+        .neighborhood-bourbonstreet .register-button, .neighborhood-bourbonstreet .download-button {
+            border-color: #FFFF00;
+            color: #FFFF00;
+            background: rgba(75, 0, 130, 0.8);
+        }
+        .neighborhood-bourbonstreet.light-mode .register-button, .neighborhood-bourbonstreet.light-mode .download-button {
+            border-color: #4B0082;
+            color: #4B0082;
+            background: rgba(230, 230, 250, 0.9);
+        }
+        .neighborhood-broadway .register-button, .neighborhood-broadway .download-button {
+            border-color: #FF4040;
+            color: #FF4040;
+            background: rgba(28, 37, 38, 0.8);
+        }
+        .neighborhood-broadway.light-mode .register-button, .neighborhood-broadway.light-mode .download-button {
+            border-color: #8B0000;
+            color: #8B0000;
+            background: rgba(255, 253, 208, 0.9);
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            aspect-ratio: 1 / 1;
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
+            padding: 10px 20px;
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #000;
+            z-index: 10;
+            box-sizing: border-box;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+        body.light-mode .header {
+            background: #fff;
+        }
+
+        /* Header Logo Box */
+        .header-title-box {
+            display: flex;
+            align-items: center;
             justify-content: center;
-            align-items: center;
-            font-size: 10em;
-            border: 1px solid #FFF;
-            box-sizing: border-box;
-            color: #FFF;
+            height: 38px;
+            width: 38px;
+            border: 1px solid #fff;
+            border-radius: 0;
+            transition: border-color 0.3s ease;
+            cursor: pointer;
         }
-        .profile-container {
-            width: 100%;
+        .header-title-box.light-mode {
+            border-color: #000;
         }
-        .profile-box {
-            border: 1px solid #FFF;
-            padding: 10px;
-            color: #FFF;
-            word-break: break-word;
+
+        /* Header Logo Text */
+        .header-title {
+            color: #fff;
+            font-size: 1.2em;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 10px;
-            border-top: none;
-            width: 100%;
-            box-sizing: border-box;
-            min-height: 38px;
-        }
-        .profile-box:first-child {
-            border-top: 1px solid #FFF;
-        }
-        .profile-box.light-mode {
-            border-color: #000;
-            color: #000;
-        }
-        .profile-box-header {
+            height: 100%;
+            padding: 0;
+            margin: 0;
             font-weight: bold;
-            color: #FFF;
-            flex: 0 0 100px;
-            min-width: 80px;
-            text-align: left;
+            transition: color 0.3s ease;
         }
-        .profile-box-header.light-mode {
+        .header-title.light-mode {
             color: #000;
         }
-        .profile-box-value {
-            flex: 1;
-            text-align: left;
-            word-break: break-all;
-            color: #FFF;
+
+        /* Header Button Wrapper */
+        .header-button-wrapper {
+            display: flex;
+            align-items: center;
+            height: 38px;
+            box-sizing: border-box;
         }
-        .profile-box-value.light-mode {
-            color: #000;
-        }
-        .profile-box-value a {
-            color: #FFF;
-            text-decoration: underline;
-        }
-        .profile-box-value.light-mode a {
-            color: #000;
-        }
-        .profile-box-value a:hover {
-            text-decoration: none;
-        }
+
+        /* Footer Styles */
         .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
             width: 100%;
             background: #000;
-            color: #FFF;
+            color: #fff;
             text-align: center;
             padding: 10px 0;
             font-size: 0.8em;
             box-sizing: border-box;
-            border-top: 1px solid #FFF;
+            border-top: 1px solid #fff;
+            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            z-index: 10;
         }
         .footer.light-mode {
-            background: #FFF;
+            background: #fff;
             color: #000;
-            border-top: 1px solid #000;
+            border-top-color: #000;
         }
         .footer a {
             color: inherit;
             text-decoration: none;
-            transition: text-decoration 0.3s ease;
         }
         .footer a:hover {
             text-decoration: underline;
         }
-        .neighborhood-geocities {
-            background: #000;
-            color: #FFF;
-        }
-        .neighborhood-geocities.light-mode {
-            background: #FFF;
-            color: #000;
-        }
-        .neighborhood-area51 {
-            font-family: 'Orbitron', sans-serif;
-            background: #0A0A0A;
-            color: #00FF00;
-        }
-        .neighborhood-area51.light-mode {
-            background: #E0E0E0;
-            color: #008000;
-        }
-        .neighborhood-area51 .profile-box {
-            box-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00;
-            border-color: #00FF00;
-            background: rgba(0, 0, 0, 0.8);
-        }
-        .neighborhood-area51.light-mode .profile-box {
-            box-shadow: 0 0 10px #008000, 0 0 20px #008000;
-            border-color: #008000;
-            background: rgba(255, 255, 255, 0.9);
-            color: #008000;
-        }
-        .neighborhood-area51 .profile-box-header,
-        .neighborhood-area51 .profile-box-value,
-        .neighborhood-area51 .profile-box-value a {
-            color: #00FF00;
-        }
-        .neighborhood-area51.light-mode .profile-box-header,
-        .neighborhood-area51.light-mode .profile-box-value,
-        .neighborhood-area51.light-mode .profile-box-value a {
-            color: #008000;
-        }
-        .neighborhood-area51 .profile-header,
-        .neighborhood-area51 .profile-avatar {
-            border-color: #00FF00;
-        }
-        .neighborhood-area51.light-mode .profile-header,
-        .neighborhood-area51.light-mode .profile-avatar {
-            border-color: #008000;
-        }
-        .neighborhood-area51 .download-button {
-            border-color: #00FF00;
-            color: #00FF00;
-            background: rgba(0, 0, 0, 0.8);
-        }
-        .neighborhood-area51.light-mode .download-button {
-            border-color: #008000;
-            color: #008000;
-            background: rgba(255, 255, 255, 0.9);
-        }
-        .neighborhood-athens {
-            font-family: 'Georgia', serif;
-            background: #2F4F4F;
-            color: #ADD8E6;
-        }
-        .neighborhood-athens.light-mode {
-            background: #F5F5DC;
-            color: #00008B;
-        }
-        .neighborhood-athens .profile-box {
-            border-color: #ADD8E6;
-            background: rgba(47, 79, 79, 0.8);
-        }
-        .neighborhood-athens.light-mode .profile-box {
-            border-color: #00008B;
-            background: rgba(245, 245, 220, 0.9);
-            color: #00008B;
-        }
-        .neighborhood-athens .profile-box-header,
-        .neighborhood-athens .profile-box-value,
-        .neighborhood-athens .profile-box-value a {
-            color: #ADD8E6;
-        }
-        .neighborhood-athens.light-mode .profile-box-header,
-        .neighborhood-athens.light-mode .profile-box-value,
-        .neighborhood-athens.light-mode .profile-box-value a {
-            color: #00008B;
-        }
-        .neighborhood-athens .profile-header,
-        .neighborhood-athens .profile-avatar {
-            border-color: #ADD8E6;
-        }
-        .neighborhood-athens.light-mode .profile-header,
-        .neighborhood-athens.light-mode .profile-avatar {
-            border-color: #00008B;
-        }
-        .neighborhood-athens .download-button {
-            border-color: #ADD8E6;
-            color: #ADD8E6;
-            background: rgba(47, 79, 79, 0.8);
-        }
-        .neighborhood-athens.light-mode .download-button {
-            border-color: #00008B;
-            color: #00008B;
-            background: rgba(245, 245, 220, 0.9);
-        }
-        .neighborhood-augusta {
-            background: #006400;
-            color: #FFFFFF;
-        }
-        .neighborhood-augusta.light-mode {
-            background: #90EE90;
-            color: #006400;
-        }
-        .neighborhood-augusta .profile-box {
-            background-image: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%);
-            border-color: #FFFFFF;
-            background: rgba(0, 100, 0, 0.8);
-        }
-        .neighborhood-augusta.light-mode .profile-box {
-            background-image: linear-gradient(45deg, rgba(0,0,0,0.1) 25%, transparent 25%);
-            border-color: #006400;
-            background: rgba(144, 238, 144, 0.9);
-            color: #006400;
-        }
-        .neighborhood-augusta .profile-box-header,
-        .neighborhood-augusta .profile-box-value,
-        .neighborhood-augusta .profile-box-value a {
-            color: #FFFFFF;
-        }
-        .neighborhood-augusta.light-mode .profile-box-header,
-        .neighborhood-augusta.light-mode .profile-box-value,
-        .neighborhood-augusta.light-mode .profile-box-value a {
-            color: #006400;
-        }
-        .neighborhood-augusta .profile-header,
-        .neighborhood-augusta .profile-avatar {
-            border-color: #FFFFFF;
-        }
-        .neighborhood-augusta.light-mode .profile-header,
-        .neighborhood-augusta.light-mode .profile-avatar {
-            border-color: #006400;
-        }
-        .neighborhood-augusta .download-button {
-            border-color: #FFFFFF;
-            color: #FFFFFF;
-            background: rgba(0, 100, 0, 0.8);
-        }
-        .neighborhood-augusta.light-mode .download-button {
-            border-color: #006400;
-            color: #006400;
-            background: rgba(144, 238, 144, 0.9);
-        }
-        .neighborhood-baja {
-            background: #F4A460;
-            color: #FF4500;
-        }
-        .neighborhood-baja.light-mode {
-            background: #D2B48C;
-            color: #FF4500;
-        }
-        .neighborhood-baja .profile-box {
-            border-color: #FF4500;
-            background: rgba(244, 164, 96, 0.8);
-            transition: transform 0.2s ease;
-        }
-        .neighborhood-baja.light-mode .profile-box {
-            border-color: #FF4500;
-            background: rgba(210, 180, 140, 0.9);
-            color: #FF4500;
-        }
-        .neighborhood-baja .profile-box:hover {
-            transform: scale(1.02);
-        }
-        .neighborhood-baja .profile-box-header,
-        .neighborhood-baja .profile-box-value,
-        .neighborhood-baja .profile-box-value a {
-            color: #FF4500;
-        }
-        .neighborhood-baja.light-mode .profile-box-header,
-        .neighborhood-baja.light-mode .profile-box-value,
-        .neighborhood-baja.light-mode .profile-box-value a {
-            color: #FF4500;
-        }
-        .neighborhood-baja .profile-header,
-        .neighborhood-baja .profile-avatar {
-            border-color: #FF4500;
-        }
-        .neighborhood-baja.light-mode .profile-header,
-        .neighborhood-baja.light-mode .profile-avatar {
-            border-color: #FF4500;
-        }
-        .neighborhood-baja .download-button {
-            border-color: #FF4500;
-            color: #FF4500;
-            background: rgba(244, 164, 96, 0.8);
-        }
-        .neighborhood-baja.light-mode .download-button {
-            border-color: #FF4500;
-            color: #FF4500;
-            background: rgba(210, 180, 140, 0.9);
-        }
-        .neighborhood-bourbonstreet {
-            background: #4B0082;
-            color: #FFFF00;
-        }
-        .neighborhood-bourbonstreet.light-mode {
-            background: #E6E6FA;
-            color: #4B0082;
-        }
-        .neighborhood-bourbonstreet .profile-box {
-            border-color: #FFFF00;
-            background: rgba(75, 0, 130, 0.8);
-            animation: fadeIn 1s ease-in;
-        }
-        .neighborhood-bourbonstreet.light-mode .profile-box {
-            border-color: #4B0082;
-            background: rgba(230, 230, 250, 0.9);
-            color: #4B0082;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .neighborhood-bourbonstreet .profile-box-header,
-        .neighborhood-bourbonstreet .profile-box-value,
-        .neighborhood-bourbonstreet .profile-box-value a {
-            color: #FFFF00;
-        }
-        .neighborhood-bourbonstreet.light-mode .profile-box-header,
-        .neighborhood-bourbonstreet.light-mode .profile-box-value,
-        .neighborhood-bourbonstreet.light-mode .profile-box-value a {
-            color: #4B0082;
-        }
-        .neighborhood-bourbonstreet .profile-header,
-        .neighborhood-bourbonstreet .profile-avatar {
-            border-color: #FFFF00;
-        }
-        .neighborhood-bourbonstreet.light-mode .profile-header,
-        .neighborhood-bourbonstreet.light-mode .profile-avatar {
-            border-color: #4B0082;
-        }
-        .neighborhood-bourbonstreet .download-button {
-            border-color: #FFFF00;
-            color: #FFFF00;
-            background: rgba(75, 0, 130, 0.8);
-        }
-        .neighborhood-bourbonstreet.light-mode .download-button {
-            border-color: #4B0082;
-            color: #4B0082;
-            background: rgba(230, 230, 250, 0.9);
-        }
-        .neighborhood-broadway {
-            background: #1C2526;
-            color: #FF4040;
-        }
-        .neighborhood-broadway.light-mode {
-            background: #FFFDD0;
-            color: #8B0000;
-        }
-        .neighborhood-broadway .profile-box {
-            border-color: #FF4040;
-            background: rgba(28, 37, 38, 0.8);
-            transition: box-shadow 0.3s ease;
-        }
-        .neighborhood-broadway.light-mode .profile-box {
-            border-color: #8B0000;
-            background: rgba(255, 253, 208, 0.9);
-            color: #8B0000;
-        }
-        .neighborhood-broadway .profile-box:hover {
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-        }
-        .neighborhood-broadway .profile-box-header,
-        .neighborhood-broadway .profile-box-value,
-        .neighborhood-broadway .profile-box-value a {
-            color: #FF4040;
-        }
-        .neighborhood-broadway.light-mode .profile-box-header,
-        .neighborhood-broadway.light-mode .profile-box-value,
-        .neighborhood-broadway.light-mode .profile-box-value a {
-            color: #8B0000;
-        }
-        .neighborhood-broadway .profile-header,
-        .neighborhood-broadway .profile-avatar {
-            border-color: #FF4040;
-        }
-        .neighborhood-broadway.light-mode .profile-header,
-        .neighborhood-broadway.light-mode .profile-avatar {
-            border-color: #8B0000;
-        }
-        .neighborhood-broadway .download-button {
-            border-color: #FF4040;
-            color: #FF4040;
-            background: rgba(28, 37, 38, 0.8);
-        }
-        .neighborhood-broadway.light-mode .download-button {
-            border-color: #8B0000;
-            color: #8B0000;
-            background: rgba(255, 253, 208, 0.9);
-        }
     </style>
 </head>
-<body class="neighborhood-geocities">
-    <div class="page-container">
-        <header class="header">
-            <div class="header-content">
-                <div class="header-box">
-                    <div class="header-logo"></div>
-                    <h1 class="geocities-title">GeoCities®️</h1>
-                </div>
-                <div class="nav-links">
-                    <a href="https://geocities.eth.limo" target="_blank" rel="noopener noreferrer">About</a>
-                    <a href="https://x.com/geocitieseth" target="_blank" rel="noopener noreferrer">X</a>
-                </div>
-            </div>
-        </header>
-        <main>
-            <div class="homepage">
-                <div class="homepage-content">
-                    <div class="homepage-avatar"></div>
-                    <div class="search-container">
-                        <input type="text" id="ens-input-home" class="ens-input" placeholder="Enter ENS or Base name">
-                        <button id="home-search-button" class="search-button" onclick="searchENS()">Search</button>
-                    </div>
-                    <div id="error-message-home" class="error-message"></div>
-                </div>
-            </div>
-            <div class="profile-page">
-                <div class="neighborhood-select-container">
-                    <select id="neighborhood-select" class="neighborhood-select" onchange="changeNeighborhood()">
-                        <option value="geocities">GeoCities</option>
-                        <option value="area51">Area51</option>
-                        <option value="athens">Athens</option>
-                        <option value="augusta">Augusta</option>
-                        <option value="baja">Baja</option>
-                        <option value="bourbonstreet">Bourbon Street</option>
-                        <option value="broadway">Broadway</option>
-                    </select>
-                </div>
-                <div id="neighborhood-container" class="neighborhood-container neighborhood-geocities"></div>
-                <div id="success-message-profile" class="success-message"></div>
-                <div id="error-message-profile" class="error-message"></div>
-                <div id="register-button-container" class="register-button-container">
-                    <button id="register-name-button" class="register-button"></button>
-                    <button id="download-button" class="download-button" onclick="downloadProfileHtml()">Download HTML</button>
-                </div>
-                <button class="theme-btn" onclick="toggleTheme()">Light</button>
-            </div>
-        </main>
-        <footer class="footer">
-            GeoCities®️
-        </footer>
+<body>
+    <div class="header">
+        <div class="header-title-box" onclick="showHomepage()" title="Go to Homepage">
+            <div class="header-title">G</div>
+        </div>
+        <div class="header-button-wrapper">
+            <button class="toggle-button" onclick="toggleTheme()">Light</button>
+        </div>
     </div>
-    <script>
-        let lightMode = false;
-        let currentNeighborhood = 'geocities';
-        let currentEnsName = null;
-        let currentEnsData = null;
 
-        const pageContainer = document.querySelector('.page-container');
-        const headerElement = document.querySelector('.header');
-        const footerElement = document.querySelector('.footer');
-        const homepage = document.querySelector('.homepage');
-        const profilePage = document.querySelector('.profile-page');
-        const ensInputHome = document.getElementById('ens-input-home');
-        const ensInputProfile = document.getElementById('ens-input-profile');
-        const homeSearchButton = document.getElementById('home-search-button');
-        const profileSearchButton = document.getElementById('profile-search-button');
-        const themeBtn = document.querySelector('.theme-btn');
-        const headerLogo = document.querySelector('.header-logo');
-        const headerBox = document.querySelector('.header-box');
-        const geoCitiesTitle = document.querySelector('.geocities-title');
-        const homepageAvatar = document.querySelector('.homepage-avatar');
+    <div class="container">
+        <div id="homepage">
+            <div class="logo-box" id="homepage-avatar"></div>
+            <h2 id="homepage-geocities">GeoCities</h2>
+            <div class="search-container" id="home-search-container">
+                <input type="text" id="ens-query-home" class="search-input" placeholder="Enter ENS or Base name">
+                <button class="search-button" id="home-search-button" onclick="searchENS()">Search</button>
+            </div>
+            <div id="error-message-home" class="error-message"></div>
+        </div>
+
+        <div id="profile-page">
+            <div class="search-container" id="profile-search-container">
+                <input type="text" id="ens-query-profile" class="search-input" placeholder="Enter ENS or Base name">
+                <button class="search-button" id="profile-search-button" onclick="searchENS()">Search</button>
+            </div>
+            <div id="error-message-profile" class="error-message"></div>
+            <div id="success-message-profile" class="success-message"></div>
+            <select id="neighborhood-select" class="neighborhood-select" onchange="changeNeighborhood()">
+                <option value="geocities">GeoCities</option>
+                <option value="area51">Area51</option>
+                <option value="athens">Athens</option>
+                <option value="augusta">Augusta</option>
+                <option value="baja">Baja</option>
+                <option value="bourbonstreet">BourbonStreet</option>
+                <option value="broadway">Broadway</option>
+            </select>
+            <div id="neighborhood-container" class="neighborhood-container neighborhood-geocities"></div>
+            <div id="register-button-container" class="register-button-container">
+                <button id="register-name-button" class="register-button"></button>
+                <button id="download-button" class="download-button" onclick="downloadHTML()">Download HTML</button>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <a href="https://geocities.eth.link" target="_blank" rel="noopener noreferrer">GeoCities®️</a>
+    </footer>
+
+    <script>
+        // DOM Element References
+        const homepage = document.getElementById('homepage');
+        const profilePage = document.getElementById('profile-page');
+        const ensInputHome = document.getElementById('ens-query-home');
+        const ensInputProfile = document.getElementById('ens-query-profile');
+        const profileRecords = document.getElementById('profile-records');
         const errorMessageHome = document.getElementById('error-message-home');
         const errorMessageProfile = document.getElementById('error-message-profile');
         const successMessageProfile = document.getElementById('success-message-profile');
+        const homepageAvatar = document.getElementById('homepage-avatar');
+        const profileAvatar = document.getElementById('profile-avatar');
+        const profileHeader = document.getElementById('profile-header');
+        const profileAvatarLink = document.getElementById('profile-avatar-link');
+        const profileHeaderLink = document.getElementById('profile-header-link');
+        const pageBody = document.body;
+        const homeSearchButton = document.getElementById('home-search-button');
+        const profileSearchButton = document.getElementById('profile-search-button');
+        const themeBtn = document.querySelector('.toggle-button');
+        const headerLogo = document.querySelector('.header-title');
+        const headerBox = document.querySelector('.header-title-box');
+        const headerElement = document.querySelector('.header');
+        const geoCitiesTitle = document.getElementById('homepage-geocities');
+        const footerElement = document.querySelector('.footer');
         const registerButtonContainer = document.getElementById('register-button-container');
         const registerButton = document.getElementById('register-name-button');
         const downloadButton = document.getElementById('download-button');
         const neighborhoodSelect = document.getElementById('neighborhood-select');
         const neighborhoodContainer = document.getElementById('neighborhood-container');
-        const profileHeader = document.getElementById('profile-header');
-        const profileAvatar = document.getElementById('profile-avatar');
-        const profileHeaderLink = document.getElementById('profile-header-link');
-        const profileAvatarLink = document.getElementById('profile-avatar-link');
 
+        // State Variables
+        let lightMode = false;
+        let currentNeighborhood = 'geocities';
+        let currentEnsData = null;
+        let currentEnsName = '';
+
+        // Theme Toggling Function
         function toggleTheme() {
             lightMode = !lightMode;
-            pageContainer.classList.toggle('light-mode', lightMode);
+            pageBody.classList.toggle('light-mode', lightMode);
             headerElement.classList.toggle('light-mode', lightMode);
             footerElement.classList.toggle('light-mode', lightMode);
             ensInputHome.classList.toggle('light-mode', lightMode);
+            ensInputProfile.classList.toggle('light-mode', lightMode);
             homeSearchButton.classList.toggle('light-mode', lightMode);
+            profileSearchButton.classList.toggle('light-mode', lightMode);
             themeBtn.classList.toggle('light-mode', lightMode);
             headerLogo.classList.toggle('light-mode', lightMode);
             headerBox.classList.toggle('light-mode', lightMode);
@@ -760,55 +1628,49 @@
             downloadButton.classList.toggle('light-mode', lightMode);
             neighborhoodContainer.classList.toggle('light-mode', lightMode);
 
+            // Update profile content and background for current neighborhood
             changeNeighborhood();
+
             themeBtn.textContent = lightMode ? 'Dark' : 'Light';
         }
 
-        function changeNeighborhood() {
-            const newNeighborhood = neighborhoodSelect.value;
-            neighborhoodContainer.className = `neighborhood-container neighborhood-${newNeighborhood}`;
-            if (lightMode) neighborhoodContainer.classList.add('light-mode');
-            currentNeighborhood = newNeighborhood;
+        // Set Profile Images (Avatar and Header)
+        async function setProfileImages(name, avatarElement, headerElement, isProfile = false, makeClickable = true) {
+            const avatarTarget = avatarElement;
+            const headerTarget = headerElement || null;
+            const avatarLink = isProfile ? profileAvatarLink : null;
+            const headerLink = isProfile ? profileHeaderLink : null;
 
-            if (currentEnsName && currentEnsData) {
-                generateProfileHtml(currentEnsData, currentEnsName, currentNeighborhood);
-            }
-        }
-
-        async function setProfileImages(name, avatarTarget, headerTarget, setAvatarLink = false, setHeaderLink = false) {
+            // Reset avatar
             avatarTarget.style.backgroundImage = 'none';
             const initial = name ? name[0].toUpperCase() : 'G';
             avatarTarget.textContent = initial;
 
-            headerTarget.style.backgroundImage = 'none';
-            headerTarget.style.display = 'none';
-            if (setHeaderLink) {
-                profileHeaderLink.href = '';
-                profileHeaderLink.style.cursor = 'default';
-                profileHeaderLink.style.pointerEvents = 'none';
+            // Reset header (if provided)
+            if (headerTarget) {
+                headerTarget.style.backgroundImage = 'none';
+                headerTarget.style.display = 'none';
+                if (headerLink) {
+                    headerLink.href = '';
+                    headerLink.style.cursor = 'default';
+                    headerLink.style.pointerEvents = 'none';
+                }
             }
 
-            if (setAvatarLink) {
-                profileAvatarLink.href = '';
-                profileAvatarLink.style.cursor = 'default';
-                profileAvatarLink.style.pointerEvents = 'none';
-            }
-
-            if (name && typeof name === 'string' && name.trim()) {
+            // Set avatar and header links
+            if (avatarLink && makeClickable && name && typeof name === 'string' && name.trim()) {
                 let normalizedName = name.trim().toLowerCase();
                 normalizedName = normalizedName.replace(/\.eth$/, '').replace(/\.base\.eth$/, '');
                 let limoUrl = name.endsWith('.base.eth')
                     ? `https://${normalizedName}.base.eth.limo`
                     : `https://${normalizedName}.eth.limo`;
-                if (setAvatarLink) {
-                    profileAvatarLink.href = limoUrl;
-                    profileAvatarLink.style.cursor = 'pointer';
-                    profileAvatarLink.style.pointerEvents = 'auto';
-                }
-                if (setHeaderLink) {
-                    profileHeaderLink.href = limoUrl;
-                    profileHeaderLink.style.cursor = 'pointer';
-                    profileHeaderLink.style.pointerEvents = 'auto';
+                avatarLink.href = limoUrl;
+                avatarLink.style.cursor = 'pointer';
+                avatarLink.style.pointerEvents = 'auto';
+                if (headerLink) {
+                    headerLink.href = limoUrl;
+                    headerLink.style.cursor = 'pointer';
+                    headerLink.style.pointerEvents = 'auto';
                 }
             }
 
@@ -829,6 +1691,7 @@
                     headerUrl = data.header;
                 }
 
+                // Set avatar image
                 if (avatarUrl) {
                     const img = new Image();
                     img.src = avatarUrl;
@@ -843,7 +1706,8 @@
                     avatarTarget.textContent = initial;
                 }
 
-                if (headerUrl) {
+                // Set header image
+                if (headerUrl && headerTarget) {
                     const img = new Image();
                     img.src = headerUrl;
                     img.onload = () => {
@@ -853,15 +1717,19 @@
                     img.onerror = () => {
                         headerTarget.style.display = 'none';
                     };
-                } else {
+                } else if (headerTarget) {
                     headerTarget.style.display = 'none';
                 }
             } catch (err) {
                 avatarTarget.textContent = initial;
-                headerTarget.style.display = 'none';
+                if (headerTarget) headerTarget.style.display = 'none';
             }
         }
 
+        // Set initial homepage avatar
+        setProfileImages('geocities.eth', homepageAvatar, null, false, false);
+
+        // Add Profile Record to DOM
         function addProfileRecord(container, label, value, isFirst, isLink = false, linkUrl = '') {
             const recordDiv = document.createElement('div');
             recordDiv.classList.add('profile-box');
@@ -869,7 +1737,7 @@
 
             const headerElement = document.createElement('div');
             headerElement.classList.add('profile-box-header');
-            if (lightMode) headerElement.classList.add('light-mode');
+            if (lightMode) headerElement.classList.add(' emergent');
             headerElement.textContent = label;
 
             const valueContainer = document.createElement('div');
@@ -892,18 +1760,24 @@
             container.appendChild(recordDiv);
         }
 
+        // Helper function to normalize URLs
         function normalizeUrl(url) {
             if (!url) return url;
+            // If the URL already has a protocol, return it as is
             if (/^https?:\/\//i.test(url)) return url;
+            // If the URL is a valid domain or path, prepend https://
             if (/^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/.*)?$/.test(url)) return `https://${url}`;
+            // For other cases, return as is to avoid breaking non-URL values
             return url;
         }
 
-        async function generateProfileHtml(ensData, searchedName, neighborhood) {
+        // Generate Profile HTML
+        function generateProfileHtml(ensData, ensName, neighborhood) {
             neighborhoodContainer.innerHTML = '';
             neighborhoodContainer.className = `neighborhood-container neighborhood-${neighborhood}`;
             if (lightMode) neighborhoodContainer.classList.add('light-mode');
 
+            // Create profile elements
             const headerLink = document.createElement('a');
             headerLink.id = 'profile-header-link';
             headerLink.target = '_blank';
@@ -911,7 +1785,6 @@
 
             const headerDiv = document.createElement('div');
             headerDiv.id = 'profile-header';
-            headerDiv.classList.add('profile-header');
             headerLink.appendChild(headerDiv);
 
             const avatarLink = document.createElement('a');
@@ -921,7 +1794,6 @@
 
             const avatarDiv = document.createElement('div');
             avatarDiv.id = 'profile-avatar';
-            avatarDiv.classList.add('profile-avatar');
             avatarLink.appendChild(avatarDiv);
 
             const recordsDiv = document.createElement('div');
@@ -932,8 +1804,11 @@
             neighborhoodContainer.appendChild(avatarLink);
             neighborhoodContainer.appendChild(recordsDiv);
 
-            await setProfileImages(ensData?.identity || searchedName, avatarDiv, headerDiv, true, true);
+            // Set profile images
+            const identityName = ensData?.identity || ensName;
+            setProfileImages(identityName, avatarDiv, headerDiv, true, true);
 
+            // Populate records
             const specificOmissions = ['avatar', 'header', 'contenthash', 'contentHash', 'identity', 'address', 'displayName', 'description', 'email', 'location', 'status', 'createdAt', 'records', 'followers', 'platform', 'follower', 'following', 'social'];
             const headerRenames = {
                 'email': 'Email',
@@ -1076,714 +1951,552 @@
             if (recordsMap['description']) orderedRecords.push(recordsMap['description']);
             if (recordsMap['email']) orderedRecords.push(recordsMap['email']);
             if (recordsMap['website']) orderedRecords.push(recordsMap['website']);
-            otherRecords.sort((a, b) => a.label.localeCompare(b.label));
-            orderedRecords = orderedRecords.concat(otherRecords);
             if (recordsMap['createdAt']) orderedRecords.push(recordsMap['createdAt']);
+            otherRecords.forEach(record => orderedRecords.push(record));
 
-            if (orderedRecords.length === 0) {
-                addProfileRecord(recordsDiv, 'Status', 'No profile records found.', true);
-            } else {
-                orderedRecords.forEach((record, index) => {
+            orderedRecords.forEach((record, index) => {
+                if (record && record.value !== null && record.value !== undefined && record.value !== '') {
                     addProfileRecord(recordsDiv, record.label, record.value, index === 0, record.isLink, record.linkUrl);
-                });
-            }
+                }
+            });
+
+            // Update button visibility and text
+            registerButtonContainer.style.display = 'flex';
+            registerButton.textContent = ensData?.identity?.endsWith('.base.eth') ? 'Manage Base Name' : 'Manage ENS';
+            registerButton.onclick = () => {
+                const url = ensData?.identity?.endsWith('.base.eth')
+                    ? `https://www.base.org/names`
+                    : `https://app.ens.domains/name/${ensData.identity}`;
+                window.open(url, '_blank', 'noopener,noreferrer');
+            };
         }
 
+        // Show Homepage
+        function showHomepage() {
+            homepage.style.display = 'block';
+            profilePage.style.display = 'none';
+            errorMessageHome.style.display = 'none';
+            errorMessageProfile.style.display = 'none';
+            successMessageProfile.style.display = 'none';
+            ensInputHome.value = '';
+            ensInputProfile.value = '';
+            currentEnsData = null;
+            currentEnsName = '';
+            setProfileImages('geocities.eth', homepageAvatar, null, false, false);
+        }
+
+        // Search ENS or Base Name
         async function searchENS() {
+            const query = (ensInputHome.value || ensInputProfile.value).trim().toLowerCase();
+            if (!query) {
+                errorMessageHome.style.display = 'block';
+                errorMessageHome.textContent = 'Please enter an ENS or Base name.';
+                errorMessageProfile.style.display = 'block';
+                errorMessageProfile.textContent = 'Please enter an ENS or Base name.';
+                return;
+            }
+
             errorMessageHome.style.display = 'none';
             errorMessageProfile.style.display = 'none';
             successMessageProfile.style.display = 'none';
 
-            let ensName = ensInputHome.value.trim().toLowerCase();
-            if (!ensName) {
-                errorMessageHome.textContent = 'Please enter an ENS or Base name';
-                errorMessageHome.style.display = 'block';
-                return;
-            }
-
-            if (!ensName.endsWith('.eth') && !ensName.endsWith('.base.eth')) {
-                ensName = `${ensName}.eth`;
-            }
-
-            let url = `https://api.web3.bio/profile/ens/${ensName}`;
-            const isBaseName = ensName.endsWith('.base.eth');
-            if (isBaseName) {
-                url = `https://api.web3.bio/profile/basenames/${ensName}`;
+            let url = `https://api.web3.bio/profile/ens/${query}`;
+            if (query.endsWith('.base.eth')) {
+                url = `https://api.web3.bio/profile/basenames/${query}`;
             }
 
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
-                    if (response.status === 404) {
-                        displayUnregisteredProfile(ensName, isBaseName);
-                    } else {
-                        throw new Error(`Error ${response.status}: ${response.statusText}`);
-                    }
-                    return;
+                    throw new Error('Profile not found');
                 }
+                const data = await response.json();
+                currentEnsData = data;
+                currentEnsName = query;
 
-                const ensData = await response.json();
-                currentEnsName = ensData.identity || ensName;
-                currentEnsData = ensData;
-                displayProfile(ensData, ensName);
+                homepage.style.display = 'none';
+                profilePage.style.display = 'block';
+                generateProfileHtml(data, query, currentNeighborhood);
             } catch (err) {
-                errorMessageHome.textContent = `Error searching for ${ensName}: ${err.message}`;
                 errorMessageHome.style.display = 'block';
+                errorMessageHome.textContent = 'Profile not found or an error occurred.';
+                errorMessageProfile.style.display = 'block';
+                errorMessageProfile.textContent = 'Profile not found or an error occurred.';
             }
         }
 
-        function displayProfile(ensData, searchedName) {
-            homepage.style.display = 'none';
-            profilePage.style.display = 'flex';
-            errorMessageProfile.style.display = 'none';
-            errorMessageHome.style.display = 'none';
-            successMessageProfile.style.display = 'none';
-            neighborhoodSelect.value = currentNeighborhood;
-
-            generateProfileHtml(ensData, searchedName, currentNeighborhood);
-            registerButtonContainer.style.display = 'flex';
-            registerButton.style.display = 'none';
-            downloadButton.style.display = 'inline-block';
-        }
-
-        function displayUnregisteredProfile(ensName, isBaseName) {
-            homepage.style.display = 'none';
-            profilePage.style.display = 'flex';
-            neighborhoodContainer.innerHTML = '';
+        // Change Neighborhood Theme
+        function changeNeighborhood() {
+            currentNeighborhood = neighborhoodSelect.value;
             neighborhoodContainer.className = `neighborhood-container neighborhood-${currentNeighborhood}`;
             if (lightMode) neighborhoodContainer.classList.add('light-mode');
-            errorMessageProfile.style.display = 'none';
-            errorMessageHome.style.display = 'none';
-            successMessageProfile.style.display = 'none';
 
-            const headerLink = document.createElement('a');
-            headerLink.id = 'profile-header-link';
-            headerLink.target = '_blank';
-            headerLink.rel = 'noopener noreferrer';
-
-            const headerDiv = document.createElement('div');
-            headerDiv.id = 'profile-header';
-            headerLink.appendChild(headerDiv);
-
-            const avatarLink = document.createElement('a');
-            avatarLink.id = 'profile-avatar-link';
-            avatarLink.target = '_blank';
-            avatarLink.rel = 'noopener noreferrer';
-
-            const avatarDiv = document.createElement('div');
-            avatarDiv.id = 'profile-avatar';
-            avatarLink.appendChild(avatarDiv);
-
-            const recordsDiv = document.createElement('div');
-            recordsDiv.id = 'profile-records';
-            recordsDiv.className = 'profile-container';
-
-            neighborhoodContainer.appendChild(headerLink);
-            neighborhoodContainer.appendChild(avatarLink);
-            neighborhoodContainer.appendChild(recordsDiv);
-
-            setProfileImages(ensName, avatarDiv, headerDiv, true, true);
-
-            if (isBaseName) {
-                addProfileRecord(recordsDiv, 'Base Name', ensName, true);
-            } else {
-                addProfileRecord(recordsDiv, 'ENS', ensName, true);
+            if (currentEnsData && currentEnsName) {
+                generateProfileHtml(currentEnsData, currentEnsName, currentNeighborhood);
             }
 
-            addProfileRecord(recordsDiv, 'Status', 'Name not registered', false);
-
-            const buttonText = isBaseName ? 'Register Base Name' : 'Register ENS Name';
-            let registerUrl = '';
-
-            if (isBaseName) {
-                const baseNameOnly = ensName.replace(/\.base\.eth$/, '');
-                registerUrl = `https://www.base.org/names?claim=${baseNameOnly}`;
-            } else {
-                registerUrl = `https://app.ens.domains/${ensName}/register`;
-            }
-
-            registerButton.textContent = buttonText;
-            registerButton.onclick = () => window.open(registerUrl, '_blank');
-            registerButton.className = 'register-button';
-            if (lightMode) registerButton.classList.add('light-mode');
-            registerButtonContainer.style.display = 'flex';
-            registerButton.style.display = 'inline-block';
-            downloadButton.style.display = 'none';
+            // Update styles for profile elements
+            const profileBoxes = document.querySelectorAll('.profile-box');
+            const profileBoxHeaders = document.querySelectorAll('.profile-box-header');
+            const profileBoxValues = document.querySelectorAll('.profile-box-value');
+            profileBoxes.forEach(box => {
+                box.classList.toggle('light-mode', lightMode);
+            });
+            profileBoxHeaders.forEach(header => {
+                header.classList.toggle('light-mode', lightMode);
+            });
+            profileBoxValues.forEach(value => {
+                value.classList.toggle('light-mode', lightMode);
+            });
         }
 
-        async function downloadProfileHtml() {
-            if (!currentEnsName) return;
-
-            const colors = {
-                geocities: { 
-                    bg: lightMode ? '#FFF' : '#000', 
-                    color: lightMode ? '#000' : '#FFF', 
-                    border: lightMode ? '#000' : '#FFF' 
+        // Generate CSS for Downloaded HTML
+        function getNeighborhoodStyles(neighborhood, isLightMode) {
+            const styles = {
+                geocities: {
+                    background: isLightMode ? '#fff' : '#000',
+                    color: isLightMode ? '#000' : '#fff',
+                    borderColor: isLightMode ? '#000' : '#fff',
+                    boxBackground: isLightMode ? '#fff' : '#000',
+                    fontFamily: 'sans-serif'
                 },
-                area51: { 
-                    bg: lightMode ? '#E0E0E0' : '#0A0A0A', 
-                    color: lightMode ? '#008000' : '#00FF00', 
-                    border: lightMode ? '#008000' : '#00FF00' 
+                area51: {
+                    background: isLightMode ? '#E0E0E0' : '#0A0A0A',
+                    color: isLightMode ? '#008000' : '#00FF00',
+                    borderColor: isLightMode ? '#008000' : '#00FF00',
+                    boxBackground: isLightMode ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.8)',
+                    boxShadow: isLightMode ? 'none' : '0 0 10px #00FF00, 0 0 20px #00FF00',
+                    fontFamily: '"Orbitron", sans-serif'
                 },
-                athens: { 
-                    bg: lightMode ? '#F5F5DC' : '#2F4F4F', 
-                    color: lightMode ? '#00008B' : '#ADD8E6', 
-                    border: lightMode ? '#00008B' : '#ADD8E6' 
+                athens: {
+                    background: isLightMode ? '#F5F5DC' : '#2F4F4F',
+                    color: isLightMode ? '#00008B' : '#ADD8E6',
+                    borderColor: isLightMode ? '#00008B' : '#ADD8E6',
+                    boxBackground: isLightMode ? 'rgba(245, 245, 220, 0.9)' : 'rgba(47, 79, 79, 0.8)',
+                    fontFamily: '"Georgia", serif'
                 },
-                augusta: { 
-                    bg: lightMode ? '#90EE90' : '#006400', 
-                    color: lightMode ? '#006400' : '#FFFFFF', 
-                    border: lightMode ? '#006400' : '#FFFFFF' 
+                augusta: {
+                    background: isLightMode ? '#90EE90' : '#006400',
+                    color: isLightMode ? '#006400' : '#FFFFFF',
+                    borderColor: isLightMode ? '#006400' : '#FFFFFF',
+                    boxBackground: isLightMode ? 'rgba(144, 238, 144, 0.9)' : 'rgba(0, 100, 0, 0.8)',
+                    backgroundImage: isLightMode ? 'linear-gradient(45deg, rgba(0,0,0,0.1) 25%, transparent 25%)' : 'linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%)',
+                    fontFamily: 'sans-serif'
                 },
-                baja: { 
-                    bg: lightMode ? '#D2B48C' : '#F4A460', 
-                    color: lightMode ? '#FF4500' : '#FF4500', 
-                    border: lightMode ? '#FF4500' : '#FF4500' 
+                baja: {
+                    background: isLightMode ? '#D2B48C' : '#F4A460',
+                    color: isLightMode ? '#FF4500' : '#FF4500',
+                    borderColor: isLightMode ? '#FF4500' : '#FF4500',
+                    boxBackground: isLightMode ? 'rgba(210, 180, 140, 0.9)' : 'rgba(244, 164, 96, 0.8)',
+                    fontFamily: 'sans-serif',
+                    hoverTransform: 'scale(1.02)'
                 },
-                bourbonstreet: { 
-                    bg: lightMode ? '#E6E6FA' : '#4B0082', 
-                    color: lightMode ? '#4B0082' : '#FFFF00', 
-                    border: lightMode ? '#4B0082' : '#FFFF00' 
+                bourbonstreet: {
+                    background: isLightMode ? '#E6E6FA' : '#4B0082',
+                    color: isLightMode ? '#4B0082' : '#FFFF00',
+                    borderColor: isLightMode ? '#4B0082' : '#FFFF00',
+                    boxBackground: isLightMode ? 'rgba(230, 230, 250, 0.9)' : 'rgba(75, 0, 130, 0.8)',
+                    animation: 'fadeIn 1s ease-in',
+                    fontFamily: 'sans-serif'
                 },
-                broadway: { 
-                    bg: lightMode ? '#FFFDD0' : '#1C2526', 
-                    color: lightMode ? '#8B0000' : '#FF4040', 
-                    border: lightMode ? '#8B0000' : '#FF4040' 
+                broadway: {
+                    background: isLightMode ? '#FFFDD0' : '#1C2526',
+                    color: isLightMode ? '#8B0000' : '#FF4040',
+                    borderColor: isLightMode ? '#8B0000' : '#FF4040',
+                    boxBackground: isLightMode ? 'rgba(255, 253, 208, 0.9)' : 'rgba(28, 37, 38, 0.8)',
+                    hoverShadow: isLightMode ? 'none' : '0 0 15px rgba(255, 215, 0, 0.5)',
+                    fontFamily: 'sans-serif'
                 }
             };
 
-            const fonts = {
-                geocities: 'sans-serif',
-                area51: "'Orbitron', sans-serif",
-                athens: "'Georgia', serif",
-                augusta: 'sans-serif',
-                baja: 'sans-serif',
-                bourbonstreet: 'sans-serif',
-                broadway: 'sans-serif'
-            };
+            const style = styles[neighborhood] || styles.geocities;
+            let css = `
+                body {
+                    font-family: ${style.fontFamily};
+                    background: ${style.background};
+                    color: ${style.color};
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    min-height: 100vh;
+                    margin: 0;
+                    padding: 20px;
+                    box-sizing: border-box;
+                }
+                .container {
+                    width: 90%;
+                    max-width: 600px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+                #profile-header {
+                    width: 100%;
+                    height: 0;
+                    padding-bottom: 33.33%;
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    border: 1px solid ${style.borderColor};
+                    box-sizing: border-box;
+                    border-radius: 0;
+                    overflow: hidden;
+                    margin-bottom: 0;
+                }
+                #profile-avatar {
+                    width: 100%;
+                    height: auto;
+                    aspect-ratio: 1 / 1;
+                    background-size: contain;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 10em;
+                    border: 1px solid ${style.borderColor};
+                    box-sizing: border-box;
+                    border-radius: 0;
+                    overflow: hidden;
+                    margin-bottom: 0;
+                    color: ${style.color};
+                }
+                .profile-container {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: stretch;
+                    margin: 0;
+                }
+                .profile-box {
+                    border: 1px solid ${style.borderColor};
+                    border-top: none;
+                    padding: 10px;
+                    background: ${style.boxBackground};
+                    color: ${style.color};
+                    word-break: break-word;
+                    border-radius: 0;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    margin: 0;
+                    width: 100%;
+                    box-sizing: border-box;
+                    min-height: 38px;
+                    font-family: ${style.fontFamily};
+                    ${style.boxShadow ? `box-shadow: ${style.boxShadow};` : ''}
+                    ${style.backgroundImage ? `background-image: ${style.backgroundImage};` : ''}
+                    ${style.animation ? `animation: ${style.animation};` : ''}
+                }
+                .profile-box:first-child {
+                    border-top: 1px solid ${style.borderColor};
+                }
+                .profile-box:hover {
+                    ${style.hoverTransform ? `transform: ${style.hoverTransform};` : ''}
+                    ${style.hoverShadow ? `box-shadow: ${style.hoverShadow};` : ''}
+                }
+                .profile-box-header {
+                    font-weight: bold;
+                    color: ${style.color};
+                    flex: 0 0 100px;
+                    min-width: 80px;
+                    text-align: left;
+                    font-family: ${style.fontFamily};
+                }
+                .profile-box-value {
+                    flex: 1;
+                    text-align: left;
+                    word-break: break-all;
+                    color: ${style.color};
+                    font-family: ${style.fontFamily};
+                }
+                .profile-box-value a {
+                    color: ${style.color};
+                    text-decoration: underline;
+                }
+                .profile-box-value a:hover {
+                    text-decoration: none;
+                }
+                .footer {
+                    width: 100%;
+                    background: ${style.background};
+                    color: ${style.color};
+                    text-align: center;
+                    padding: 10px 0;
+                    font-size: 0.8em;
+                    box-sizing: border-box;
+                    border-top: 1px solid ${style.borderColor};
+                    margin-top: 20px;
+                }
+                .footer a {
+                    color: ${style.color};
+                    text-decoration: none;
+                }
+                .footer a:hover {
+                    text-decoration: underline;
+                }
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+            `;
+            return css;
+        }
 
-            const neighborhoodStyles = {
-                area51: `
-                    .profile-box {
-                        box-shadow: 0 0 10px ${colors[currentNeighborhood].border}, 0 0 20px ${colors[currentNeighborhood].border};
-                        background: ${lightMode ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.8)'};
-                    }
-                `,
-                augusta: `
-                    .profile-box {
-                        background-image: linear-gradient(45deg, ${lightMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)'} 25%, transparent 25%);
-                        background: ${lightMode ? 'rgba(144, 238, 144, 0.9)' : 'rgba(0, 100, 0, 0.8)'};
-                    }
-                `,
-                baja: `
-                    .profile-box {
-                        background: ${lightMode ? 'rgba(210, 180, 140, 0.9)' : 'rgba(244, 164, 96, 0.8)'};
-                        transition: transform 0.2s ease;
-                    }
-                    .profile-box:hover {
-                        transform: scale(1.02);
-                    }
-                `,
-                bourbonstreet: `
-                    .profile-box {
-                        background: ${lightMode ? 'rgba(230, 230, 250, 0.9)' : 'rgba(75, 0, 130, 0.8)'};
-                        animation: fadeIn 1s ease-in;
-                    }
-                    @keyframes fadeIn {
-                        from { opacity: 0; }
-                        to { opacity: 1; }
-                    }
-                `,
-                broadway: `
-                    .profile-box {
-                        background: ${lightMode ? 'rgba(255, 253, 208, 0.9)' : 'rgba(28, 37, 38, 0.8)'};
-                        transition: box-shadow 0.3s ease;
-                    }
-                    .profile-box:hover {
-                        box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-                    }
-                `,
-                geocities: `
-                    .profile-box {
-                        background: ${lightMode ? '#FFF' : '#000'};
-                    }
-                `
-            };
+        // Generate Downloaded HTML Content
+        function generateDownloadableHtml(ensData, ensName, neighborhood) {
+            const isLightMode = lightMode;
+            const css = getNeighborhoodStyles(neighborhood, isLightMode);
+            const identityName = ensData?.identity || ensName;
+            const initial = identityName ? identityName[0].toUpperCase() : 'G';
+            let avatarUrl = '';
+            let headerUrl = '';
+            let avatarStyle = `background-image: none; text-align: center;`;
+            let headerStyle = `display: none;`;
 
-            const htmlContent = `
+            // Attempt to fetch avatar and header URLs
+            if (ensData.avatar) {
+                avatarUrl = ensData.avatar;
+                avatarStyle = `background-image: url('${avatarUrl}'); text-align: center;`;
+            }
+            if (ensData.header) {
+                headerUrl = ensData.header;
+                headerStyle = `background-image: url('${headerUrl}'); display: block;`;
+            }
+
+            // Generate profile records
+            let recordsHtml = '';
+            const specificOmissions = ['avatar', 'header', 'contenthash', 'contentHash', 'identity', 'address', 'displayName', 'description', 'email', 'location', 'status', 'createdAt', 'records', 'followers', 'platform', 'follower', 'following', 'social'];
+            const headerRenames = {
+                'email': 'Email',
+                'description': 'Bio',
+                'location': 'Location',
+                'status': 'Status',
+                'keywords': 'Tags',
+                'com.discord': 'Discord',
+                'com.twitter': 'Twitter',
+                'com.github': 'GitHub',
+                'org.telegram': 'Telegram'
+            };
+            const linkableRecords = ['Website', 'Twitter', 'GitHub', 'Discord', 'Telegram'];
+
+            let recordsMap = {
+                'address': null,
+                'identity': null,
+                'displayName': null,
+                'followers': null,
+                'following': null,
+                'location': null,
+                'status': null,
+                'description': null,
+                'website': null,
+                'email': null,
+                'createdAt': null
+            };
+            let otherRecords = [];
+
+            if (ensData.address) recordsMap['address'] = { label: 'Address', value: ensData.address };
+            if (ensData.identity) {
+                const isBase = ensData.identity.endsWith('.base.eth');
+                const displayLabel = isBase ? 'Base Name' : 'ENS';
+                recordsMap['identity'] = { label: displayLabel, value: ensData.identity };
+            }
+            if (ensData.displayName && ensData.displayName !== ensData.identity) {
+                recordsMap['displayName'] = { label: 'Name', value: ensData.displayName };
+            }
+            if (ensData.social?.follower != null) {
+                recordsMap['followers'] = { label: 'Followers', value: ensData.social.follower };
+            }
+            if (ensData.social?.following != null) {
+                recordsMap['following'] = { label: 'Following', value: ensData.social.following };
+            }
+            if (ensData.location) {
+                recordsMap['location'] = { label: 'Location', value: ensData.location };
+            }
+            if (ensData.status) {
+                recordsMap['status'] = { label: 'Status', value: ensData.status };
+            }
+            if (ensData.description) {
+                recordsMap['description'] = { label: 'Bio', value: ensData.description };
+            }
+            if (ensData.links?.website?.handle) {
+                recordsMap['website'] = { 
+                    label: 'Website', 
+                    value: ensData.links.website.handle, 
+                    isLink: true, 
+                    linkUrl: ensData.links.website.link || normalizeUrl(ensData.links.website.handle) 
+                };
+            }
+            if (ensData.email) {
+                recordsMap['email'] = { label: 'Email', value: ensData.email };
+            }
+            if (ensData.createdAt) {
+                let formattedDate = ensData.createdAt;
+                try {
+                    const date = new Date(ensData.createdAt);
+                    if (!isNaN(date.getTime())) { formattedDate = date.toLocaleDateString(); }
+                } catch (err) { }
+                recordsMap['createdAt'] = { label: 'Created', value: formattedDate };
+            }
+
+            function processValue(key, value, targetArray) {
+                if (value === null || value === undefined || value === '' || specificOmissions.includes(key)) return;
+
+                const label = headerRenames[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+
+                if (recordsMap[key] || targetArray.some(r => r.label === label)) return;
+
+                if (typeof value === 'object') {
+                    if (key === 'links') {
+                        Object.entries(value).forEach(([linkName, linkData]) => {
+                            if (linkName !== 'website' && linkData && linkData.handle && linkData.link) {
+                                const formattedLabel = headerRenames[linkName] || linkName.replace(/^./, c => c.toUpperCase());
+                                targetArray.push({ 
+                                    label: formattedLabel, 
+                                    value: linkData.handle, 
+                                    isLink: true, 
+                                    linkUrl: linkData.link 
+                                });
+                            }
+                        });
+                    }
+                    else if (key === 'records') {
+                        Object.entries(value).forEach(([recordKey, recordValue]) => {
+                            if (recordKey !== 'contenthash' && recordKey !== 'contentHash' && recordValue) {
+                                const recordLabel = headerRenames[recordKey] || recordKey.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                                let isLink = linkableRecords.includes(recordLabel);
+                                let linkUrl = '';
+                                if (isLink) {
+                                    linkUrl = recordKey === 'com.twitter' ? `https://x.com/${recordValue}`
+                                        : recordKey === 'com.github' ? `https://github.com/${recordValue}`
+                                        : recordKey === 'com.discord' ? `https://discord.com/users/${recordValue}`
+                                        : recordKey === 'org.telegram' ? `https://t.me/${recordValue}`
+                                        : normalizeUrl(recordValue);
+                                }
+                                targetArray.push({ label: recordLabel, value: recordValue, isLink: isLink, linkUrl: linkUrl });
+                            }
+                        });
+                    }
+                } else {
+                    let isLink = linkableRecords.includes(label);
+                    let linkUrl = '';
+                    if (isLink) {
+                        linkUrl = key === 'com.twitter' ? `https://x.com/${value}`
+                            : key === 'com.github' ? `https://github.com/${value}`
+                            : key === 'com.discord' ? `https://discord.com/users/${value}`
+                            : key === 'org.telegram' ? `https://t.me/${value}`
+                            : normalizeUrl(value);
+                    }
+                    targetArray.push({ label: label, value: value, isLink: isLink, linkUrl: linkUrl });
+                }
+            }
+
+            Object.entries(ensData).forEach(([key, value]) => {
+                if (!Object.keys(recordsMap).includes(key)) {
+                    processValue(key, value, otherRecords);
+                }
+            });
+
+            let orderedRecords = [];
+            if (recordsMap['address']) orderedRecords.push(recordsMap['address']);
+            if (recordsMap['identity']) orderedRecords.push(recordsMap['identity']);
+            if (recordsMap['displayName']) orderedRecords.push(recordsMap['displayName']);
+            if (recordsMap['followers']) orderedRecords.push(recordsMap['followers']);
+            if (recordsMap['following']) orderedRecords.push(recordsMap['following']);
+            if (recordsMap['location']) orderedRecords.push(recordsMap['location']);
+            if (recordsMap['status']) orderedRecords.push(recordsMap['status']);
+            if (recordsMap['description']) orderedRecords.push(recordsMap['description']);
+            if (recordsMap['email']) orderedRecords.push(recordsMap['email']);
+            if (recordsMap['website']) orderedRecords.push(recordsMap['website']);
+            if (recordsMap['createdAt']) orderedRecords.push(recordsMap['createdAt']);
+            otherRecords.forEach(record => orderedRecords.push(record));
+
+            orderedRecords.forEach((record, index) => {
+                if (record && record.value !== null && record.value !== undefined && record.value !== '') {
+                    const valueContent = record.isLink && record.linkUrl
+                        ? `<a href="${record.linkUrl}" target="_blank" rel="noopener noreferrer">${record.value}</a>`
+                        : record.value;
+                    recordsHtml += `
+                        <div class="profile-box" style="${index === 0 ? `border-top: 1px solid ${getNeighborhoodStyles(neighborhood, isLightMode).borderColor};` : ''}">
+                            <div class="profile-box-header">${record.label}</div>
+                            <div class="profile-box-value">${valueContent}</div>
+                        </div>
+                    `;
+                }
+            });
+
+            // Generate limo URL
+            let normalizedName = ensName.trim().toLowerCase();
+            normalizedName = normalizedName.replace(/\.eth$/, '').replace(/\.base\.eth$/, '');
+            let limoUrl = ensName.endsWith('.base.eth')
+                ? `https://${normalizedName}.base.eth.limo`
+                : `https://${normalizedName}.eth.limo`;
+
+            return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${currentEnsName} - GeoCities Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>${identityName} - GeoCities Profile</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='50' font-size='80' text-anchor='middle' dominant-baseline='middle' fill='%23000'>G%3C/text%3E%3C/svg%3E" type="image/svg+xml">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Georgia&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: ${fonts[currentNeighborhood]};
-            background: ${colors[currentNeighborhood].bg};
-            color: ${colors[currentNeighborhood].color};
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        .profile-container {
-            width: 90%;
-            max-width: 600px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .profile-header {
-            width: 100%;
-            height: 0;
-            padding-bottom: 33.33%;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            border: 1px solid ${colors[currentNeighborhood].border};
-            box-sizing: border-box;
-            display: none;
-        }
-        .profile-avatar {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 10em;
-            border: 1px solid ${colors[currentNeighborhood].border};
-            box-sizing: border-box;
-            color: ${colors[currentNeighborhood].color};
-        }
-        .profile-box {
-            border: 1px solid ${colors[currentNeighborhood].border};
-            padding: 10px;
-            color: ${colors[currentNeighborhood].color};
-            word-break: break-word;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-top: none;
-            width: 100%;
-            box-sizing: border-box;
-            min-height: 38px;
-        }
-        .profile-box:first-child {
-            border-top: 1px solid ${colors[currentNeighborhood].border};
-        }
-        .profile-box-header {
-            font-weight: bold;
-            color: ${colors[currentNeighborhood].color};
-            flex: 0 0 100px;
-            min-width: 80px;
-            text-align: left;
-        }
-        .profile-box-value {
-            flex: 1;
-            text-align: left;
-            word-break: break-all;
-            color: ${colors[currentNeighborhood].color};
-        }
-        .profile-box-value a {
-            color: inherit;
-            text-decoration: underline;
-        }
-        .profile-box-value a:hover {
-            text-decoration: none;
-        }
-        .footer {
-            width: 100%;
-            background: ${colors[currentNeighborhood].bg};
-            color: ${colors[currentNeighborhood].color};
-            text-align: center;
-            padding: 10px 0;
-            font-size: 0.8em;
-            box-sizing: border-box;
-            border-top: 1px solid ${colors[currentNeighborhood].border};
-        }
-        .footer a {
-            color: inherit;
-            text-decoration: none;
-        }
-        .footer a:hover {
-            text-decoration: underline;
-        }
-        .error-message {
-            color: red;
-            margin-top: 10px;
-            display: none;
-            width: 100%;
-            text-align: center;
-            padding: 5px;
-            box-sizing: border-box;
-        }
-        ${neighborhoodStyles[currentNeighborhood] || ''}
+        ${css}
     </style>
 </head>
 <body>
-    <div class="profile-container">
-        <a id="profile-header-link" href="" target="_blank" rel="noopener noreferrer">
-            <div class="profile-header" id="profile-header"></div>
+    <div class="container">
+        <a id="profile-header-link" href="${limoUrl}" target="_blank" rel="noopener noreferrer">
+            <div id="profile-header" style="${headerStyle}"></div>
         </a>
-        <a id="profile-avatar-link" href="" target="_blank" rel="noopener noreferrer">
-            <div class="profile-avatar" id="profile-avatar"></div>
+        <a id="profile-avatar-link" href="${limoUrl}" target="_blank" rel="noopener noreferrer">
+            <div id="profile-avatar" style="${avatarStyle}">${avatarUrl ? '' : initial}</div>
         </a>
-        <div class="profile-records" id="profile-records"></div>
-        <div id="error-message" class="error-message"></div>
+        <div id="profile-records" class="profile-container">
+            ${recordsHtml}
+        </div>
     </div>
     <footer class="footer">
         <a href="https://geocities.eth.link" target="_blank" rel="noopener noreferrer">GeoCities®️</a>
     </footer>
-    <script>
-        const ensName = "${currentEnsName}";
-        const profileContainer = document.getElementById('profile-records');
-        const profileAvatar = document.getElementById('profile-avatar');
-        const profileHeader = document.getElementById('profile-header');
-        const profileAvatarLink = document.getElementById('profile-avatar-link');
-        const profileHeaderLink = document.getElementById('profile-header-link');
-        const errorMessage = document.getElementById('error-message');
-
-        async function setProfileImages(name) {
-            const avatarTarget = profileAvatar;
-            const headerTarget = profileHeader;
-            const avatarLink = profileAvatarLink;
-            const headerLink = profileHeaderLink;
-
-            avatarTarget.style.backgroundImage = 'none';
-            const initial = name ? name[0].toUpperCase() : 'G';
-            avatarTarget.textContent = initial;
-
-            headerTarget.style.backgroundImage = 'none';
-            headerTarget.style.display = 'none';
-            headerLink.href = '';
-            headerLink.style.cursor = 'default';
-            headerLink.style.pointerEvents = 'none';
-
-            if (name && typeof name === 'string' && name.trim()) {
-                let normalizedName = name.trim().toLowerCase();
-                normalizedName = normalizedName.replace(/\\.eth$/, '').replace(/\\.base\\.eth$/, '');
-                let limoUrl = name.endsWith('.base.eth')
-                    ? \`https://\${normalizedName}.base.eth.limo\`
-                    : \`https://\${normalizedName}.eth.limo\`;
-                avatarLink.href = limoUrl;
-                avatarLink.style.cursor = 'pointer';
-                avatarLink.style.pointerEvents = 'auto';
-                headerLink.href = limoUrl;
-                headerLink.style.cursor = 'pointer';
-                headerLink.style.pointerEvents = 'auto';
-            }
-
-            if (!name || !name.trim()) return;
-
-            let url = \`https://api.web3.bio/profile/ens/\${name}\`;
-            if (name.endsWith('.base.eth')) {
-                url = \`https://api.web3.bio/profile/basenames/\${name}\`;
-            }
-
-            try {
-                const response = await fetch(url);
-                let avatarUrl = null;
-                let headerUrl = null;
-                if (response.ok) {
-                    const data = await response.json();
-                    avatarUrl = data.avatar;
-                    headerUrl = data.header;
-                }
-
-                if (avatarUrl) {
-                    const img = new Image();
-                    img.src = avatarUrl;
-                    img.onload = () => {
-                        avatarTarget.style.backgroundImage = \`url('\${avatarUrl}')\`;
-                        avatarTarget.textContent = '';
-                    };
-                    img.onerror = () => {
-                        avatarTarget.textContent = initial;
-                    };
-                } else {
-                    avatarTarget.textContent = initial;
-                }
-
-                if (headerUrl) {
-                    const img = new Image();
-                    img.src = headerUrl;
-                    img.onload = () => {
-                        headerTarget.style.backgroundImage = \`url('\${headerUrl}')\`;
-                        headerTarget.style.display = 'block';
-                    };
-                    img.onerror = () => {
-                        headerTarget.style.display = 'none';
-                    };
-                } else {
-                    headerTarget.style.display = 'none';
-                }
-            } catch (err) {
-                avatarTarget.textContent = initial;
-                headerTarget.style.display = 'none';
-            }
-        }
-
-        function addProfileRecord(container, label, value, isFirst, isLink = false, linkUrl = '') {
-            const recordDiv = document.createElement('div');
-            recordDiv.classList.add('profile-box');
-
-            const headerElement = document.createElement('div');
-            headerElement.classList.add('profile-box-header');
-            headerElement.textContent = label;
-
-            const valueContainer = document.createElement('div');
-            valueContainer.classList.add('profile-box-value');
-
-            if (isLink && linkUrl) {
-                const linkElement = document.createElement('a');
-                linkElement.href = linkUrl;
-                linkElement.target = '_blank';
-                linkElement.rel = 'noopener noreferrer';
-                linkElement.textContent = (typeof value === 'object' && value !== null) ? JSON.stringify(value) : value;
-                valueContainer.appendChild(linkElement);
-            } else {
-                valueContainer.textContent = (typeof value === 'object' && value !== null) ? JSON.stringify(value) : value;
-            }
-
-            recordDiv.appendChild(headerElement);
-            recordDiv.appendChild(valueContainer);
-            container.appendChild(recordDiv);
-        }
-
-        function normalizeUrl(url) {
-            if (!url) return url;
-            if (/^https?:\\/\\//i.test(url)) return url;
-            if (/^[a-zA-Z0-9-]+\\.[a-zA-Z]{2,}(\\/.*)?$/.test(url)) return \`https://\${url}\`;
-            return url;
-        }
-
-        async function fetchProfile() {
-            let url = \`https://api.web3.bio/profile/ens/\${ensName}\`;
-            const isBaseName = ensName.endsWith('.base.eth');
-            if (isBaseName) {
-                url = \`https://api.web3.bio/profile/basenames/\${ensName}\`;
-            }
-
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    if (response.status === 404) {
-                        profileContainer.innerHTML = '';
-                        setProfileImages(ensName);
-                        if (isBaseName) {
-                            addProfileRecord(profileContainer, 'Base Name', ensName, true);
-                        } else {
-                            addProfileRecord(profileContainer, 'ENS', ensName, true);
-                        }
-                        addProfileRecord(profileContainer, 'Status', 'Name not registered', false);
-                    } else {
-                        throw new Error(\`Error \${response.status}: \${response.statusText}\`);
-                    }
-                    return;
-                }
-
-                const ensData = await response.json();
-                profileContainer.innerHTML = '';
-
-                setProfileImages(ensData?.identity || ensName);
-
-                const specificOmissions = ['avatar', 'header', 'contenthash', 'contentHash', 'identity', 'address', 'displayName', 'description', 'email', 'location', 'status', 'createdAt', 'records', 'followers', 'platform', 'follower', 'following', 'social'];
-                const headerRenames = {
-                    'email': 'Email',
-                    'description': 'Bio',
-                    'location': 'Location',
-                    'status': 'Status',
-                    'keywords': 'Tags',
-                    'com.discord': 'Discord',
-                    'com.twitter': 'Twitter',
-                    'com.github': 'GitHub',
-                    'org.telegram': 'Telegram'
-                };
-                const linkableRecords = ['Website', 'Twitter', 'GitHub', 'Discord', 'Telegram'];
-
-                let recordsMap = {
-                    'address': null,
-                    'identity': null,
-                    'displayName': null,
-                    'followers': null,
-                    'following': null,
-                    'location': null,
-                    'status': null,
-                    'description': null,
-                    'website': null,
-                    'email': null,
-                    'createdAt': null
-                };
-                let otherRecords = [];
-
-                if (ensData.address) recordsMap['address'] = { label: 'Address', value: ensData.address };
-                if (ensData.identity) {
-                    const isBase = ensData.identity.endsWith('.base.eth');
-                    const displayLabel = isBase ? 'Base Name' : 'ENS';
-                    recordsMap['identity'] = { label: displayLabel, value: ensData.identity };
-                }
-                if (ensData.displayName && ensData.displayName !== ensData.identity) {
-                    recordsMap['displayName'] = { label: 'Name', value: ensData.displayName };
-                }
-                if (ensData.social?.follower != null) {
-                    recordsMap['followers'] = { label: 'Followers', value: ensData.social.follower };
-                }
-                if (ensData.social?.following != null) {
-                    recordsMap['following'] = { label: 'Following', value: ensData.social.following };
-                }
-                if (ensData.location) {
-                    recordsMap['location'] = { label: 'Location', value: ensData.location };
-                }
-                if (ensData.status) {
-                    recordsMap['status'] = { label: 'Status', value: ensData.status };
-                }
-                if (ensData.description) {
-                    recordsMap['description'] = { label: 'Bio', value: ensData.description };
-                }
-                if (ensData.links?.website?.handle) {
-                    recordsMap['website'] = { 
-                        label: 'Website', 
-                        value: ensData.links.website.handle, 
-                        isLink: true, 
-                        linkUrl: ensData.links.website.link || normalizeUrl(ensData.links.website.handle) 
-                    };
-                }
-                if (ensData.email) {
-                    recordsMap['email'] = { label: 'Email', value: ensData.email };
-                }
-                if (ensData.createdAt) {
-                    let formattedDate = ensData.createdAt;
-                    try {
-                        const date = new Date(ensData.createdAt);
-                        if (!isNaN(date.getTime())) { formattedDate = date.toLocaleDateString(); }
-                    } catch (err) { }
-                    recordsMap['createdAt'] = { label: 'Created', value: formattedDate };
-                }
-
-                function processValue(key, value, targetArray) {
-                    if (value === null || value === undefined || value === '' || specificOmissions.includes(key)) return;
-
-                    const label = headerRenames[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
-
-                    if (recordsMap[key] || targetArray.some(r => r.label === label)) return;
-
-                    if (typeof value === 'object') {
-                        if (key === 'links') {
-                            Object.entries(value).forEach(([linkName, linkData]) => {
-                                if (linkName !== 'website' && linkData && linkData.handle && linkData.link) {
-                                    const formattedLabel = headerRenames[linkName] || linkName.replace(/^./, c => c.toUpperCase());
-                                    targetArray.push({ 
-                                        label: formattedLabel, 
-                                        value: linkData.handle, 
-                                        isLink: true, 
-                                        linkUrl: linkData.link 
-                                    });
-                                }
-                            });
-                        }
-                        else if (key === 'records') {
-                            Object.entries(value).forEach(([recordKey, recordValue]) => {
-                                if (recordKey !== 'contenthash' && recordKey !== 'contentHash' && recordValue) {
-                                    const recordLabel = headerRenames[recordKey] || recordKey.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
-                                    let isLink = linkableRecords.includes(recordLabel);
-                                    let linkUrl = '';
-                                    if (isLink) {
-                                        linkUrl = recordKey === 'com.twitter' ? \`https://x.com/\${recordValue}\`
-                                            : recordKey === 'com.github' ? \`https://github.com/\${recordValue}\`
-                                            : recordKey === 'com.discord' ? \`https://discord.com/users/\${recordValue}\`
-                                            : recordKey === 'org.telegram' ? \`https://t.me/\${recordValue}\`
-                                            : normalizeUrl(recordValue);
-                                    }
-                                    targetArray.push({ label: recordLabel, value: recordValue, isLink: isLink, linkUrl: linkUrl });
-                                }
-                            });
-                        }
-                    } else {
-                        let isLink = linkableRecords.includes(label);
-                        let linkUrl = '';
-                        if (isLink) {
-                            linkUrl = key === 'com.twitter' ? \`https://x.com/\${value}\`
-                                : key === 'com.github' ? \`https://github.com/\${value}\`
-                                : key === 'com.discord' ? \`https://discord.com/users/\${value}\`
-                                : key === 'org.telegram' ? \`https://t.me/\${value}\`
-                                : normalizeUrl(value);
-                        }
-                        targetArray.push({ label: label, value: value, isLink: isLink, linkUrl: linkUrl });
-                    }
-                }
-
-                Object.entries(ensData).forEach(([key, value]) => {
-                    if (!Object.keys(recordsMap).includes(key)) {
-                        processValue(key, value, otherRecords);
-                    }
-                });
-
-                let orderedRecords = [];
-                if (recordsMap['address']) orderedRecords.push(recordsMap['address']);
-                if (recordsMap['identity']) orderedRecords.push(recordsMap['identity']);
-                if (recordsMap['displayName']) orderedRecords.push(recordsMap['displayName']);
-                if (recordsMap['followers']) orderedRecords.push(recordsMap['followers']);
-                if (recordsMap['following']) orderedRecords.push(recordsMap['following']);
-                if (recordsMap['location']) orderedRecords.push(recordsMap['location']);
-                if (recordsMap['status']) orderedRecords.push(recordsMap['status']);
-                if (recordsMap['description']) orderedRecords.push(recordsMap['description']);
-                if (recordsMap['email']) orderedRecords.push(recordsMap['email']);
-                if (recordsMap['website']) orderedRecords.push(recordsMap['website']);
-                otherRecords.sort((a, b) => a.label.localeCompare(b.label));
-                orderedRecords = orderedRecords.concat(otherRecords);
-                if (recordsMap['createdAt']) orderedRecords.push(recordsMap['createdAt']);
-
-                if (orderedRecords.length === 0) {
-                    addProfileRecord(profileContainer, 'Status', 'No profile records found.', true);
-                } else {
-                    orderedRecords.forEach((record, index) => {
-                        addProfileRecord(profileContainer, record.label, record.value, index === 0, record.isLink, record.linkUrl);
-                    });
-                }
-            } catch (err) {
-                errorMessage.textContent = \`Error loading profile: \${err.message}\`;
-                errorMessage.style.display = 'block';
-            }
-        }
-
-        fetchProfile();
-    </script>
 </body>
 </html>
             `;
-
-            try {
-                const blob = new Blob([htmlContent], { type: 'text/html' });
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'index.html';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(url);
-
-                successMessageProfile.textContent = 'Profile HTML downloaded successfully!';
-                successMessageProfile.style.display = 'block';
-                errorMessageProfile.style.display = 'none';
-
-                setTimeout(() => {
-                    successMessageProfile.style.display = 'none';
-                }, 3000);
-            } catch (err) {
-                errorMessageProfile.textContent = `Error downloading HTML: ${err.message}`;
-                errorMessageProfile.style.display = 'block';
-                successMessageProfile.style.display = 'none';
-            }
         }
+
+        // Download HTML File
+        function downloadHTML() {
+            if (!currentEnsData || !currentEnsName) {
+                errorMessageProfile.style.display = 'block';
+                errorMessageProfile.textContent = 'No profile data available to download.';
+                return;
+            }
+
+            const htmlContent = generateDownloadableHtml(currentEnsData, currentEnsName, currentNeighborhood);
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${currentEnsName}-geocities-profile.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            successMessageProfile.style.display = 'block';
+            successMessageProfile.textContent = 'HTML file downloaded successfully!';
+            setTimeout(() => {
+                successMessageProfile.style.display = 'none';
+            }, 3000);
+        }
+
+        // Handle Enter Key for Search
+        ensInputHome.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchENS();
+        });
+        ensInputProfile.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchENS();
+        });
     </script>
-</body>
-</html>
