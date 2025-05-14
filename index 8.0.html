@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoCities®️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Georgia&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #000;
+            color: #FFF;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+        body.light-mode {
+            background: #FFF;
+            color: #000;
+        }
+        .page-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .header {
+            width: 100%;
+            background: #000;
+            color: #FFF;
+            padding: 10px 0;
+            box-sizing: border-box;
+            border-bottom: 1px solid #FFF;
+        }
+        .header.light-mode {
+            background: #FFF;
+            color: #000;
+            border-bottom: 1px solid #000;
+        }
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .header-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .header-box.light-mode {
+            color: #000;
+        }
+        .header-logo {
+            width: 50px;
+            height: 50px;
+            background: url('https://i.imgur.com/V7qF6qF.png') no-repeat center;
+            background-size: contain;
+        }
+        .header-logo.light-mode {
+            background: url('https://i.imgur.com/3zXz7pB.png') no-repeat center;
+            background-size: contain;
+        }
+        .geocities-title {
+            font-size: 1.5em;
+            margin: 0;
+        }
+        .geocities-title.light-mode {
+            color: #000;
+        }
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+        .nav-links a {
+            color: #FFF;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+        .nav-links.light-mode a {
+            color: #000;
+        }
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        .theme-btn {
+            padding: 5px 10px;
+            background: #FFF;
+            color: #000;
+            border: 1px solid #FFF;
+            cursor: pointer;
+            border-radius: 0;
+            transition: all 0.3s ease;
+        }
+        .theme-btn.light-mode {
+            background: #000;
+            color: #FFF;
+            border: 1px solid #000;
+        }
+        .homepage, .profile-page {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .homepage {
+            display: flex;
+        }
+        .profile-page {
+            display: none;
+        }
+        .homepage-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 600px;
+        }
+        .homepage-avatar {
+            width: 100%;
+            max-width: 300px;
+            aspect-ratio: 1 / 1;
+            background: url('https://i.imgur.com/V7qF6qF.png') no-repeat center;
+            background-size: contain;
+            border: 1px solid #FFF;
+        }
+        .homepage-avatar.light-mode {
+            border: 1px solid #000;
+            background: url('https://i.imgur.com/3zXz7pB.png') no-repeat center;
+            background-size: contain;
+        }
+        .search-container {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .ens-input {
+            flex: 1;
+            padding: 10px;
+            background: #000;
+            color: #FFF;
+            border: 1px solid #FFF;
+            font-size: 0.9em;
+            box-sizing: border-box;
+        }
+        .ens-input.light-mode {
+            background: #FFF;
+            color: #000;
+            border: 1px solid #000;
+        }
+        .search-button {
+            padding: 10px 15px;
+            background: #FFF;
+            color: #000;
+            border: 1px solid #FFF;
+            cursor: pointer;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+        .search-button.light-mode {
+            background: #000;
+            color: #FFF;
+            border: 1px solid #000;
+        }
+        .error-message, .success-message {
+            margin-top: 10px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            padding: 5px;
+            box-sizing: border-box;
+            display: none;
+        }
+        .error-message {
+            color: red;
+        }
+        .success-message {
+            color: green;
+        }
+        .neighborhood-container {
+            width: 90%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .neighborhood-select-container {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 10px;
+        }
+        .neighborhood-select {
+            width: 100%;
+            padding: 10px;
+            background: #000;
+            color: #FFF;
+            border: 1px solid #FFF;
+            font-size: 0.9em;
+            box-sizing: border-box;
+        }
+        .neighborhood-select.light-mode {
+            background: #FFF;
+            color: #000;
+            border: 1px solid #000;
+        }
+        .register-button-container {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            display: none;
+        }
+        .register-button {
+            flex: 1;
+            padding: 10px 15px;
+            background: #000;
+            color: #FFF;
+            border: 1px solid #FFF;
+            cursor: pointer;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            font-size: 0.8em;
+            text-align: center;
+            height: 38px;
+            box-sizing: border-box;
+        }
+        .register-button.light-mode {
+            background: #FFF;
+            color: #000;
+            border: 1px solid #000;
+        }
+        .download-button {
+            padding: 10px 15px;
+            color: #FFF;
+            border: 1px solid #FFF;
+            cursor: pointer;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            font-size: 0.8em;
+            text-align: center;
+            height: 38px;
+            background: #000;
+            box-sizing: border-box;
+            display: inline-block;
+        }
+        .download-button.light-mode {
+            background: #FFF;
+            color: #000;
+            border-color: #000;
+        }
+        .profile-header {
+            width: 100%;
+            height: 0;
+            padding-bottom: 33.33%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border: 1px solid #FFF;
+            box-sizing: border-box;
+            display: none;
+        }
+        .profile-avatar {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10em;
+            border: 1px solid #FFF;
+            box-sizing: border-box;
+            color: #FFF;
+        }
+        .profile-container {
+            width: 100%;
+        }
+        .profile-box {
+            border: 1px solid #FFF;
+            padding: 10px;
+            color: #FFF;
+            word-break: break-word;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-top: none;
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 38px;
+        }
+        .profile-box:first-child {
+            border-top: 1px solid #FFF;
+        }
+        .profile-box.light-mode {
+            border-color: #000;
+            color: #000;
+        }
+        .profile-box-header {
+            font-weight: bold;
+            color: #FFF;
+            flex: 0 0 100px;
+            min-width: 80px;
+            text-align: left;
+        }
+        .profile-box-header.light-mode {
+            color: #000;
+        }
+        .profile-box-value {
+            flex: 1;
+            text-align: left;
+            word-break: break-all;
+            color: #FFF;
+        }
+        .profile-box-value.light-mode {
+            color: #000;
+        }
+        .profile-box-value a {
+            color: #FFF;
+            text-decoration: underline;
+        }
+        .profile-box-value.light-mode a {
+            color: #000;
+        }
+        .profile-box-value a:hover {
+            text-decoration: none;
+        }
+        .footer {
+            width: 100%;
+            background: #000;
+            color: #FFF;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 0.8em;
+            box-sizing: border-box;
+            border-top: 1px solid #FFF;
+        }
+        .footer.light-mode {
+            background: #FFF;
+            color: #000;
+            border-top: 1px solid #000;
+        }
+        .footer a {
+            color: inherit;
+            text-decoration: none;
+            transition: text-decoration 0.3s ease;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .neighborhood-geocities {
+            background: #000;
+            color: #FFF;
+        }
+        .neighborhood-geocities.light-mode {
+            background: #FFF;
+            color: #000;
+        }
+        .neighborhood-area51 {
+            font-family: 'Orbitron', sans-serif;
+            background: #0A0A0A;
+            color: #00FF00;
+        }
+        .neighborhood-area51.light-mode {
+            background: #E0E0E0;
+            color: #008000;
+        }
+        .neighborhood-area51 .profile-box {
+            box-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00;
+            border-color: #00FF00;
+            background: rgba(0, 0, 0, 0.8);
+        }
+        .neighborhood-area51.light-mode .profile-box {
+            box-shadow: 0 0 10px #008000, 0 0 20px #008000;
+            border-color: #008000;
+            background: rgba(255, 255, 255, 0.9);
+            color: #008000;
+        }
+        .neighborhood-area51 .profile-box-header,
+        .neighborhood-area51 .profile-box-value,
+        .neighborhood-area51 .profile-box-value a {
+            color: #00FF00;
+        }
+        .neighborhood-area51.light-mode .profile-box-header,
+        .neighborhood-area51.light-mode .profile-box-value,
+        .neighborhood-area51.light-mode .profile-box-value a {
+            color: #008000;
+        }
+        .neighborhood-area51 .profile-header,
+        .neighborhood-area51 .profile-avatar {
+            border-color: #00FF00;
+        }
+        .neighborhood-area51.light-mode .profile-header,
+        .neighborhood-area51.light-mode .profile-avatar {
+            border-color: #008000;
+        }
+        .neighborhood-area51 .download-button {
+            border-color: #00FF00;
+            color: #00FF00;
+            background: rgba(0, 0, 0, 0.8);
+        }
+        .neighborhood-area51.light-mode .download-button {
+            border-color: #008000;
+            color: #008000;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        .neighborhood-athens {
+            font-family: 'Georgia', serif;
+            background: #2F4F4F;
+            color: #ADD8E6;
+        }
+        .neighborhood-athens.light-mode {
+            background: #F5F5DC;
+            color: #00008B;
+        }
+        .neighborhood-athens .profile-box {
+            border-color: #ADD8E6;
+            background: rgba(47, 79, 79, 0.8);
+        }
+        .neighborhood-athens.light-mode .profile-box {
+            border-color: #00008B;
+            background: rgba(245, 245, 220, 0.9);
+            color: #00008B;
+        }
+        .neighborhood-athens .profile-box-header,
+        .neighborhood-athens .profile-box-value,
+        .neighborhood-athens .profile-box-value a {
+            color: #ADD8E6;
+        }
+        .neighborhood-athens.light-mode .profile-box-header,
+        .neighborhood-athens.light-mode .profile-box-value,
+        .neighborhood-athens.light-mode .profile-box-value a {
+            color: #00008B;
+        }
+        .neighborhood-athens .profile-header,
+        .neighborhood-athens .profile-avatar {
+            border-color: #ADD8E6;
+        }
+        .neighborhood-athens.light-mode .profile-header,
+        .neighborhood-athens.light-mode .profile-avatar {
+            border-color: #00008B;
+        }
+        .neighborhood-athens .download-button {
+            border-color: #ADD8E6;
+            color: #ADD8E6;
+            background: rgba(47, 79, 79, 0.8);
+        }
+        .neighborhood-athens.light-mode .download-button {
+            border-color: #00008B;
+            color: #00008B;
+            background: rgba(245, 245, 220, 0.9);
+        }
+        .neighborhood-augusta {
+            background: #006400;
+            color: #FFFFFF;
+        }
+        .neighborhood-augusta.light-mode {
+            background: #90EE90;
+            color: #006400;
+        }
+        .neighborhood-augusta .profile-box {
+            background-image: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%);
+            border-color: #FFFFFF;
+            background: rgba(0, 100, 0, 0.8);
+        }
+        .neighborhood-augusta.light-mode .profile-box {
+            background-image: linear-gradient(45deg, rgba(0,0,0,0.1) 25%, transparent 25%);
+            border-color: #006400;
+            background: rgba(144, 238, 144, 0.9);
+            color: #006400;
+        }
+        .neighborhood-augusta .profile-box-header,
+        .neighborhood-augusta .profile-box-value,
+        .neighborhood-augusta .profile-box-value a {
+            color: #FFFFFF;
+        }
+        .neighborhood-augusta.light-mode .profile-box-header,
+        .neighborhood-augusta.light-mode .profile-box-value,
+        .neighborhood-augusta.light-mode .profile-box-value a {
+            color: #006400;
+        }
+        .neighborhood-augusta .profile-header,
+        .neighborhood-augusta .profile-avatar {
+            border-color: #FFFFFF;
+        }
+        .neighborhood-augusta.light-mode .profile-header,
+        .neighborhood-augusta.light-mode .profile-avatar {
+            border-color: #006400;
+        }
+        .neighborhood-augusta .download-button {
+            border-color: #FFFFFF;
+            color: #FFFFFF;
+            background: rgba(0, 100, 0, 0.8);
+        }
+        .neighborhood-augusta.light-mode .download-button {
+            border-color: #006400;
+            color: #006400;
+            background: rgba(144, 238, 144, 0.9);
+        }
+        .neighborhood-baja {
+            background: #F4A460;
+            color: #FF4500;
+        }
+        .neighborhood-baja.light-mode {
+            background: #D2B48C;
+            color: #FF4500;
+        }
+        .neighborhood-baja .profile-box {
+            border-color: #FF4500;
+            background: rgba(244, 164, 96, 0.8);
+            transition: transform 0.2s ease;
+        }
+        .neighborhood-baja.light-mode .profile-box {
+            border-color: #FF4500;
+            background: rgba(210, 180, 140, 0.9);
+            color: #FF4500;
+        }
+        .neighborhood-baja .profile-box:hover {
+            transform: scale(1.02);
+        }
+        .neighborhood-baja .profile-box-header,
+        .neighborhood-baja .profile-box-value,
+        .neighborhood-baja .profile-box-value a {
+            color: #FF4500;
+        }
+        .neighborhood-baja.light-mode .profile-box-header,
+        .neighborhood-baja.light-mode .profile-box-value,
+        .neighborhood-baja.light-mode .profile-box-value a {
+            color: #FF4500;
+        }
+        .neighborhood-baja .profile-header,
+        .neighborhood-baja .profile-avatar {
+            border-color: #FF4500;
+        }
+        .neighborhood-baja.light-mode .profile-header,
+        .neighborhood-baja.light-mode .profile-avatar {
+            border-color: #FF4500;
+        }
+        .neighborhood-baja .download-button {
+            border-color: #FF4500;
+            color: #FF4500;
+            background: rgba(244, 164, 96, 0.8);
+        }
+        .neighborhood-baja.light-mode .download-button {
+            border-color: #FF4500;
+            color: #FF4500;
+            background: rgba(210, 180, 140, 0.9);
+        }
+        .neighborhood-bourbonstreet {
+            background: #4B0082;
+            color: #FFFF00;
+        }
+        .neighborhood-bourbonstreet.light-mode {
+            background: #E6E6FA;
+            color: #4B0082;
+        }
+        .neighborhood-bourbonstreet .profile-box {
+            border-color: #FFFF00;
+            background: rgba(75, 0, 130, 0.8);
+            animation: fadeIn 1s ease-in;
+        }
+        .neighborhood-bourbonstreet.light-mode .profile-box {
+            border-color: #4B0082;
+            background: rgba(230, 230, 250, 0.9);
+            color: #4B0082;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .neighborhood-bourbonstreet .profile-box-header,
+        .neighborhood-bourbonstreet .profile-box-value,
+        .neighborhood-bourbonstreet .profile-box-value a {
+            color: #FFFF00;
+        }
+        .neighborhood-bourbonstreet.light-mode .profile-box-header,
+        .neighborhood-bourbonstreet.light-mode .profile-box-value,
+        .neighborhood-bourbonstreet.light-mode .profile-box-value a {
+            color: #4B0082;
+        }
+        .neighborhood-bourbonstreet .profile-header,
+        .neighborhood-bourbonstreet .profile-avatar {
+            border-color: #FFFF00;
+        }
+        .neighborhood-bourbonstreet.light-mode .profile-header,
+        .neighborhood-bourbonstreet.light-mode .profile-avatar {
+            border-color: #4B0082;
+        }
+        .neighborhood-bourbonstreet .download-button {
+            border-color: #FFFF00;
+            color: #FFFF00;
+            background: rgba(75, 0, 130, 0.8);
+        }
+        .neighborhood-bourbonstreet.light-mode .download-button {
+            border-color: #4B0082;
+            color: #4B0082;
+            background: rgba(230, 230, 250, 0.9);
+        }
+        .neighborhood-broadway {
+            background: #1C2526;
+            color: #FF4040;
+        }
+        .neighborhood-broadway.light-mode {
+            background: #FFFDD0;
+            color: #8B0000;
+        }
+        .neighborhood-broadway .profile-box {
+            border-color: #FF4040;
+            background: rgba(28, 37, 38, 0.8);
+            transition: box-shadow 0.3s ease;
+        }
+        .neighborhood-broadway.light-mode .profile-box {
+            border-color: #8B0000;
+            background: rgba(255, 253, 208, 0.9);
+            color: #8B0000;
+        }
+        .neighborhood-broadway .profile-box:hover {
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        .neighborhood-broadway .profile-box-header,
+        .neighborhood-broadway .profile-box-value,
+        .neighborhood-broadway .profile-box-value a {
+            color: #FF4040;
+        }
+        .neighborhood-broadway.light-mode .profile-box-header,
+        .neighborhood-broadway.light-mode .profile-box-value,
+        .neighborhood-broadway.light-mode .profile-box-value a {
+            color: #8B0000;
+        }
+        .neighborhood-broadway .profile-header,
+        .neighborhood-broadway .profile-avatar {
+            border-color: #FF4040;
+        }
+        .neighborhood-broadway.light-mode .profile-header,
+        .neighborhood-broadway.light-mode .profile-avatar {
+            border-color: #8B0000;
+        }
+        .neighborhood-broadway .download-button {
+            border-color: #FF4040;
+            color: #FF4040;
+            background: rgba(28, 37, 38, 0.8);
+        }
+        .neighborhood-broadway.light-mode .download-button {
+            border-color: #8B0000;
+            color: #8B0000;
+            background: rgba(255, 253, 208, 0.9);
+        }
+    </style>
+</head>
+<body class="neighborhood-geocities">
+    <div class="page-container">
+        <header class="header">
+            <div class="header-content">
+                <div class="header-box">
+                    <div class="header-logo"></div>
+                    <h1 class="geocities-title">GeoCities®️</h1>
+                </div>
+                <div class="nav-links">
+                    <a href="https://geocities.eth.limo" target="_blank" rel="noopener noreferrer">About</a>
+                    <a href="https://x.com/geocitieseth" target="_blank" rel="noopener noreferrer">X</a>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="homepage">
+                <div class="homepage-content">
+                    <div class="homepage-avatar"></div>
+                    <div class="search-container">
+                        <input type="text" id="ens-input-home" class="ens-input" placeholder="Enter ENS or Base name">
+                        <button id="home-search-button" class="search-button" onclick="searchENS()">Search</button>
+                    </div>
+                    <div id="error-message-home" class="error-message"></div>
+                </div>
+            </div>
+            <div class="profile-page">
+                <div class="neighborhood-select-container">
+                    <select id="neighborhood-select" class="neighborhood-select" onchange="changeNeighborhood()">
+                        <option value="geocities">GeoCities</option>
+                        <option value="area51">Area51</option>
+                        <option value="athens">Athens</option>
+                        <option value="augusta">Augusta</option>
+                        <option value="baja">Baja</option>
+                        <option value="bourbonstreet">Bourbon Street</option>
+                        <option value="broadway">Broadway</option>
+                    </select>
+                </div>
+                <div id="neighborhood-container" class="neighborhood-container neighborhood-geocities"></div>
+                <div id="success-message-profile" class="success-message"></div>
+                <div id="error-message-profile" class="error-message"></div>
+                <div id="register-button-container" class="register-button-container">
+                    <button id="register-name-button" class="register-button"></button>
+                    <button id="download-button" class="download-button" onclick="downloadProfileHtml()">Download HTML</button>
+                </div>
+                <button class="theme-btn" onclick="toggleTheme()">Light</button>
+            </div>
+        </main>
+        <footer class="footer">
+            GeoCities®️
+        </footer>
+    </div>
+    <script>
+        let lightMode = false;
+        let currentNeighborhood = 'geocities';
+        let currentEnsName = null;
+        let currentEnsData = null;
+
+        const pageContainer = document.querySelector('.page-container');
+        const headerElement = document.querySelector('.header');
+        const footerElement = document.querySelector('.footer');
+        const homepage = document.querySelector('.homepage');
+        const profilePage = document.querySelector('.profile-page');
+        const ensInputHome = document.getElementById('ens-input-home');
+        const ensInputProfile = document.getElementById('ens-input-profile');
+        const homeSearchButton = document.getElementById('home-search-button');
+        const profileSearchButton = document.getElementById('profile-search-button');
+        const themeBtn = document.querySelector('.theme-btn');
+        const headerLogo = document.querySelector('.header-logo');
+        const headerBox = document.querySelector('.header-box');
+        const geoCitiesTitle = document.querySelector('.geocities-title');
+        const homepageAvatar = document.querySelector('.homepage-avatar');
+        const errorMessageHome = document.getElementById('error-message-home');
+        const errorMessageProfile = document.getElementById('error-message-profile');
+        const successMessageProfile = document.getElementById('success-message-profile');
+        const registerButtonContainer = document.getElementById('register-button-container');
+        const registerButton = document.getElementById('register-name-button');
+        const downloadButton = document.getElementById('download-button');
+        const neighborhoodSelect = document.getElementById('neighborhood-select');
+        const neighborhoodContainer = document.getElementById('neighborhood-container');
+        const profileHeader = document.getElementById('profile-header');
+        const profileAvatar = document.getElementById('profile-avatar');
+        const profileHeaderLink = document.getElementById('profile-header-link');
+        const profileAvatarLink = document.getElementById('profile-avatar-link');
+
+        function toggleTheme() {
+            lightMode = !lightMode;
+            pageContainer.classList.toggle('light-mode', lightMode);
+            headerElement.classList.toggle('light-mode', lightMode);
+            footerElement.classList.toggle('light-mode', lightMode);
+            ensInputHome.classList.toggle('light-mode', lightMode);
+            homeSearchButton.classList.toggle('light-mode', lightMode);
+            themeBtn.classList.toggle('light-mode', lightMode);
+            headerLogo.classList.toggle('light-mode', lightMode);
+            headerBox.classList.toggle('light-mode', lightMode);
+            geoCitiesTitle.classList.toggle('light-mode', lightMode);
+            homepageAvatar.classList.toggle('light-mode', lightMode);
+            neighborhoodSelect.classList.toggle('light-mode', lightMode);
+            registerButton.classList.toggle('light-mode', lightMode);
+            downloadButton.classList.toggle('light-mode', lightMode);
+            neighborhoodContainer.classList.toggle('light-mode', lightMode);
+
+            changeNeighborhood();
+            themeBtn.textContent = lightMode ? 'Dark' : 'Light';
+        }
+
+        function changeNeighborhood() {
+            const newNeighborhood = neighborhoodSelect.value;
+            neighborhoodContainer.className = `neighborhood-container neighborhood-${newNeighborhood}`;
+            if (lightMode) neighborhoodContainer.classList.add('light-mode');
+            currentNeighborhood = newNeighborhood;
+
+            if (currentEnsName && currentEnsData) {
+                generateProfileHtml(currentEnsData, currentEnsName, currentNeighborhood);
+            }
+        }
+
+        async function setProfileImages(name, avatarTarget, headerTarget, setAvatarLink = false, setHeaderLink = false) {
+            avatarTarget.style.backgroundImage = 'none';
+            const initial = name ? name[0].toUpperCase() : 'G';
+            avatarTarget.textContent = initial;
+
+            headerTarget.style.backgroundImage = 'none';
+            headerTarget.style.display = 'none';
+            if (setHeaderLink) {
+                profileHeaderLink.href = '';
+                profileHeaderLink.style.cursor = 'default';
+                profileHeaderLink.style.pointerEvents = 'none';
+            }
+
+            if (setAvatarLink) {
+                profileAvatarLink.href = '';
+                profileAvatarLink.style.cursor = 'default';
+                profileAvatarLink.style.pointerEvents = 'none';
+            }
+
+            if (name && typeof name === 'string' && name.trim()) {
+                let normalizedName = name.trim().toLowerCase();
+                normalizedName = normalizedName.replace(/\.eth$/, '').replace(/\.base\.eth$/, '');
+                let limoUrl = name.endsWith('.base.eth')
+                    ? `https://${normalizedName}.base.eth.limo`
+                    : `https://${normalizedName}.eth.limo`;
+                if (setAvatarLink) {
+                    profileAvatarLink.href = limoUrl;
+                    profileAvatarLink.style.cursor = 'pointer';
+                    profileAvatarLink.style.pointerEvents = 'auto';
+                }
+                if (setHeaderLink) {
+                    profileHeaderLink.href = limoUrl;
+                    profileHeaderLink.style.cursor = 'pointer';
+                    profileHeaderLink.style.pointerEvents = 'auto';
+                }
+            }
+
+            if (!name || !name.trim()) return;
+
+            let url = `https://api.web3.bio/profile/ens/${name}`;
+            if (name.endsWith('.base.eth')) {
+                url = `https://api.web3.bio/profile/basenames/${name}`;
+            }
+
+            try {
+                const response = await fetch(url);
+                let avatarUrl = null;
+                let headerUrl = null;
+                if (response.ok) {
+                    const data = await response.json();
+                    avatarUrl = data.avatar;
+                    headerUrl = data.header;
+                }
+
+                if (avatarUrl) {
+                    const img = new Image();
+                    img.src = avatarUrl;
+                    img.onload = () => {
+                        avatarTarget.style.backgroundImage = `url('${avatarUrl}')`;
+                        avatarTarget.textContent = '';
+                    };
+                    img.onerror = () => {
+                        avatarTarget.textContent = initial;
+                    };
+                } else {
+                    avatarTarget.textContent = initial;
+                }
+
+                if (headerUrl) {
+                    const img = new Image();
+                    img.src = headerUrl;
+                    img.onload = () => {
+                        headerTarget.style.backgroundImage = `url('${headerUrl}')`;
+                        headerTarget.style.display = 'block';
+                    };
+                    img.onerror = () => {
+                        headerTarget.style.display = 'none';
+                    };
+                } else {
+                    headerTarget.style.display = 'none';
+                }
+            } catch (err) {
+                avatarTarget.textContent = initial;
+                headerTarget.style.display = 'none';
+            }
+        }
+
+        function addProfileRecord(container, label, value, isFirst, isLink = false, linkUrl = '') {
+            const recordDiv = document.createElement('div');
+            recordDiv.classList.add('profile-box');
+            if (lightMode) recordDiv.classList.add('light-mode');
+
+            const headerElement = document.createElement('div');
+            headerElement.classList.add('profile-box-header');
+            if (lightMode) headerElement.classList.add('light-mode');
+            headerElement.textContent = label;
+
+            const valueContainer = document.createElement('div');
+            valueContainer.classList.add('profile-box-value');
+            if (lightMode) valueContainer.classList.add('light-mode');
+
+            if (isLink && linkUrl) {
+                const linkElement = document.createElement('a');
+                linkElement.href = linkUrl;
+                linkElement.target = '_blank';
+                linkElement.rel = 'noopener noreferrer';
+                linkElement.textContent = (typeof value === 'object' && value !== null) ? JSON.stringify(value) : value;
+                valueContainer.appendChild(linkElement);
+            } else {
+                valueContainer.textContent = (typeof value === 'object' && value !== null) ? JSON.stringify(value) : value;
+            }
+
+            recordDiv.appendChild(headerElement);
+            recordDiv.appendChild(valueContainer);
+            container.appendChild(recordDiv);
+        }
+
+        function normalizeUrl(url) {
+            if (!url) return url;
+            if (/^https?:\/\//i.test(url)) return url;
+            if (/^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/.*)?$/.test(url)) return `https://${url}`;
+            return url;
+        }
+
+        async function generateProfileHtml(ensData, searchedName, neighborhood) {
+            neighborhoodContainer.innerHTML = '';
+            neighborhoodContainer.className = `neighborhood-container neighborhood-${neighborhood}`;
+            if (lightMode) neighborhoodContainer.classList.add('light-mode');
+
+            const headerLink = document.createElement('a');
+            headerLink.id = 'profile-header-link';
+            headerLink.target = '_blank';
+            headerLink.rel = 'noopener noreferrer';
+
+            const headerDiv = document.createElement('div');
+            headerDiv.id = 'profile-header';
+            headerDiv.classList.add('profile-header');
+            headerLink.appendChild(headerDiv);
+
+            const avatarLink = document.createElement('a');
+            avatarLink.id = 'profile-avatar-link';
+            avatarLink.target = '_blank';
+            avatarLink.rel = 'noopener noreferrer';
+
+            const avatarDiv = document.createElement('div');
+            avatarDiv.id = 'profile-avatar';
+            avatarDiv.classList.add('profile-avatar');
+            avatarLink.appendChild(avatarDiv);
+
+            const recordsDiv = document.createElement('div');
+            recordsDiv.id = 'profile-records';
+            recordsDiv.className = 'profile-container';
+
+            neighborhoodContainer.appendChild(headerLink);
+            neighborhoodContainer.appendChild(avatarLink);
+            neighborhoodContainer.appendChild(recordsDiv);
+
+            await setProfileImages(ensData?.identity || searchedName, avatarDiv, headerDiv, true, true);
+
+            const specificOmissions = ['avatar', 'header', 'contenthash', 'contentHash', 'identity', 'address', 'displayName', 'description', 'email', 'location', 'status', 'createdAt', 'records', 'followers', 'platform', 'follower', 'following', 'social'];
+            const headerRenames = {
+                'email': 'Email',
+                'description': 'Bio',
+                'location': 'Location',
+                'status': 'Status',
+                'keywords': 'Tags',
+                'com.discord': 'Discord',
+                'com.twitter': 'Twitter',
+                'com.github': 'GitHub',
+                'org.telegram': 'Telegram'
+            };
+            const linkableRecords = ['Website', 'Twitter', 'GitHub', 'Discord', 'Telegram'];
+
+            let recordsMap = {
+                'address': null,
+                'identity': null,
+                'displayName': null,
+                'followers': null,
+                'following': null,
+                'location': null,
+                'status': null,
+                'description': null,
+                'website': null,
+                'email': null,
+                'createdAt': null
+            };
+            let otherRecords = [];
+
+            if (ensData.address) recordsMap['address'] = { label: 'Address', value: ensData.address };
+            if (ensData.identity) {
+                const isBase = ensData.identity.endsWith('.base.eth');
+                const displayLabel = isBase ? 'Base Name' : 'ENS';
+                recordsMap['identity'] = { label: displayLabel, value: ensData.identity };
+            }
+            if (ensData.displayName && ensData.displayName !== ensData.identity) {
+                recordsMap['displayName'] = { label: 'Name', value: ensData.displayName };
+            }
+            if (ensData.social?.follower != null) {
+                recordsMap['followers'] = { label: 'Followers', value: ensData.social.follower };
+            }
+            if (ensData.social?.following != null) {
+                recordsMap['following'] = { label: 'Following', value: ensData.social.following };
+            }
+            if (ensData.location) {
+                recordsMap['location'] = { label: 'Location', value: ensData.location };
+            }
+            if (ensData.status) {
+                recordsMap['status'] = { label: 'Status', value: ensData.status };
+            }
+            if (ensData.description) {
+                recordsMap['description'] = { label: 'Bio', value: ensData.description };
+            }
+            if (ensData.links?.website?.handle) {
+                recordsMap['website'] = { 
+                    label: 'Website', 
+                    value: ensData.links.website.handle, 
+                    isLink: true, 
+                    linkUrl: ensData.links.website.link || normalizeUrl(ensData.links.website.handle) 
+                };
+            }
+            if (ensData.email) {
+                recordsMap['email'] = { label: 'Email', value: ensData.email };
+            }
+            if (ensData.createdAt) {
+                let formattedDate = ensData.createdAt;
+                try {
+                    const date = new Date(ensData.createdAt);
+                    if (!isNaN(date.getTime())) { formattedDate = date.toLocaleDateString(); }
+                } catch (err) { }
+                recordsMap['createdAt'] = { label: 'Created', value: formattedDate };
+            }
+
+            function processValue(key, value, targetArray) {
+                if (value === null || value === undefined || value === '' || specificOmissions.includes(key)) return;
+
+                const label = headerRenames[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+
+                if (recordsMap[key] || targetArray.some(r => r.label === label)) return;
+
+                if (typeof value === 'object') {
+                    if (key === 'links') {
+                        Object.entries(value).forEach(([linkName, linkData]) => {
+                            if (linkName !== 'website' && linkData && linkData.handle && linkData.link) {
+                                const formattedLabel = headerRenames[linkName] || linkName.replace(/^./, c => c.toUpperCase());
+                                targetArray.push({ 
+                                    label: formattedLabel, 
+                                    value: linkData.handle, 
+                                    isLink: true, 
+                                    linkUrl: linkData.link 
+                                });
+                            }
+                        });
+                    }
+                    else if (key === 'records') {
+                        Object.entries(value).forEach(([recordKey, recordValue]) => {
+                            if (recordKey !== 'contenthash' && recordKey !== 'contentHash' && recordValue) {
+                                const recordLabel = headerRenames[recordKey] || recordKey.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                                let isLink = linkableRecords.includes(recordLabel);
+                                let linkUrl = '';
+                                if (isLink) {
+                                    linkUrl = recordKey === 'com.twitter' ? `https://x.com/${recordValue}`
+                                        : recordKey === 'com.github' ? `https://github.com/${recordValue}`
+                                        : recordKey === 'com.discord' ? `https://discord.com/users/${recordValue}`
+                                        : recordKey === 'org.telegram' ? `https://t.me/${recordValue}`
+                                        : normalizeUrl(recordValue);
+                                }
+                                targetArray.push({ label: recordLabel, value: recordValue, isLink: isLink, linkUrl: linkUrl });
+                            }
+                        });
+                    }
+                } else {
+                    let isLink = linkableRecords.includes(label);
+                    let linkUrl = '';
+                    if (isLink) {
+                        linkUrl = key === 'com.twitter' ? `https://x.com/${value}`
+                            : key === 'com.github' ? `https://github.com/${value}`
+                            : key === 'com.discord' ? `https://discord.com/users/${value}`
+                            : key === 'org.telegram' ? `https://t.me/${value}`
+                            : normalizeUrl(value);
+                    }
+                    targetArray.push({ label: label, value: value, isLink: isLink, linkUrl: linkUrl });
+                }
+            }
+
+            Object.entries(ensData).forEach(([key, value]) => {
+                if (!Object.keys(recordsMap).includes(key)) {
+                    processValue(key, value, otherRecords);
+                }
+            });
+
+            let orderedRecords = [];
+            if (recordsMap['address']) orderedRecords.push(recordsMap['address']);
+            if (recordsMap['identity']) orderedRecords.push(recordsMap['identity']);
+            if (recordsMap['displayName']) orderedRecords.push(recordsMap['displayName']);
+            if (recordsMap['followers']) orderedRecords.push(recordsMap['followers']);
+            if (recordsMap['following']) orderedRecords.push(recordsMap['following']);
+            if (recordsMap['location']) orderedRecords.push(recordsMap['location']);
+            if (recordsMap['status']) orderedRecords.push(recordsMap['status']);
+            if (recordsMap['description']) orderedRecords.push(recordsMap['description']);
+            if (recordsMap['email']) orderedRecords.push(recordsMap['email']);
+            if (recordsMap['website']) orderedRecords.push(recordsMap['website']);
+            otherRecords.sort((a, b) => a.label.localeCompare(b.label));
+            orderedRecords = orderedRecords.concat(otherRecords);
+            if (recordsMap['createdAt']) orderedRecords.push(recordsMap['createdAt']);
+
+            if (orderedRecords.length === 0) {
+                addProfileRecord(recordsDiv, 'Status', 'No profile records found.', true);
+            } else {
+                orderedRecords.forEach((record, index) => {
+                    addProfileRecord(recordsDiv, record.label, record.value, index === 0, record.isLink, record.linkUrl);
+                });
+            }
+        }
+
+        async function searchENS() {
+            errorMessageHome.style.display = 'none';
+            errorMessageProfile.style.display = 'none';
+            successMessageProfile.style.display = 'none';
+
+            let ensName = ensInputHome.value.trim().toLowerCase();
+            if (!ensName) {
+                errorMessageHome.textContent = 'Please enter an ENS or Base name';
+                errorMessageHome.style.display = 'block';
+                return;
+            }
+
+            if (!ensName.endsWith('.eth') && !ensName.endsWith('.base.eth')) {
+                ensName = `${ensName}.eth`;
+            }
+
+            let url = `https://api.web3.bio/profile/ens/${ensName}`;
+            const isBaseName = ensName.endsWith('.base.eth');
+            if (isBaseName) {
+                url = `https://api.web3.bio/profile/basenames/${ensName}`;
+            }
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        displayUnregisteredProfile(ensName, isBaseName);
+                    } else {
+                        throw new Error(`Error ${response.status}: ${response.statusText}`);
+                    }
+                    return;
+                }
+
+                const ensData = await response.json();
+                currentEnsName = ensData.identity || ensName;
+                currentEnsData = ensData;
+                displayProfile(ensData, ensName);
+            } catch (err) {
+                errorMessageHome.textContent = `Error searching for ${ensName}: ${err.message}`;
+                errorMessageHome.style.display = 'block';
+            }
+        }
+
+        function displayProfile(ensData, searchedName) {
+            homepage.style.display = 'none';
+            profilePage.style.display = 'flex';
+            errorMessageProfile.style.display = 'none';
+            errorMessageHome.style.display = 'none';
+            successMessageProfile.style.display = 'none';
+            neighborhoodSelect.value = currentNeighborhood;
+
+            generateProfileHtml(ensData, searchedName, currentNeighborhood);
+            registerButtonContainer.style.display = 'flex';
+            registerButton.style.display = 'none';
+            downloadButton.style.display = 'inline-block';
+        }
+
+        function displayUnregisteredProfile(ensName, isBaseName) {
+            homepage.style.display = 'none';
+            profilePage.style.display = 'flex';
+            neighborhoodContainer.innerHTML = '';
+            neighborhoodContainer.className = `neighborhood-container neighborhood-${currentNeighborhood}`;
+            if (lightMode) neighborhoodContainer.classList.add('light-mode');
+            errorMessageProfile.style.display = 'none';
+            errorMessageHome.style.display = 'none';
+            successMessageProfile.style.display = 'none';
+
+            const headerLink = document.createElement('a');
+            headerLink.id = 'profile-header-link';
+            headerLink.target = '_blank';
+            headerLink.rel = 'noopener noreferrer';
+
+            const headerDiv = document.createElement('div');
+            headerDiv.id = 'profile-header';
+            headerLink.appendChild(headerDiv);
+
+            const avatarLink = document.createElement('a');
+            avatarLink.id = 'profile-avatar-link';
+            avatarLink.target = '_blank';
+            avatarLink.rel = 'noopener noreferrer';
+
+            const avatarDiv = document.createElement('div');
+            avatarDiv.id = 'profile-avatar';
+            avatarLink.appendChild(avatarDiv);
+
+            const recordsDiv = document.createElement('div');
+            recordsDiv.id = 'profile-records';
+            recordsDiv.className = 'profile-container';
+
+            neighborhoodContainer.appendChild(headerLink);
+            neighborhoodContainer.appendChild(avatarLink);
+            neighborhoodContainer.appendChild(recordsDiv);
+
+            setProfileImages(ensName, avatarDiv, headerDiv, true, true);
+
+            if (isBaseName) {
+                addProfileRecord(recordsDiv, 'Base Name', ensName, true);
+            } else {
+                addProfileRecord(recordsDiv, 'ENS', ensName, true);
+            }
+
+            addProfileRecord(recordsDiv, 'Status', 'Name not registered', false);
+
+            const buttonText = isBaseName ? 'Register Base Name' : 'Register ENS Name';
+            let registerUrl = '';
+
+            if (isBaseName) {
+                const baseNameOnly = ensName.replace(/\.base\.eth$/, '');
+                registerUrl = `https://www.base.org/names?claim=${baseNameOnly}`;
+            } else {
+                registerUrl = `https://app.ens.domains/${ensName}/register`;
+            }
+
+            registerButton.textContent = buttonText;
+            registerButton.onclick = () => window.open(registerUrl, '_blank');
+            registerButton.className = 'register-button';
+            if (lightMode) registerButton.classList.add('light-mode');
+            registerButtonContainer.style.display = 'flex';
+            registerButton.style.display = 'inline-block';
+            downloadButton.style.display = 'none';
+        }
+
+        async function downloadProfileHtml() {
+            if (!currentEnsName) return;
+
+            const colors = {
+                geocities: { 
+                    bg: lightMode ? '#FFF' : '#000', 
+                    color: lightMode ? '#000' : '#FFF', 
+                    border: lightMode ? '#000' : '#FFF' 
+                },
+                area51: { 
+                    bg: lightMode ? '#E0E0E0' : '#0A0A0A', 
+                    color: lightMode ? '#008000' : '#00FF00', 
+                    border: lightMode ? '#008000' : '#00FF00' 
+                },
+                athens: { 
+                    bg: lightMode ? '#F5F5DC' : '#2F4F4F', 
+                    color: lightMode ? '#00008B' : '#ADD8E6', 
+                    border: lightMode ? '#00008B' : '#ADD8E6' 
+                },
+                augusta: { 
+                    bg: lightMode ? '#90EE90' : '#006400', 
+                    color: lightMode ? '#006400' : '#FFFFFF', 
+                    border: lightMode ? '#006400' : '#FFFFFF' 
+                },
+                baja: { 
+                    bg: lightMode ? '#D2B48C' : '#F4A460', 
+                    color: lightMode ? '#FF4500' : '#FF4500', 
+                    border: lightMode ? '#FF4500' : '#FF4500' 
+                },
+                bourbonstreet: { 
+                    bg: lightMode ? '#E6E6FA' : '#4B0082', 
+                    color: lightMode ? '#4B0082' : '#FFFF00', 
+                    border: lightMode ? '#4B0082' : '#FFFF00' 
+                },
+                broadway: { 
+                    bg: lightMode ? '#FFFDD0' : '#1C2526', 
+                    color: lightMode ? '#8B0000' : '#FF4040', 
+                    border: lightMode ? '#8B0000' : '#FF4040' 
+                }
+            };
+
+            const fonts = {
+                geocities: 'sans-serif',
+                area51: "'Orbitron', sans-serif",
+                athens: "'Georgia', serif",
+                augusta: 'sans-serif',
+                baja: 'sans-serif',
+                bourbonstreet: 'sans-serif',
+                broadway: 'sans-serif'
+            };
+
+            const neighborhoodStyles = {
+                area51: `
+                    .profile-box {
+                        box-shadow: 0 0 10px ${colors[currentNeighborhood].border}, 0 0 20px ${colors[currentNeighborhood].border};
+                        background: ${lightMode ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.8)'};
+                    }
+                `,
+                augusta: `
+                    .profile-box {
+                        background-image: linear-gradient(45deg, ${lightMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)'} 25%, transparent 25%);
+                        background: ${lightMode ? 'rgba(144, 238, 144, 0.9)' : 'rgba(0, 100, 0, 0.8)'};
+                    }
+                `,
+                baja: `
+                    .profile-box {
+                        background: ${lightMode ? 'rgba(210, 180, 140, 0.9)' : 'rgba(244, 164, 96, 0.8)'};
+                        transition: transform 0.2s ease;
+                    }
+                    .profile-box:hover {
+                        transform: scale(1.02);
+                    }
+                `,
+                bourbonstreet: `
+                    .profile-box {
+                        background: ${lightMode ? 'rgba(230, 230, 250, 0.9)' : 'rgba(75, 0, 130, 0.8)'};
+                        animation: fadeIn 1s ease-in;
+                    }
+                    @keyframes fadeIn {
+                        from { opacity: 0; }
+                        to { opacity: 1; }
+                    }
+                `,
+                broadway: `
+                    .profile-box {
+                        background: ${lightMode ? 'rgba(255, 253, 208, 0.9)' : 'rgba(28, 37, 38, 0.8)'};
+                        transition: box-shadow 0.3s ease;
+                    }
+                    .profile-box:hover {
+                        box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+                    }
+                `,
+                geocities: `
+                    .profile-box {
+                        background: ${lightMode ? '#FFF' : '#000'};
+                    }
+                `
+            };
+
+            const htmlContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${currentEnsName} - GeoCities Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Georgia&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: ${fonts[currentNeighborhood]};
+            background: ${colors[currentNeighborhood].bg};
+            color: ${colors[currentNeighborhood].color};
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .profile-container {
+            width: 90%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .profile-header {
+            width: 100%;
+            height: 0;
+            padding-bottom: 33.33%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border: 1px solid ${colors[currentNeighborhood].border};
+            box-sizing: border-box;
+            display: none;
+        }
+        .profile-avatar {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10em;
+            border: 1px solid ${colors[currentNeighborhood].border};
+            box-sizing: border-box;
+            color: ${colors[currentNeighborhood].color};
+        }
+        .profile-box {
+            border: 1px solid ${colors[currentNeighborhood].border};
+            padding: 10px;
+            color: ${colors[currentNeighborhood].color};
+            word-break: break-word;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-top: none;
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 38px;
+        }
+        .profile-box:first-child {
+            border-top: 1px solid ${colors[currentNeighborhood].border};
+        }
+        .profile-box-header {
+            font-weight: bold;
+            color: ${colors[currentNeighborhood].color};
+            flex: 0 0 100px;
+            min-width: 80px;
+            text-align: left;
+        }
+        .profile-box-value {
+            flex: 1;
+            text-align: left;
+            word-break: break-all;
+            color: ${colors[currentNeighborhood].color};
+        }
+        .profile-box-value a {
+            color: inherit;
+            text-decoration: underline;
+        }
+        .profile-box-value a:hover {
+            text-decoration: none;
+        }
+        .footer {
+            width: 100%;
+            background: ${colors[currentNeighborhood].bg};
+            color: ${colors[currentNeighborhood].color};
+            text-align: center;
+            padding: 10px 0;
+            font-size: 0.8em;
+            box-sizing: border-box;
+            border-top: 1px solid ${colors[currentNeighborhood].border};
+        }
+        .footer a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            display: none;
+            width: 100%;
+            text-align: center;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        ${neighborhoodStyles[currentNeighborhood] || ''}
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <a id="profile-header-link" href="" target="_blank" rel="noopener noreferrer">
+            <div class="profile-header" id="profile-header"></div>
+        </a>
+        <a id="profile-avatar-link" href="" target="_blank" rel="noopener noreferrer">
+            <div class="profile-avatar" id="profile-avatar"></div>
+        </a>
+        <div class="profile-records" id="profile-records"></div>
+        <div id="error-message" class="error-message"></div>
+    </div>
+    <footer class="footer">
+        <a href="https://geocities.eth.link" target="_blank" rel="noopener noreferrer">GeoCities®️</a>
+    </footer>
+    <script>
+        const ensName = "${currentEnsName}";
+        const profileContainer = document.getElementById('profile-records');
+        const profileAvatar = document.getElementById('profile-avatar');
+        const profileHeader = document.getElementById('profile-header');
+        const profileAvatarLink = document.getElementById('profile-avatar-link');
+        const profileHeaderLink = document.getElementById('profile-header-link');
+        const errorMessage = document.getElementById('error-message');
+
+        async function setProfileImages(name) {
+            const avatarTarget = profileAvatar;
+            const headerTarget = profileHeader;
+            const avatarLink = profileAvatarLink;
+            const headerLink = profileHeaderLink;
+
+            avatarTarget.style.backgroundImage = 'none';
+            const initial = name ? name[0].toUpperCase() : 'G';
+            avatarTarget.textContent = initial;
+
+            headerTarget.style.backgroundImage = 'none';
+            headerTarget.style.display = 'none';
+            headerLink.href = '';
+            headerLink.style.cursor = 'default';
+            headerLink.style.pointerEvents = 'none';
+
+            if (name && typeof name === 'string' && name.trim()) {
+                let normalizedName = name.trim().toLowerCase();
+                normalizedName = normalizedName.replace(/\\.eth$/, '').replace(/\\.base\\.eth$/, '');
+                let limoUrl = name.endsWith('.base.eth')
+                    ? \`https://\${normalizedName}.base.eth.limo\`
+                    : \`https://\${normalizedName}.eth.limo\`;
+                avatarLink.href = limoUrl;
+                avatarLink.style.cursor = 'pointer';
+                avatarLink.style.pointerEvents = 'auto';
+                headerLink.href = limoUrl;
+                headerLink.style.cursor = 'pointer';
+                headerLink.style.pointerEvents = 'auto';
+            }
+
+            if (!name || !name.trim()) return;
+
+            let url = \`https://api.web3.bio/profile/ens/\${name}\`;
+            if (name.endsWith('.base.eth')) {
+                url = \`https://api.web3.bio/profile/basenames/\${name}\`;
+            }
+
+            try {
+                const response = await fetch(url);
+                let avatarUrl = null;
+                let headerUrl = null;
+                if (response.ok) {
+                    const data = await response.json();
+                    avatarUrl = data.avatar;
+                    headerUrl = data.header;
+                }
+
+                if (avatarUrl) {
+                    const img = new Image();
+                    img.src = avatarUrl;
+                    img.onload = () => {
+                        avatarTarget.style.backgroundImage = \`url('\${avatarUrl}')\`;
+                        avatarTarget.textContent = '';
+                    };
+                    img.onerror = () => {
+                        avatarTarget.textContent = initial;
+                    };
+                } else {
+                    avatarTarget.textContent = initial;
+                }
+
+                if (headerUrl) {
+                    const img = new Image();
+                    img.src = headerUrl;
+                    img.onload = () => {
+                        headerTarget.style.backgroundImage = \`url('\${headerUrl}')\`;
+                        headerTarget.style.display = 'block';
+                    };
+                    img.onerror = () => {
+                        headerTarget.style.display = 'none';
+                    };
+                } else {
+                    headerTarget.style.display = 'none';
+                }
+            } catch (err) {
+                avatarTarget.textContent = initial;
+                headerTarget.style.display = 'none';
+            }
+        }
+
+        function addProfileRecord(container, label, value, isFirst, isLink = false, linkUrl = '') {
+            const recordDiv = document.createElement('div');
+            recordDiv.classList.add('profile-box');
+
+            const headerElement = document.createElement('div');
+            headerElement.classList.add('profile-box-header');
+            headerElement.textContent = label;
+
+            const valueContainer = document.createElement('div');
+            valueContainer.classList.add('profile-box-value');
+
+            if (isLink && linkUrl) {
+                const linkElement = document.createElement('a');
+                linkElement.href = linkUrl;
+                linkElement.target = '_blank';
+                linkElement.rel = 'noopener noreferrer';
+                linkElement.textContent = (typeof value === 'object' && value !== null) ? JSON.stringify(value) : value;
+                valueContainer.appendChild(linkElement);
+            } else {
+                valueContainer.textContent = (typeof value === 'object' && value !== null) ? JSON.stringify(value) : value;
+            }
+
+            recordDiv.appendChild(headerElement);
+            recordDiv.appendChild(valueContainer);
+            container.appendChild(recordDiv);
+        }
+
+        function normalizeUrl(url) {
+            if (!url) return url;
+            if (/^https?:\\/\\//i.test(url)) return url;
+            if (/^[a-zA-Z0-9-]+\\.[a-zA-Z]{2,}(\\/.*)?$/.test(url)) return \`https://\${url}\`;
+            return url;
+        }
+
+        async function fetchProfile() {
+            let url = \`https://api.web3.bio/profile/ens/\${ensName}\`;
+            const isBaseName = ensName.endsWith('.base.eth');
+            if (isBaseName) {
+                url = \`https://api.web3.bio/profile/basenames/\${ensName}\`;
+            }
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        profileContainer.innerHTML = '';
+                        setProfileImages(ensName);
+                        if (isBaseName) {
+                            addProfileRecord(profileContainer, 'Base Name', ensName, true);
+                        } else {
+                            addProfileRecord(profileContainer, 'ENS', ensName, true);
+                        }
+                        addProfileRecord(profileContainer, 'Status', 'Name not registered', false);
+                    } else {
+                        throw new Error(\`Error \${response.status}: \${response.statusText}\`);
+                    }
+                    return;
+                }
+
+                const ensData = await response.json();
+                profileContainer.innerHTML = '';
+
+                setProfileImages(ensData?.identity || ensName);
+
+                const specificOmissions = ['avatar', 'header', 'contenthash', 'contentHash', 'identity', 'address', 'displayName', 'description', 'email', 'location', 'status', 'createdAt', 'records', 'followers', 'platform', 'follower', 'following', 'social'];
+                const headerRenames = {
+                    'email': 'Email',
+                    'description': 'Bio',
+                    'location': 'Location',
+                    'status': 'Status',
+                    'keywords': 'Tags',
+                    'com.discord': 'Discord',
+                    'com.twitter': 'Twitter',
+                    'com.github': 'GitHub',
+                    'org.telegram': 'Telegram'
+                };
+                const linkableRecords = ['Website', 'Twitter', 'GitHub', 'Discord', 'Telegram'];
+
+                let recordsMap = {
+                    'address': null,
+                    'identity': null,
+                    'displayName': null,
+                    'followers': null,
+                    'following': null,
+                    'location': null,
+                    'status': null,
+                    'description': null,
+                    'website': null,
+                    'email': null,
+                    'createdAt': null
+                };
+                let otherRecords = [];
+
+                if (ensData.address) recordsMap['address'] = { label: 'Address', value: ensData.address };
+                if (ensData.identity) {
+                    const isBase = ensData.identity.endsWith('.base.eth');
+                    const displayLabel = isBase ? 'Base Name' : 'ENS';
+                    recordsMap['identity'] = { label: displayLabel, value: ensData.identity };
+                }
+                if (ensData.displayName && ensData.displayName !== ensData.identity) {
+                    recordsMap['displayName'] = { label: 'Name', value: ensData.displayName };
+                }
+                if (ensData.social?.follower != null) {
+                    recordsMap['followers'] = { label: 'Followers', value: ensData.social.follower };
+                }
+                if (ensData.social?.following != null) {
+                    recordsMap['following'] = { label: 'Following', value: ensData.social.following };
+                }
+                if (ensData.location) {
+                    recordsMap['location'] = { label: 'Location', value: ensData.location };
+                }
+                if (ensData.status) {
+                    recordsMap['status'] = { label: 'Status', value: ensData.status };
+                }
+                if (ensData.description) {
+                    recordsMap['description'] = { label: 'Bio', value: ensData.description };
+                }
+                if (ensData.links?.website?.handle) {
+                    recordsMap['website'] = { 
+                        label: 'Website', 
+                        value: ensData.links.website.handle, 
+                        isLink: true, 
+                        linkUrl: ensData.links.website.link || normalizeUrl(ensData.links.website.handle) 
+                    };
+                }
+                if (ensData.email) {
+                    recordsMap['email'] = { label: 'Email', value: ensData.email };
+                }
+                if (ensData.createdAt) {
+                    let formattedDate = ensData.createdAt;
+                    try {
+                        const date = new Date(ensData.createdAt);
+                        if (!isNaN(date.getTime())) { formattedDate = date.toLocaleDateString(); }
+                    } catch (err) { }
+                    recordsMap['createdAt'] = { label: 'Created', value: formattedDate };
+                }
+
+                function processValue(key, value, targetArray) {
+                    if (value === null || value === undefined || value === '' || specificOmissions.includes(key)) return;
+
+                    const label = headerRenames[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+
+                    if (recordsMap[key] || targetArray.some(r => r.label === label)) return;
+
+                    if (typeof value === 'object') {
+                        if (key === 'links') {
+                            Object.entries(value).forEach(([linkName, linkData]) => {
+                                if (linkName !== 'website' && linkData && linkData.handle && linkData.link) {
+                                    const formattedLabel = headerRenames[linkName] || linkName.replace(/^./, c => c.toUpperCase());
+                                    targetArray.push({ 
+                                        label: formattedLabel, 
+                                        value: linkData.handle, 
+                                        isLink: true, 
+                                        linkUrl: linkData.link 
+                                    });
+                                }
+                            });
+                        }
+                        else if (key === 'records') {
+                            Object.entries(value).forEach(([recordKey, recordValue]) => {
+                                if (recordKey !== 'contenthash' && recordKey !== 'contentHash' && recordValue) {
+                                    const recordLabel = headerRenames[recordKey] || recordKey.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                                    let isLink = linkableRecords.includes(recordLabel);
+                                    let linkUrl = '';
+                                    if (isLink) {
+                                        linkUrl = recordKey === 'com.twitter' ? \`https://x.com/\${recordValue}\`
+                                            : recordKey === 'com.github' ? \`https://github.com/\${recordValue}\`
+                                            : recordKey === 'com.discord' ? \`https://discord.com/users/\${recordValue}\`
+                                            : recordKey === 'org.telegram' ? \`https://t.me/\${recordValue}\`
+                                            : normalizeUrl(recordValue);
+                                    }
+                                    targetArray.push({ label: recordLabel, value: recordValue, isLink: isLink, linkUrl: linkUrl });
+                                }
+                            });
+                        }
+                    } else {
+                        let isLink = linkableRecords.includes(label);
+                        let linkUrl = '';
+                        if (isLink) {
+                            linkUrl = key === 'com.twitter' ? \`https://x.com/\${value}\`
+                                : key === 'com.github' ? \`https://github.com/\${value}\`
+                                : key === 'com.discord' ? \`https://discord.com/users/\${value}\`
+                                : key === 'org.telegram' ? \`https://t.me/\${value}\`
+                                : normalizeUrl(value);
+                        }
+                        targetArray.push({ label: label, value: value, isLink: isLink, linkUrl: linkUrl });
+                    }
+                }
+
+                Object.entries(ensData).forEach(([key, value]) => {
+                    if (!Object.keys(recordsMap).includes(key)) {
+                        processValue(key, value, otherRecords);
+                    }
+                });
+
+                let orderedRecords = [];
+                if (recordsMap['address']) orderedRecords.push(recordsMap['address']);
+                if (recordsMap['identity']) orderedRecords.push(recordsMap['identity']);
+                if (recordsMap['displayName']) orderedRecords.push(recordsMap['displayName']);
+                if (recordsMap['followers']) orderedRecords.push(recordsMap['followers']);
+                if (recordsMap['following']) orderedRecords.push(recordsMap['following']);
+                if (recordsMap['location']) orderedRecords.push(recordsMap['location']);
+                if (recordsMap['status']) orderedRecords.push(recordsMap['status']);
+                if (recordsMap['description']) orderedRecords.push(recordsMap['description']);
+                if (recordsMap['email']) orderedRecords.push(recordsMap['email']);
+                if (recordsMap['website']) orderedRecords.push(recordsMap['website']);
+                otherRecords.sort((a, b) => a.label.localeCompare(b.label));
+                orderedRecords = orderedRecords.concat(otherRecords);
+                if (recordsMap['createdAt']) orderedRecords.push(recordsMap['createdAt']);
+
+                if (orderedRecords.length === 0) {
+                    addProfileRecord(profileContainer, 'Status', 'No profile records found.', true);
+                } else {
+                    orderedRecords.forEach((record, index) => {
+                        addProfileRecord(profileContainer, record.label, record.value, index === 0, record.isLink, record.linkUrl);
+                    });
+                }
+            } catch (err) {
+                errorMessage.textContent = \`Error loading profile: \${err.message}\`;
+                errorMessage.style.display = 'block';
+            }
+        }
+
+        fetchProfile();
+    </script>
+</body>
+</html>
+            `;
+
+            try {
+                const blob = new Blob([htmlContent], { type: 'text/html' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'index.html';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+
+                successMessageProfile.textContent = 'Profile HTML downloaded successfully!';
+                successMessageProfile.style.display = 'block';
+                errorMessageProfile.style.display = 'none';
+
+                setTimeout(() => {
+                    successMessageProfile.style.display = 'none';
+                }, 3000);
+            } catch (err) {
+                errorMessageProfile.textContent = `Error downloading HTML: ${err.message}`;
+                errorMessageProfile.style.display = 'block';
+                successMessageProfile.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
